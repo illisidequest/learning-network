@@ -1,0 +1,1546 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Learning Network</title>
+<meta name="description" content="A daily learning ritual: pick a topic, research it, log what you learned and watch your neural network grow.">
+<meta name="theme-color" content="#F3EEE4">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%231E1B18'/%3E%3Ccircle cx='16' cy='16' r='3.4' fill='%23F3EEE4'/%3E%3Cpath d='M16 5v4M16 23v4M5 16h4M23 16h4M8.2 8.2l2.8 2.8M21 21l2.8 2.8M23.8 8.2L21 11M11 21l-2.8 2.8' stroke='%23F3EEE4' stroke-width='2.2' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;1,400&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#5C564E}a:hover{color:#1E1B18}
+.lnw-root,.lnw-root button,.lnw-root textarea{font-family:'IBM Plex Mono',ui-monospace,Menlo,monospace}
+.lnw-btn{transition:transform .18s cubic-bezier(.2,.8,.2,1),box-shadow .18s ease,background-color .18s ease}
+.lnw-btn:hover{transform:translateY(-2px);box-shadow:0 10px 24px -10px rgba(30,27,24,.55)}
+.lnw-btn:active{transform:translateY(0) scale(.97)}
+.lnw-root button:focus-visible,.lnw-root textarea:focus-visible{outline:2px solid #A0644F;outline-offset:3px}
+.lnw-ghost{transition:background-color .15s ease,color .15s ease,border-color .15s ease}
+.lnw-ghost:hover{background-color:rgba(30,27,24,.07)}
+.lnw-ink{transition:background-color .15s ease,transform .15s ease}
+.lnw-ink:hover{background-color:#38332D}
+.lnw-ink:active{transform:scale(.98)}
+.lnw-dark-btn{transition:background-color .15s ease,border-color .15s ease,color .15s ease}
+.lnw-dark-btn:hover{background-color:rgba(241,232,211,.08);border-color:rgba(241,232,211,.5)}
+.lnw-cream-btn{transition:background-color .15s ease,transform .15s ease}
+.lnw-cream-btn:hover{background-color:#FFF8E8}
+.lnw-cream-btn:active{transform:scale(.98)}
+.lnw-hint{transition:opacity .8s ease}
+.lnw-backdrop{animation:lnwFade .35s ease both}
+.lnw-card{animation:lnwRise .5s cubic-bezier(.2,.8,.2,1) both}
+.lnw-swap-a{animation:lnwSwapA .45s cubic-bezier(.2,.8,.2,1) both}
+.lnw-swap-b{animation:lnwSwapB .45s cubic-bezier(.2,.8,.2,1) both}
+.lnw-timer{animation:lnwFade .6s ease both}
+.lnw-drawer{animation:lnwSlide .4s cubic-bezier(.2,.8,.2,1) both}
+.lnw-tip{animation:lnwTip .22s cubic-bezier(.2,.8,.2,1) both}
+.lnw-tile{position:relative;overflow:hidden}
+.lnw-tile::after{content:'';position:absolute;left:0;right:0;top:50%;height:2px;margin-top:-1px;background:#0E0C0A;box-shadow:0 1px 0 rgba(241,232,211,.05)}
+.lnw-tile::before{content:'';position:absolute;left:0;right:0;top:0;height:50%;background:linear-gradient(rgba(241,232,211,.035),rgba(241,232,211,0))}
+.lnw-flap-a{display:inline-block;animation:lnwFlapA .46s cubic-bezier(.3,.75,.2,1) both;transform-origin:50% 50%}
+.lnw-flap-b{display:inline-block;animation:lnwFlapB .46s cubic-bezier(.3,.75,.2,1) both;transform-origin:50% 50%}
+.lnw-blink{animation:lnwBlink 1.6s ease-in-out infinite}
+.lnw-out-bg{animation:lnwOutBg .32s ease forwards;pointer-events:none}
+.lnw-out-card{animation:lnwOutCard .32s cubic-bezier(.4,0,.6,1) forwards}
+.lnw-toast{animation:lnwToast 3s ease forwards}
+.lnw-area{transition:border-color .15s ease,background-color .15s ease}
+.lnw-area:focus{border-color:#1E1B18;background-color:#FFFDF8;outline:none}
+.lnw-area::placeholder{color:#8F877C}
+@keyframes lnwFade{from{opacity:0}to{opacity:1}}
+@keyframes lnwRise{from{opacity:0;transform:translateY(18px) scale(.985)}to{opacity:1;transform:none}}
+@keyframes lnwSwapA{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@keyframes lnwSwapB{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@keyframes lnwSlide{from{opacity:0;transform:translateX(24px)}to{opacity:1;transform:none}}
+@keyframes lnwTip{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+@keyframes lnwFlapA{0%{transform:perspective(700px) rotateX(-62deg);opacity:.25;filter:blur(1.5px)}100%{transform:none;opacity:1;filter:none}}
+@keyframes lnwFlapB{0%{transform:perspective(700px) rotateX(-62deg);opacity:.25;filter:blur(1.5px)}100%{transform:none;opacity:1;filter:none}}
+@keyframes lnwOutBg{from{opacity:1}to{opacity:0}}
+@keyframes lnwOutCard{from{opacity:1;transform:none}to{opacity:0;transform:translateY(14px) scale(.985)}}
+@keyframes lnwToast{0%{opacity:0;transform:translateX(16px)}10%{opacity:1;transform:none}82%{opacity:1;transform:none}100%{opacity:0;transform:translateX(8px)}}
+@keyframes lnwBlink{0%,100%{opacity:1}50%{opacity:.35}}
+@media (prefers-reduced-motion: reduce){.lnw-card,.lnw-backdrop,.lnw-swap-a,.lnw-swap-b,.lnw-timer,.lnw-drawer,.lnw-tip,.lnw-flap-a,.lnw-flap-b,.lnw-blink{animation:none}}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<template id="app-tpl">
+<div class="lnw-root" style="position: relative; width: 100%; height: 100vh; min-height: 600px; overflow: hidden; background-color: #F3EEE4; color: #1E1B18">
+<canvas ref="{{setCanvas}}" role="img" aria-label="{{ariaLabel}}" style="position: absolute; inset: 0; width: 100%; height: 100%; display: block; touch-action: none; cursor: grab"></canvas>
+
+<div style="position: absolute; top: 24px; left: 28px; display: flex; flex-direction: column; gap: 10px; pointer-events: none">
+<p style="margin: 0; font-size: 12px; font-weight: 600; letter-spacing: 0.14em">LEARNING NETWORK <span style="font-weight: 400; color: #6B645B">/ v0.2 · local</span></p>
+<div style="display: flex; border: 1px solid rgba(30,27,24,0.22); background-color: rgba(243,238,228,0.88)">
+<div style="padding: 10px 16px 11px; display: flex; flex-direction: column; gap: 4px; border-right: 1px solid rgba(30,27,24,0.22)">
+<span style="font-size: 10px; letter-spacing: 0.12em; color: #6B645B">TOPICS COMPLETED</span>
+<span style="font-size: 20px; font-weight: 500; letter-spacing: 0.02em; font-variant-numeric: tabular-nums">{{completedLabel}}</span>
+</div>
+<div style="padding: 10px 16px 11px; display: flex; flex-direction: column; gap: 4px; border-right: 1px solid rgba(30,27,24,0.22)">
+<span style="font-size: 10px; letter-spacing: 0.12em; color: #6B645B">TIME SPENT LEARNING</span>
+<span style="font-size: 20px; font-weight: 500; letter-spacing: 0.02em; font-variant-numeric: tabular-nums">{{timeLabel}}</span>
+</div>
+<div style="padding: 10px 16px 11px; display: flex; flex-direction: column; gap: 4px">
+<span style="font-size: 10px; letter-spacing: 0.12em; color: #6B645B">CLUSTERS</span>
+<span style="display: flex; gap: 6px; align-items: center; height: 26px">
+<sc-for list="{{clusters}}" as="cl" hint-placeholder-count="1">
+<span style="width: 8px; height: 8px; border-radius: 50%; display: block; background-color: {{cl.color}}"></span>
+</sc-for>
+</span>
+</div>
+</div>
+</div>
+
+<div style="position: absolute; top: 26px; right: 28px; display: flex; flex-direction: column; align-items: flex-end; gap: 6px; pointer-events: none; font-size: 11px; letter-spacing: 0.1em; color: #6B645B">
+<span>{{dateLabel}}</span>
+<span style="display: flex; align-items: center; gap: 7px"><span style="width: 6px; height: 6px; border-radius: 50%; display: block; background-color: #5E7A64"></span>{{savedLabel}}</span>
+<button type="button" class="lnw-ghost" onClick="{{openLibrary}}" style="pointer-events: auto; margin-top: 6px; height: 40px; padding: 0 14px; border: 1px solid rgba(30,27,24,0.22); background-color: rgba(243,238,228,0.9); color: #1E1B18; font-size: 11px; letter-spacing: 0.1em; cursor: pointer; display: flex; align-items: center; gap: 10px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="square" aria-hidden="true"><path d="M5 4h4v16H5zM10 4h4v16h-4zM15.5 5l3.8 1 -3.6 14 -3.8-1"></path></svg>LIBRARY · {{libLeft}} / {{libTotal}} LEFT</button>
+</div>
+
+<p class="lnw-hint" style="position: absolute; left: 28px; bottom: 32px; margin: 0; font-size: 11px; letter-spacing: 0.08em; color: #6B645B; pointer-events: none; opacity: {{hintOpacity}}">DRAG · PAN &#160;&#160; SCROLL · ZOOM &#160;&#160; HOVER · RECALL</p>
+
+<div style="position: absolute; left: 50%; bottom: 28px; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; gap: 10px">
+<span style="font-size: 10px; letter-spacing: 0.14em; color: #6B645B; pointer-events: none">{{nextLabel}}</span>
+<button type="button" class="lnw-btn" onClick="{{openTopic}}" style="height: 56px; padding: 0 28px 0 22px; border: 0; border-radius: 999px; background-color: #1E1B18; color: #F3EEE4; font-size: 15px; font-weight: 500; letter-spacing: 0.01em; display: flex; align-items: center; gap: 12px; cursor: pointer; box-shadow: 0 6px 18px -10px rgba(30,27,24,0.6)">
+<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="2.6" fill="currentColor" stroke="none"></circle><path d="M12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3M5.3 5.3l2.1 2.1M16.6 16.6l2.1 2.1M18.7 5.3l-2.1 2.1M7.4 16.6l-2.1 2.1"></path></svg>
+<span>Learn something new</span>
+</button>
+</div>
+
+<div style="position: absolute; right: 28px; bottom: 30px; display: flex; align-items: center; border: 1px solid rgba(30,27,24,0.22); background-color: rgba(243,238,228,0.9)">
+<button type="button" class="lnw-ghost" onClick="{{zoomOut}}" aria-label="Zoom out" style="width: 44px; height: 44px; border: 0; background-color: transparent; color: #1E1B18; cursor: pointer; display: flex; align-items: center; justify-content: center"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="square" aria-hidden="true"><path d="M5 12h14"></path></svg></button>
+<span style="min-width: 56px; height: 44px; display: flex; align-items: center; justify-content: center; font-size: 12px; color: #1E1B18; font-variant-numeric: tabular-nums; border-left: 1px solid rgba(30,27,24,0.22); border-right: 1px solid rgba(30,27,24,0.22)">{{zoomLabel}}</span>
+<button type="button" class="lnw-ghost" onClick="{{zoomIn}}" aria-label="Zoom in" style="width: 44px; height: 44px; border: 0; background-color: transparent; color: #1E1B18; cursor: pointer; display: flex; align-items: center; justify-content: center"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="square" aria-hidden="true"><path d="M5 12h14M12 5v14"></path></svg></button>
+<button type="button" class="lnw-ghost" onClick="{{fit}}" aria-label="Fit whole network" style="width: 44px; height: 44px; border: 0; border-left: 1px solid rgba(30,27,24,0.22); background-color: transparent; color: #1E1B18; cursor: pointer; display: flex; align-items: center; justify-content: center"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="square" aria-hidden="true"><path d="M4 9V4h5M15 4h5v5M20 15v5h-5M9 20H4v-5"></path></svg></button>
+</div>
+
+<sc-if value="{{hovShow}}" hint-placeholder-val="{{ false }}">
+<div class="lnw-tip" style="position: absolute; left: {{hovX}}px; top: {{hovY}}px; width: 288px; box-sizing: border-box; padding: 14px 16px 16px; background-color: #FBF8F1; border: 1px solid #1E1B18; box-shadow: 4px 4px 0 rgba(30,27,24,0.9); pointer-events: none; display: flex; flex-direction: column; gap: 10px">
+<div style="display: flex; justify-content: space-between; gap: 12px; font-size: 10px; letter-spacing: 0.12em; color: #6B645B"><span>№ {{hovNo}} · {{hovTitle}}</span></div>
+<span style="font-size: 10px; letter-spacing: 0.12em; color: #6B645B; border-top: 1px dashed rgba(30,27,24,0.35); padding-top: 10px">MOST INTERESTING THING I LEARNED</span>
+<p style="margin: 0; font-size: 15px; line-height: 1.5">{{hovA}}</p>
+<span style="font-size: 10px; letter-spacing: 0.12em; color: #6B645B">{{hovDate}} · {{hovDur}}</span>
+</div>
+</sc-if>
+
+<sc-if value="{{toastShow}}" hint-placeholder-val="{{ false }}">
+<div class="lnw-toast" role="status" style="position: absolute; right: 28px; bottom: 96px; display: flex; align-items: center; gap: 10px; padding: 12px 16px; background-color: #FBF8F1; border: 1px solid rgba(30,27,24,0.3); font-size: 12px; letter-spacing: 0.04em; color: #1E1B18; pointer-events: none">
+<span style="width: 6px; height: 6px; border-radius: 50%; display: block; background-color: #A0644F"></span>
+<span>{{toastText}}</span>
+</div>
+</sc-if>
+
+<input type="file" ref="{{setFileInput}}" accept=".xlsx,.csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,text/csv" onChange="{{onFile}}" aria-hidden="true" style="display: none">
+
+<sc-if value="{{showLibrary}}" hint-placeholder-val="{{ false }}">
+<div class="lnw-backdrop" style="position: absolute; inset: 0; background-color: rgba(243,238,228,0.72); backdrop-filter: blur(3px); display: flex; align-items: center; justify-content: center; padding: 24px; box-sizing: border-box">
+<div class="lnw-card" role="dialog" aria-modal="true" aria-labelledby="lnw-lib-title" onKeyDown="{{dialogKey}}" style="width: 100%; max-width: 600px; max-height: calc(100vh - 48px); overflow-y: auto; box-sizing: border-box; background-color: #FBF8F1; border: 1px solid #1E1B18; box-shadow: 6px 6px 0 rgba(30,27,24,0.92)">
+<div style="display: flex; align-items: center; justify-content: space-between; padding: 0 8px 0 20px; height: 44px; border-bottom: 1px solid #1E1B18; font-size: 11px; letter-spacing: 0.14em">
+<span id="lnw-lib-title">TOPIC LIBRARY</span>
+<button type="button" ref="{{setPrimary}}" class="lnw-ghost" onClick="{{closeTopic}}" aria-label="Close" style="width: 36px; height: 36px; border: 0; background-color: transparent; color: #1E1B18; cursor: pointer; display: flex; align-items: center; justify-content: center"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="square" aria-hidden="true"><path d="M5 5l14 14M19 5L5 19"></path></svg></button>
+</div>
+<div style="padding: 24px 28px 28px; display: flex; flex-direction: column; gap: 20px">
+<sc-if value="{{libBanner}}" hint-placeholder-val="{{ false }}">
+<div style="padding: 14px 16px; background-color: #1E1B18; color: #F3EEE4; font-size: 13px; line-height: 1.6">Every topic in this library is learned. Import a new file to keep your network growing.</div>
+</sc-if>
+<div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border: 1px solid rgba(30,27,24,0.22)">
+<div style="padding: 10px 14px; display: flex; flex-direction: column; gap: 4px; border-right: 1px solid rgba(30,27,24,0.22)"><span style="font-size: 10px; letter-spacing: 0.12em; color: #6B645B">TOPICS</span><span style="font-size: 20px; font-weight: 500; font-variant-numeric: tabular-nums">{{libTotal}}</span></div>
+<div style="padding: 10px 14px; display: flex; flex-direction: column; gap: 4px; border-right: 1px solid rgba(30,27,24,0.22)"><span style="font-size: 10px; letter-spacing: 0.12em; color: #6B645B">LEARNED</span><span style="font-size: 20px; font-weight: 500; font-variant-numeric: tabular-nums">{{libLearned}}</span></div>
+<div style="padding: 10px 14px; display: flex; flex-direction: column; gap: 4px"><span style="font-size: 10px; letter-spacing: 0.12em; color: #6B645B">STILL TO LEARN</span><span style="font-size: 20px; font-weight: 500; font-variant-numeric: tabular-nums">{{libLeft}}</span></div>
+</div>
+<div style="display: flex; flex-direction: column">
+<span style="font-size: 10px; letter-spacing: 0.14em; color: #6B645B; padding-bottom: 8px">SOURCES</span>
+<sc-for list="{{libImports}}" as="im" hint-placeholder-count="1">
+<div style="display: flex; align-items: baseline; justify-content: space-between; gap: 16px; padding: 10px 0; border-top: 1px dashed rgba(30,27,24,0.28); font-size: 13px"><span style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap">{{im.name}}</span><span style="flex-shrink: 0; font-size: 11px; letter-spacing: 0.08em; color: #6B645B">{{im.meta}}</span></div>
+</sc-for>
+</div>
+<div onDragOver="{{onDragOver}}" onDragLeave="{{onDragLeave}}" onDrop="{{onDrop}}" style="border: 1px dashed {{dropBorder}}; background-color: {{dropBg}}; padding: 22px 20px; display: flex; flex-direction: column; align-items: center; gap: 12px; text-align: center; transition: background-color .15s ease, border-color .15s ease">
+<span style="font-size: 13px; color: #3D3832">Drop an .xlsx or .csv file here</span>
+<button type="button" class="lnw-ink" onClick="{{pickFile}}" style="height: 44px; padding: 0 18px; border: 0; background-color: #1E1B18; color: #F3EEE4; font-size: 13px; font-weight: 500; cursor: pointer; display: flex; align-items: center; gap: 10px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="square" aria-hidden="true"><path d="M12 15V4M7 9l5-5 5 5M4 20h16"></path></svg>{{importLabel}}</button>
+<sc-if value="{{libHasMsg}}" hint-placeholder-val="{{ false }}"><span role="status" style="font-size: 12px; line-height: 1.5; color: {{libMsgColor}}">{{libMsgText}}</span></sc-if>
+</div>
+<div style="display: flex; flex-direction: column; gap: 6px; font-size: 11px; line-height: 1.6; color: #6B645B">
+<span>First row: Topic ID · Topic · Category · Research time (min) · Curiosity hook · Research question 1–4. Only “Topic” is required.</span>
+<span>New topics are added to this library. Topics you’ve already logged are skipped and never come back.</span>
+</div>
+</div>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{showTopic}}" hint-placeholder-val="{{ false }}">
+<div class="lnw-backdrop" style="position: absolute; inset: 0; background-color: rgba(243,238,228,0.72); backdrop-filter: blur(3px); display: flex; align-items: center; justify-content: center; padding: 24px; box-sizing: border-box">
+<div class="lnw-card" role="dialog" aria-modal="true" aria-labelledby="lnw-topic-title" onKeyDown="{{dialogKey}}" style="width: 100%; max-width: 600px; max-height: calc(100vh - 48px); overflow-y: auto; box-sizing: border-box; background-color: #FBF8F1; border: 1px solid #1E1B18; box-shadow: 6px 6px 0 rgba(30,27,24,0.92)">
+<div style="display: flex; align-items: center; justify-content: space-between; padding: 0 8px 0 20px; height: 44px; border-bottom: 1px solid #1E1B18; font-size: 11px; letter-spacing: 0.14em">
+<span>TOPIC № {{tNo}}</span>
+<span style="display: flex; align-items: center; gap: 12px"><span style="color: #6B645B">{{tCat}}</span>
+<button type="button" class="lnw-ghost" onClick="{{closeTopic}}" aria-label="Close" style="width: 36px; height: 36px; border: 0; background-color: transparent; color: #1E1B18; cursor: pointer; display: flex; align-items: center; justify-content: center"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="square" aria-hidden="true"><path d="M5 5l14 14M19 5L5 19"></path></svg></button></span>
+</div>
+<div class="{{swapClass}}" style="padding: 28px 28px 8px; display: flex; flex-direction: column; gap: 16px">
+<h2 id="lnw-topic-title" style="margin: 0; font-size: 30px; font-weight: 500; line-height: 1.15; letter-spacing: -0.02em">{{tTitle}}</h2>
+<p style="margin: 0; font-size: 14px; line-height: 1.7; color: #3D3832">{{tIntro}}</p>
+<div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border: 1px solid rgba(30,27,24,0.22)">
+<div style="padding: 10px 14px; display: flex; flex-direction: column; gap: 4px; border-right: 1px solid rgba(30,27,24,0.22)"><span style="font-size: 10px; letter-spacing: 0.12em; color: #6B645B">ALLOCATED</span><span style="font-size: 16px; font-weight: 500">{{tTime}}</span></div>
+<div style="padding: 10px 14px; display: flex; flex-direction: column; gap: 4px; border-right: 1px solid rgba(30,27,24,0.22)"><span style="font-size: 10px; letter-spacing: 0.12em; color: #6B645B">CATEGORY</span><span style="font-size: 16px; font-weight: 500">{{tCatPlain}}</span></div>
+<div style="padding: 10px 14px; display: flex; flex-direction: column; gap: 4px"><span style="font-size: 10px; letter-spacing: 0.12em; color: #6B645B">QUESTIONS</span><span style="font-size: 16px; font-weight: 500">{{tQCount}}</span></div>
+</div>
+<div style="display: flex; flex-direction: column">
+<span style="font-size: 10px; letter-spacing: 0.14em; color: #6B645B; padding-bottom: 8px">KEY QUESTIONS TO INVESTIGATE</span>
+<sc-for list="{{tQs}}" as="q" hint-placeholder-count="4">
+<div style="display: flex; gap: 14px; padding: 11px 0; border-top: 1px dashed rgba(30,27,24,0.28); font-size: 13px; line-height: 1.55"><span style="color: #6B645B; flex-shrink: 0">{{q.n}}</span><span>{{q.text}}</span></div>
+</sc-for>
+</div>
+</div>
+<div style="display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; padding: 16px 20px 20px 20px">
+<button type="button" class="lnw-ghost" onClick="{{shuffleTopic}}" style="height: 44px; padding: 0 14px; border: 1px solid rgba(30,27,24,0.25); background-color: transparent; color: #1E1B18; font-size: 13px; cursor: pointer; display: flex; align-items: center; gap: 8px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="square" aria-hidden="true"><path d="M4 12a8 8 0 0 1 14-5.3M20 4v5h-5M20 12a8 8 0 0 1-14 5.3M4 20v-5h5"></path></svg>Another topic</button>
+<button type="button" ref="{{setPrimary}}" class="lnw-ink" onClick="{{startLearning}}" style="height: 48px; padding: 0 22px; border: 0; background-color: #1E1B18; color: #F3EEE4; font-size: 14px; font-weight: 500; cursor: pointer; display: flex; align-items: center; gap: 12px">Start learning<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="square" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"></path></svg></button>
+</div>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{showTimer}}" hint-placeholder-val="{{ false }}">
+<div class="lnw-timer" style="position: absolute; inset: 0; background-color: #151310; background-image: radial-gradient(rgba(241,232,211,0.07) 1px, transparent 1.2px); background-size: 28px 28px; color: #F1E8D3; display: flex; flex-direction: column">
+<div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; padding: 26px 28px 0; flex-wrap: wrap">
+<div style="display: flex; flex-direction: column; gap: 8px; max-width: 620px">
+<span style="font-size: 11px; letter-spacing: 0.14em; color: rgba(241,232,211,0.55)">SESSION № {{tNo}} · {{tCat}}</span>
+<span style="font-size: 18px; font-weight: 500; line-height: 1.3">{{tTitle}}</span>
+</div>
+<div style="display: flex; flex-direction: column; align-items: flex-end; gap: 8px; font-size: 11px; letter-spacing: 0.14em; color: rgba(241,232,211,0.55)">
+<span>ALLOCATED {{tTime}}</span>
+<sc-if value="{{paused}}" hint-placeholder-val="{{ false }}"><span class="lnw-blink" style="color: #F2B35B">● PAUSED</span></sc-if>
+<sc-if value="{{running}}" hint-placeholder-val="{{ true }}"><span>● IN SESSION</span></sc-if>
+<sc-if value="{{timerDone}}" hint-placeholder-val="{{ false }}"><span style="color: #F2B35B">● COMPLETE</span></sc-if>
+</div>
+</div>
+<div style="flex: 1 1 auto; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 36px; padding: 24px">
+<div aria-live="polite" aria-label="{{timeLeftAria}}" style="display: flex; align-items: center; gap: clamp(8px, 1.4vw, 18px); opacity: {{digitOpacity}}; transition: opacity .4s ease">
+<div class="lnw-tile" style="width: clamp(78px, 13vw, 200px); height: clamp(112px, 19vw, 280px); background-color: #23201B; border-radius: 10px; display: flex; align-items: center; justify-content: center; box-shadow: inset 0 0 0 1px rgba(241,232,211,0.06), 0 18px 40px -20px rgba(0,0,0,0.8)"><span class="{{f0}}" style="font-size: clamp(88px, 15vw, 236px); font-weight: 500; line-height: 1; letter-spacing: -0.04em">{{d0}}</span></div>
+<div class="lnw-tile" style="width: clamp(78px, 13vw, 200px); height: clamp(112px, 19vw, 280px); background-color: #23201B; border-radius: 10px; display: flex; align-items: center; justify-content: center; box-shadow: inset 0 0 0 1px rgba(241,232,211,0.06), 0 18px 40px -20px rgba(0,0,0,0.8)"><span class="{{f1}}" style="font-size: clamp(88px, 15vw, 236px); font-weight: 500; line-height: 1; letter-spacing: -0.04em">{{d1}}</span></div>
+<div style="display: flex; flex-direction: column; gap: clamp(14px, 2.4vw, 34px)"><span style="width: clamp(8px, 1.1vw, 16px); height: clamp(8px, 1.1vw, 16px); background-color: rgba(241,232,211,0.7); display: block"></span><span style="width: clamp(8px, 1.1vw, 16px); height: clamp(8px, 1.1vw, 16px); background-color: rgba(241,232,211,0.7); display: block"></span></div>
+<div class="lnw-tile" style="width: clamp(78px, 13vw, 200px); height: clamp(112px, 19vw, 280px); background-color: #23201B; border-radius: 10px; display: flex; align-items: center; justify-content: center; box-shadow: inset 0 0 0 1px rgba(241,232,211,0.06), 0 18px 40px -20px rgba(0,0,0,0.8)"><span class="{{f2}}" style="font-size: clamp(88px, 15vw, 236px); font-weight: 500; line-height: 1; letter-spacing: -0.04em">{{d2}}</span></div>
+<div class="lnw-tile" style="width: clamp(78px, 13vw, 200px); height: clamp(112px, 19vw, 280px); background-color: #23201B; border-radius: 10px; display: flex; align-items: center; justify-content: center; box-shadow: inset 0 0 0 1px rgba(241,232,211,0.06), 0 18px 40px -20px rgba(0,0,0,0.8)"><span class="{{f3}}" style="font-size: clamp(88px, 15vw, 236px); font-weight: 500; line-height: 1; letter-spacing: -0.04em">{{d3}}</span></div>
+</div>
+<div style="width: min(720px, 86vw); display: flex; flex-direction: column; gap: 10px">
+<div style="height: 1px; background-color: rgba(241,232,211,0.16); position: relative"><div style="position: absolute; left: 0; top: -1px; height: 3px; background-color: #F1E8D3; width: {{progPct}}%; transition: width .9s linear"></div></div>
+<div style="display: flex; justify-content: space-between; font-size: 11px; letter-spacing: 0.12em; color: rgba(241,232,211,0.55)"><span>ELAPSED {{elapsedLabel}}</span><span>MM : SS</span></div>
+</div>
+<sc-if value="{{timerDone}}" hint-placeholder-val="{{ false }}">
+<div class="lnw-card" style="display: flex; flex-direction: column; align-items: center; gap: 18px; text-align: center">
+<p style="margin: 0; font-size: 15px; line-height: 1.6; color: rgba(241,232,211,0.8); max-width: 460px">Time’s up. Before it fades, write down what stuck with you. Your network grows once the entry is saved.</p>
+<button type="button" class="lnw-cream-btn" onClick="{{toLog}}" style="height: 52px; padding: 0 26px; border: 0; background-color: #F1E8D3; color: #151310; font-size: 14px; font-weight: 500; cursor: pointer; display: flex; align-items: center; gap: 12px">Log this session<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="square" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"></path></svg></button>
+</div>
+</sc-if>
+<sc-if value="{{notDone}}" hint-placeholder-val="{{ true }}">
+<div style="display: flex; gap: 10px; flex-wrap: wrap; justify-content: center">
+<button type="button" class="lnw-cream-btn" onClick="{{togglePause}}" style="height: 48px; min-width: 132px; padding: 0 20px; border: 0; background-color: #F1E8D3; color: #151310; font-size: 13px; font-weight: 500; letter-spacing: 0.06em; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px">
+<sc-if value="{{running}}" hint-placeholder-val="{{ true }}"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="6" y="5" width="4" height="14"></rect><rect x="14" y="5" width="4" height="14"></rect></svg></sc-if>
+<sc-if value="{{paused}}" hint-placeholder-val="{{ false }}"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 5l12 7-12 7z"></path></svg></sc-if>
+<span>{{pauseLabel}}</span></button>
+<button type="button" class="lnw-dark-btn" onClick="{{toggleQs}}" aria-expanded="{{showQsAria}}" style="height: 48px; padding: 0 18px; border: 1px solid rgba(241,232,211,0.25); background-color: transparent; color: #F1E8D3; font-size: 13px; letter-spacing: 0.06em; cursor: pointer">Questions · {{tQCount}}</button>
+<button type="button" class="lnw-dark-btn" onClick="{{finishEarly}}" style="height: 48px; padding: 0 18px; border: 1px solid rgba(241,232,211,0.25); background-color: transparent; color: rgba(241,232,211,0.75); font-size: 13px; letter-spacing: 0.06em; cursor: pointer">Finish early</button>
+</div>
+</sc-if>
+</div>
+<sc-if value="{{showQs}}" hint-placeholder-val="{{ false }}">
+<aside class="lnw-drawer" aria-label="Research questions" style="position: absolute; top: 0; right: 0; bottom: 0; width: min(400px, 100%); box-sizing: border-box; background-color: #1C1915; border-left: 1px solid rgba(241,232,211,0.14); display: flex; flex-direction: column">
+<div style="height: 64px; padding: 0 12px 0 24px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid rgba(241,232,211,0.14); font-size: 11px; letter-spacing: 0.14em; color: rgba(241,232,211,0.6)">
+<span>RESEARCH QUESTIONS</span>
+<button type="button" class="lnw-dark-btn" onClick="{{toggleQs}}" aria-label="Close questions" style="width: 44px; height: 44px; border: 0; background-color: transparent; color: #F1E8D3; cursor: pointer; display: flex; align-items: center; justify-content: center"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="square" aria-hidden="true"><path d="M5 5l14 14M19 5L5 19"></path></svg></button>
+</div>
+<div style="padding: 8px 24px 24px; overflow-y: auto; display: flex; flex-direction: column">
+<sc-for list="{{tQs}}" as="q" hint-placeholder-count="4">
+<div style="display: flex; gap: 14px; padding: 16px 0; border-bottom: 1px dashed rgba(241,232,211,0.16); font-size: 14px; line-height: 1.6"><span style="color: rgba(241,232,211,0.45); flex-shrink: 0">{{q.n}}</span><span>{{q.text}}</span></div>
+</sc-for>
+</div>
+</aside>
+</sc-if>
+</div>
+</sc-if>
+
+<sc-if value="{{showLog}}" hint-placeholder-val="{{ false }}">
+<div class="{{logBgClass}}" style="position: absolute; inset: 0; background-color: rgba(243,238,228,0.72); backdrop-filter: blur(3px); display: flex; align-items: center; justify-content: center; padding: 24px; box-sizing: border-box">
+<div class="{{logCardClass}}" role="dialog" aria-modal="true" aria-labelledby="lnw-log-title" style="width: 100%; max-width: 600px; max-height: calc(100vh - 48px); overflow-y: auto; box-sizing: border-box; background-color: #FBF8F1; border: 1px solid #1E1B18; box-shadow: 6px 6px 0 rgba(30,27,24,0.92); margin: 0">
+<div style="display: flex; align-items: center; justify-content: space-between; padding: 0 20px; height: 44px; border-bottom: 1px solid #1E1B18; font-size: 11px; letter-spacing: 0.14em">
+<span>LEARNING LOG · ENTRY № {{tNo}}</span>
+<span style="color: #6B645B">{{logDate}}</span>
+</div>
+<div style="padding: 26px 28px 8px; display: flex; flex-direction: column; gap: 20px">
+<div style="display: flex; flex-direction: column; gap: 8px">
+<h2 id="lnw-log-title" style="margin: 0; font-size: 24px; font-weight: 500; line-height: 1.2; letter-spacing: -0.02em">{{tTitle}}</h2>
+<span style="font-size: 11px; letter-spacing: 0.12em; color: #6B645B">{{tCat}} · {{logSpent}} SPENT</span>
+</div>
+<div style="display: flex; flex-direction: column; gap: 8px">
+<label for="lnw-log-a" style="font-size: 10px; letter-spacing: 0.14em; color: #1E1B18">THE MOST INTERESTING THING I LEARNED <span style="color: #A0644F">*</span></label>
+<textarea id="lnw-log-a" ref="{{setLogArea}}" class="lnw-area" rows="4" value="{{logA}}" onChange="{{onLogA}}" placeholder="One idea, fact or connection you want to keep…" style="width: 100%; box-sizing: border-box; resize: vertical; padding: 12px 14px; border: 1px solid rgba(30,27,24,0.3); background-color: #F6F1E7; color: #1E1B18; font-size: 14px; line-height: 1.6"></textarea>
+<sc-if value="{{logErr}}" hint-placeholder-val="{{ false }}"><span role="alert" style="font-size: 12px; color: #9A4A33">Write at least one thing you learned to grow the network.</span></sc-if>
+</div>
+</div>
+<div style="display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; padding: 16px 20px 20px 20px">
+<button type="button" class="lnw-ghost" onClick="{{discardLog}}" style="height: 44px; padding: 0 14px; border: 1px solid rgba(30,27,24,0.25); background-color: transparent; color: #1E1B18; font-size: 13px; cursor: pointer">Discard session</button>
+<button type="button" class="lnw-ink" onClick="{{submitLog}}" style="height: 48px; padding: 0 22px; border: 0; background-color: #1E1B18; color: #F3EEE4; font-size: 14px; font-weight: 500; cursor: pointer; display: flex; align-items: center; gap: 12px"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="2.6" fill="currentColor" stroke="none"></circle><path d="M12 3.5v3M12 17.5v3M3.5 12h3M17.5 12h3"></path></svg>Save &amp; grow the network</button>
+</div>
+<p style="margin: 0; padding: 0 20px 18px; font-size: 11px; color: #6B645B">Saved on this device only, with the date, duration and your note.</p>
+</div>
+</div>
+</sc-if>
+</div>
+</template>
+<script>
+// ---- Minimal runtime: binds the {{ }} template to the component (no libraries) ----
+class DCLogic {
+  constructor(){ this.props = {}; this.state = {}; }
+  setState(patch){
+    const p = typeof patch === 'function' ? patch(this.state, this.props) : patch;
+    if (p) Object.assign(this.state, p);
+    if (this.__schedule) this.__schedule();
+  }
+  forceUpdate(){ if (this.__schedule) this.__schedule(); }
+}
+(function(){
+  const HOLE = /\{\{\s*([^}]+?)\s*\}\}/g;
+  function lookup(path, scope){
+    if (path === 'true') return true; if (path === 'false') return false;
+    if (/^-?\d+(\.\d+)?$/.test(path)) return Number(path);
+    const parts = path.split('.');
+    for (let sc = scope; sc; sc = sc.parent){
+      if (sc.vars && Object.prototype.hasOwnProperty.call(sc.vars, parts[0])){
+        let v = sc.vars[parts[0]];
+        for (let i = 1; i < parts.length && v !== undefined && v !== null; i++) v = v[parts[i]];
+        return v;
+      }
+    }
+    return undefined;
+  }
+  function single(str){ const m = str.match(/^\s*\{\{\s*([^}]+?)\s*\}\}\s*$/); return m ? m[1] : null; }
+  function interp(str, scope){ return str.replace(HOLE, (_, p) => { const v = lookup(p, scope); return v === undefined || v === null ? '' : String(v); }); }
+  const EVENTS = { onclick: 'click', onchange: 'change', oninput: 'input', onkeydown: 'keydown', onsubmit: 'submit', ondragover: 'dragover', ondragleave: 'dragleave', ondrop: 'drop', onpointerdown: 'pointerdown' };
+
+  function bindNode(node, scope, ups, refs){
+    if (node.nodeType === 3){
+      if (node.nodeValue.indexOf('{{') >= 0){ const src = node.nodeValue; let last; ups.push(() => { const v = interp(src, scope.cur()); if (v !== last){ last = v; node.nodeValue = v; } }); }
+      return;
+    }
+    if (node.nodeType !== 1) return;
+    const tag = node.tagName.toLowerCase();
+    if (tag === 'sc-if' || tag === 'sc-for'){
+      const anchor = document.createComment(tag); const frag = document.createDocumentFragment();
+      while (node.firstChild) frag.appendChild(node.firstChild);
+      const expr = single(node.getAttribute(tag === 'sc-if' ? 'value' : 'list') || '') || 'false';
+      const asName = node.getAttribute('as') || 'item';
+      node.parentNode.replaceChild(anchor, node);
+      let mounted = [], childUps = [], lastKey = null;
+      const clear = () => { mounted.forEach((n) => n.parentNode && n.parentNode.removeChild(n)); mounted = []; childUps = []; };
+      ups.push(() => {
+        const sc = scope.cur(); const v = lookup(expr, sc);
+        if (tag === 'sc-if'){
+          if (v && !mounted.length){
+            const c = frag.cloneNode(true); const r = [];
+            const inner = { cur: () => scope.cur() };
+            Array.from(c.childNodes).forEach((ch) => bindNode(ch, inner, childUps, r));
+            mounted = Array.from(c.childNodes); anchor.parentNode.insertBefore(c, anchor);
+            childUps.forEach((u) => u()); r.forEach((f) => f());
+            return;
+          }
+          if (!v && mounted.length){ clear(); return; }
+          childUps.forEach((u) => u());
+          return;
+        }
+        const list = Array.isArray(v) ? v : [];
+        const key = JSON.stringify(list, (k, x) => typeof x === 'function' ? undefined : x);
+        if (key === lastKey){ childUps.forEach((u) => u()); return; }
+        lastKey = key; clear();
+        const out = document.createDocumentFragment(); const r = [];
+        list.forEach((item, idx) => {
+          const c = frag.cloneNode(true);
+          const vars = {}; vars[asName] = item; vars.$index = idx;
+          const inner = { cur: () => ({ vars: vars, parent: scope.cur() }) };
+          Array.from(c.childNodes).forEach((ch) => bindNode(ch, inner, childUps, r));
+          mounted.push.apply(mounted, Array.from(c.childNodes)); out.appendChild(c);
+        });
+        anchor.parentNode.insertBefore(out, anchor);
+        childUps.forEach((u) => u()); r.forEach((f) => f());
+      });
+      return;
+    }
+    Array.from(node.attributes).forEach((at) => {
+      const name = at.name, val = at.value;
+      if (name.indexOf('hint-') === 0){ node.removeAttribute(name); return; }
+      if (EVENTS[name]){
+        node.removeAttribute(name);
+        const p = single(val); if (!p) return;
+        let ev = EVENTS[name];
+        if (ev === 'change' && (tag === 'textarea' || (tag === 'input' && node.type !== 'file' && node.type !== 'checkbox'))) ev = 'input';
+        node.addEventListener(ev, (e) => { const fn = lookup(p, scope.cur()); if (typeof fn === 'function') fn(e); });
+        return;
+      }
+      if (name === 'ref'){
+        node.removeAttribute(name);
+        const p = single(val); if (p) refs.push(() => { const fn = lookup(p, scope.cur()); if (typeof fn === 'function') fn(node); });
+        return;
+      }
+      if (val.indexOf('{{') < 0) return;
+      let last;
+      if (name === 'value'){ node.removeAttribute(name); ups.push(() => { const v = interp(val, scope.cur()); if (node.value !== v) node.value = v; }); return; }
+      ups.push(() => { const v = interp(val, scope.cur()); if (v !== last){ last = v; if (name === 'class') node.className = v; else if (name === 'style') node.style.cssText = v; else node.setAttribute(name, v); } });
+      if (name === 'style' || name === 'class') node.removeAttribute(name);
+    });
+    Array.from(node.childNodes).forEach((ch) => bindNode(ch, scope, ups, refs));
+  }
+
+  window.lnwMount = function(target, tpl, comp){
+    let vals = {}; const ups = [], refs = [];
+    const rootScope = { cur: () => ({ vars: vals, parent: null }) };
+    const render = () => { vals = comp.renderVals() || {}; ups.forEach((u) => u()); };
+    let queued = false;
+    comp.__schedule = () => { if (queued) return; queued = true; Promise.resolve().then(() => { queued = false; render(); }); };
+    const frag = tpl.content.cloneNode(true);
+    vals = comp.renderVals() || {};
+    Array.from(frag.childNodes).forEach((ch) => bindNode(ch, rootScope, ups, refs));
+    target.appendChild(frag);
+    ups.forEach((u) => u());
+    refs.forEach((f) => f());
+    window.addEventListener('pagehide', () => { if (comp.componentWillUnmount) comp.componentWillUnmount(); });
+  };
+})();
+
+const LNW_ASSETS = {"start":{"body":"M35.6 -38.2C35.4 -38.4 35.2 -38.5 34.8 -38.5C34.5 -38.5 35.6 -39.6 33.6 -38.1C31.7 -36.6 25.8 -31.5 23.2 -29.5C20.6 -27.5 19.6 -27 18.1 -26.1C16.6 -25.2 15.2 -24.5 14 -24C12.8 -23.4 11.9 -23.2 10.9 -22.9C9.9 -22.7 9.9 -22.4 8.1 -22.5C6.3 -22.6 2.3 -23.3 0 -23.3C-2.3 -23.3 -4.3 -22.9 -5.7 -22.6C-7.2 -22.3 -7.8 -22 -8.8 -21.6C-9.9 -21.2 -11.1 -20.5 -12.1 -20C-13.2 -19.4 -14 -18.8 -14.9 -18.1C-15.8 -17.4 -16.5 -16.8 -17.4 -15.8C-18.3 -14.8 -19.5 -13.3 -20.3 -12C-21.1 -10.6 -21.8 -9.2 -22.3 -7.8C-22.8 -6.4 -23.1 -5.2 -23.3 -3.7C-23.6 -2.3 -23.7 -0.5 -23.6 1.1C-23.5 2.7 -23.3 4.3 -22.9 5.8C-22.6 7.2 -22.1 8.4 -21.5 9.7C-20.9 11 -20 12.5 -19.1 13.7C-18.2 14.9 -17.3 16 -16.2 17C-15.1 18 -13.7 19 -12.4 19.9C-11 20.7 -9.6 21.3 -8.2 21.8C-6.7 22.4 -5.2 22.8 -3.7 23C-2.1 23.2 -0.3 23.3 1.2 23.2C2.7 23.2 4 23 5.5 22.7C6.9 22.3 8.5 21.8 9.9 21.2C11.3 20.5 12.6 19.8 13.9 18.8C15.2 17.9 16.6 16.6 17.5 15.6C18.5 14.7 18.9 14 19.6 13C20.3 12 21 10.8 21.5 9.8C22 8.7 22.3 7.8 22.6 6.8C23 5.7 23.2 4.6 23.4 3.6C23.6 2.5 23.6 1.6 23.7 0.7C23.7 -0.3 23.8 -0.8 23.5 -2.3C23.3 -3.8 22.6 -6.8 22.3 -8.3C22.1 -9.7 22 -10 22 -11.1C22 -12.3 22 -14 22.1 -15.1C22.2 -16.2 22.4 -16.9 22.7 -17.9C23 -18.8 23.4 -19.8 24 -20.8C24.5 -21.8 24 -21.5 26 -24C27.9 -26.5 34 -33.8 35.7 -36C37.4 -38.1 36.1 -36.8 36.1 -37.2C36.1 -37.6 35.8 -38 35.6 -38.2ZM-0.1 -20.1C1.4 -20 3.4 -19.7 4.7 -19.5C6 -19.3 6.7 -19 7.8 -18.6C8.9 -18.1 10 -17.6 11.1 -16.8C12.2 -16.1 13.5 -15.2 14.5 -14.2C15.5 -13.1 16.5 -11.9 17.2 -10.8C18 -9.7 18.5 -8.6 19 -7.5C19.4 -6.3 19.8 -5.2 20.1 -3.9C20.3 -2.7 20.4 -1.5 20.4 -0.1C20.4 1.3 20.3 2.8 20 4.2C19.7 5.6 19.2 7 18.6 8.2C18.1 9.4 17.5 10.4 16.8 11.4C16.1 12.4 15.3 13.4 14.3 14.4C13.3 15.3 12 16.3 10.8 17C9.7 17.7 8.7 18.2 7.5 18.6C6.3 19.1 4.8 19.5 3.5 19.8C2.1 20 0.9 20.1 -0.4 20.1C-1.7 20 -2.9 19.9 -4.2 19.6C-5.5 19.4 -7 18.9 -8.2 18.4C-9.4 17.9 -10.5 17.3 -11.5 16.6C-12.5 15.9 -13.6 15 -14.5 14.1C-15.4 13.2 -16.2 12.2 -17 11.2C-17.7 10.1 -18.3 9.1 -18.8 7.9C-19.3 6.7 -19.7 5.2 -20 3.9C-20.3 2.6 -20.4 1.4 -20.4 0.1C-20.4 -1.2 -20.3 -2.5 -20.1 -3.8C-19.8 -5 -19.5 -6.1 -19 -7.4C-18.5 -8.6 -17.8 -9.9 -17 -11.1C-16.3 -12.2 -15.5 -13.1 -14.6 -14C-13.7 -14.9 -12.7 -15.8 -11.6 -16.5C-10.5 -17.3 -9.2 -18 -7.9 -18.5C-6.6 -19 -5.2 -19.4 -3.9 -19.7C-2.6 -20 -1.5 -20.1 -0.1 -20.1Z","spark":[{"d":35.6,"c":[-9.9,34.2],"p":"M-8.9 27.8C-9.2 27.8 -9.4 27.8 -9.7 28C-9.9 28.3 -10 27.5 -10.4 29.1C-10.8 30.7 -11.7 35.8 -12 37.4C-12.3 39.1 -12.2 38.8 -12.1 39.3C-12.1 39.7 -11.9 39.8 -11.7 40C-11.5 40.2 -11.3 40.3 -11 40.4C-10.8 40.4 -10.5 40.4 -10.3 40.3C-10 40.2 -9.8 40.1 -9.6 39.8C-9.4 39.5 -9.2 39.1 -9 38.6C-8.9 38.1 -8.9 38.3 -8.6 36.7C-8.4 35.2 -7.8 30.6 -7.7 29.2C-7.6 27.7 -8 28.3 -8.2 28.1C-8.4 27.9 -8.7 27.8 -8.9 27.8Z"},{"d":36.0,"c":[-28.8,-21.6],"p":"M-33.8 -27C-34.1 -26.8 -34.1 -26.5 -34.2 -26.3C-34.2 -26 -34.4 -25.9 -34.1 -25.4C-33.8 -24.9 -33.7 -24.6 -32.4 -23.1C-31.1 -21.7 -27.5 -17.8 -26.3 -16.6C-25.1 -15.5 -25.5 -16.1 -25.1 -16C-24.7 -15.9 -24.2 -16.1 -23.9 -16.2C-23.6 -16.4 -23.5 -16.6 -23.5 -16.9C-23.4 -17.1 -23.4 -17.4 -23.4 -17.7C-23.5 -18 -22.4 -17 -23.8 -18.5C-25.1 -20 -30 -25.3 -31.5 -26.8C-33 -28.3 -32.4 -27.3 -32.7 -27.4C-33.1 -27.4 -33.6 -27.1 -33.8 -27Z"},{"d":36.3,"c":[-36.2,2.4],"p":"M-41.8 1.8C-41.9 2.1 -41.8 2.4 -41.7 2.6C-41.6 2.9 -41.6 3.1 -41.2 3.2C-40.8 3.4 -41 3.6 -39.5 3.8C-38 3.9 -33.6 4.3 -32.2 4.3C-30.8 4.2 -31.3 3.9 -31 3.7C-30.8 3.5 -30.7 3.3 -30.7 3C-30.6 2.8 -30.7 2.5 -30.8 2.2C-30.9 2 -30.9 1.8 -31.3 1.6C-31.7 1.4 -31.5 1.3 -33 1.1C-34.5 0.9 -38.9 0.6 -40.3 0.6C-41.7 0.6 -41.2 0.9 -41.4 1.1C-41.7 1.3 -41.8 1.6 -41.8 1.8Z"},{"d":39.2,"c":[-30.1,25.1],"p":"M-24.5 19.5C-24.8 19.3 -25.3 19.2 -25.7 19.2C-26.1 19.3 -25.2 18.3 -26.9 19.9C-28.6 21.4 -34.3 26.8 -35.9 28.4C-37.5 30 -36.3 29.3 -36.3 29.6C-36.4 29.9 -36.3 30.1 -36.1 30.4C-35.9 30.6 -35.4 30.9 -35 30.9C-34.7 31 -35.3 31.8 -33.8 30.6C-32.3 29.3 -27.7 25 -26.1 23.5C-24.5 22 -24.5 21.9 -24.2 21.4C-23.8 20.8 -24 20.5 -24 20.1C-24.1 19.8 -24.2 19.6 -24.5 19.5Z"},{"d":47.9,"c":[-11.8,46.4],"p":"M-11.8 44.7C-12.2 44.7 -12.7 44.9 -12.9 45.2C-13.2 45.5 -13.3 46 -13.3 46.4C-13.3 46.8 -13.1 47.4 -12.9 47.6C-12.6 47.9 -12.2 48.1 -11.8 48.1C-11.4 48.1 -10.9 47.9 -10.7 47.6C-10.4 47.3 -10.3 46.8 -10.3 46.4C-10.3 46 -10.4 45.5 -10.7 45.2C-11 44.9 -11.4 44.7 -11.8 44.7Z"},{"d":48.3,"c":[-48.3,0.9],"p":"M-47.9 -1.2C-48.2 -1.2 -48.5 -1.2 -48.7 -1.1C-49 -1.1 -49.3 -1 -49.5 -0.8C-49.8 -0.6 -50 -0.4 -50.1 -0.2C-50.3 0.1 -50.4 0.4 -50.4 0.7C-50.5 0.9 -50.4 1.2 -50.3 1.5C-50.3 1.8 -50.2 2 -49.9 2.3C-49.7 2.5 -49.2 2.9 -48.9 3C-48.5 3.1 -48.3 3.1 -48 3.1C-47.7 3 -47.4 2.9 -47.2 2.8C-46.9 2.6 -46.7 2.4 -46.5 2.2C-46.3 2 -46.2 1.7 -46.1 1.4C-46.1 1.1 -46.1 0.8 -46.1 0.5C-46.2 0.2 -46.3 -0.1 -46.4 -0.3C-46.6 -0.5 -46.8 -0.7 -47.1 -0.9C-47.3 -1 -47.6 -1.1 -47.9 -1.2Z"},{"d":54.4,"c":[-41.8,-34.8],"p":"M-46.6 -39.6C-46.8 -39.4 -46.9 -39.2 -47 -38.9C-47 -38.6 -47.3 -38.4 -46.7 -37.7C-46.2 -36.9 -45 -35.7 -43.7 -34.4C-42.4 -33.1 -39.9 -30.7 -38.9 -30C-37.9 -29.2 -38 -29.7 -37.7 -29.7C-37.4 -29.7 -37.2 -29.9 -37 -30C-36.8 -30.2 -36.6 -30.5 -36.6 -30.7C-36.5 -31 -36.3 -31.1 -36.6 -31.6C-37 -32.1 -37.2 -32.5 -38.4 -33.8C-39.7 -35.1 -43.1 -38.4 -44.2 -39.4C-45.4 -40.4 -45.1 -39.9 -45.4 -40C-45.8 -40 -46.3 -39.8 -46.6 -39.6Z"},{"d":59.9,"c":[-59.8,1.4],"p":"M-65.8 1.2C-65.9 1.5 -65.8 1.7 -65.6 1.9C-65.5 2.2 -65.4 2.3 -65 2.5C-64.6 2.6 -64.8 2.8 -63.2 2.9C-61.6 2.9 -56.9 3.1 -55.4 3C-53.9 3 -54.5 2.7 -54.2 2.5C-54 2.3 -53.9 2 -53.9 1.8C-53.8 1.5 -53.9 1.2 -54 1C-54.1 0.7 -54 0.5 -54.5 0.4C-54.9 0.2 -55.1 0 -56.7 -0.1C-58.3 -0.3 -62.7 -0.4 -64.1 -0.3C-65.5 -0.3 -65 -0.1 -65.3 0.1C-65.6 0.4 -65.8 0.9 -65.8 1.2Z"},{"d":63.7,"c":[-13.9,62.1],"p":"M-12.4 51.6C-12.7 51.7 -13.2 51.8 -13.5 52.1C-13.8 52.4 -13.5 50.6 -14.1 53.3C-14.6 56 -16.1 65.6 -16.6 68.4C-17 71.3 -16.7 69.9 -16.7 70.3C-16.7 70.8 -16.6 70.9 -16.5 71.2C-16.4 71.5 -16.2 71.7 -16 71.9C-15.8 72.1 -15.6 72.2 -15.3 72.2C-15 72.2 -14.5 72.1 -14.2 71.9C-13.9 71.6 -14 72.6 -13.6 70.7C-13.3 68.9 -12.5 63.7 -12.1 60.7C-11.7 57.8 -11.3 54.6 -11.3 53.1C-11.2 51.6 -11.6 52.2 -11.7 52C-11.9 51.7 -12.2 51.6 -12.4 51.6Z"},{"d":68.2,"c":[-51.6,44.6],"p":"M-39.3 33.7C-39.5 33.5 -39.9 33.3 -40.4 33.3C-40.8 33.4 -39.5 32.1 -42 34.1C-44.5 36.2 -51.6 42.3 -55.3 45.6C-58.9 48.8 -62.3 52.1 -63.9 53.6C-65.4 55.1 -64.5 54.4 -64.5 54.8C-64.6 55.2 -64.5 55.6 -64.2 55.9C-64 56.1 -63.6 56.3 -63.1 56.2C-62.7 56.1 -65.4 58.6 -61.6 55.4C-57.7 52.1 -43.7 39.9 -39.9 36.6C-36.1 33.2 -39 35.5 -38.8 35.1C-38.7 34.7 -38.8 34.6 -38.8 34.3C-38.9 34.1 -39 33.8 -39.3 33.7Z"},{"d":68.6,"c":[-52.5,-44.2],"p":"M-52.5 -46.5C-52.8 -46.5 -53.1 -46.4 -53.3 -46.3C-53.6 -46.2 -53.9 -46 -54 -45.8C-54.2 -45.5 -54.4 -45.3 -54.5 -45C-54.6 -44.7 -54.7 -44.4 -54.7 -44.1C-54.7 -43.8 -54.6 -43.5 -54.5 -43.3C-54.4 -43 -54.2 -42.7 -54 -42.5C-53.8 -42.3 -53.6 -42.2 -53.3 -42.1C-53.1 -42 -52.7 -41.9 -52.5 -41.9C-52.2 -41.9 -51.9 -42 -51.6 -42.1C-51.4 -42.3 -51.1 -42.5 -50.9 -42.7C-50.7 -42.9 -50.6 -43.1 -50.5 -43.4C-50.4 -43.7 -50.3 -44 -50.3 -44.3C-50.3 -44.6 -50.4 -44.9 -50.5 -45.1C-50.6 -45.4 -50.7 -45.7 -50.9 -45.9C-51.1 -46.1 -51.4 -46.2 -51.7 -46.4C-51.9 -46.5 -52.2 -46.5 -52.5 -46.5Z"},{"d":75.0,"c":[-75.0,2.2],"p":"M-69.3 1.9C-69.4 1.6 -69.7 1.1 -70 0.9C-70.4 0.7 -69.9 0.6 -71.3 0.5C-72.7 0.5 -76.8 0.5 -78.3 0.6C-79.8 0.7 -79.7 0.9 -80.1 1.1C-80.4 1.3 -80.5 1.5 -80.6 1.7C-80.7 2 -80.7 2.3 -80.7 2.5C-80.6 2.8 -80.5 3 -80.3 3.2C-80 3.4 -80.6 3.7 -79.1 3.8C-77.7 3.9 -73.2 3.8 -71.7 3.7C-70.1 3.7 -70.3 3.4 -69.9 3.3C-69.5 3.1 -69.5 2.9 -69.4 2.6C-69.3 2.4 -69.2 2.2 -69.3 1.9Z"},{"d":80.1,"c":[-15.4,78.6],"p":"M-15.5 76.7C-15.9 76.7 -16.4 76.9 -16.7 77.1C-17 77.3 -17 77.6 -17.1 77.8C-17.2 78.1 -17.3 78.4 -17.2 78.7C-17.2 79 -17.1 79.3 -17 79.6C-16.9 79.8 -16.8 80.1 -16.6 80.3C-16.3 80.5 -15.8 80.7 -15.4 80.7C-15 80.6 -14.5 80.3 -14.2 80.1C-14 79.9 -13.8 79.7 -13.7 79.4C-13.6 79.2 -13.5 78.9 -13.5 78.6C-13.6 78.3 -13.6 78 -13.7 77.7C-13.9 77.5 -14 77.3 -14.3 77.1C-14.6 76.9 -15.1 76.7 -15.5 76.7Z"},{"d":80.9,"c":[-62.1,-51.9],"p":"M-67.1 -56.2C-67.2 -55.9 -67.4 -55.4 -67.3 -55C-67.2 -54.6 -67.8 -55 -66.6 -53.9C-65.4 -52.7 -61.4 -49.2 -60.1 -48C-58.7 -46.9 -58.9 -47.3 -58.5 -47.2C-58.1 -47 -57.9 -47.1 -57.7 -47.2C-57.4 -47.3 -57.2 -47.4 -57 -47.7C-56.9 -48 -56.7 -48.5 -56.8 -48.9C-56.9 -49.3 -56.4 -48.9 -57.5 -50C-58.7 -51.1 -62.4 -54.4 -63.7 -55.5C-65.1 -56.7 -65.2 -56.5 -65.7 -56.7C-66.1 -56.9 -66.2 -56.7 -66.5 -56.7C-66.7 -56.6 -67 -56.4 -67.1 -56.2Z"},{"d":87.2,"c":[-87.2,2.5],"p":"M-87.5 0.7C-87.9 0.8 -88.3 1.1 -88.6 1.4C-88.8 1.7 -89 2.2 -89 2.6C-89 3 -88.7 3.4 -88.5 3.7C-88.3 4 -88 4.1 -87.8 4.2C-87.5 4.2 -87.2 4.3 -86.9 4.2C-86.6 4.1 -86 3.9 -85.8 3.6C-85.5 3.3 -85.4 2.7 -85.4 2.4C-85.3 2.1 -85.5 1.8 -85.6 1.6C-85.7 1.3 -85.9 1.1 -86.2 1C-86.5 0.8 -87.1 0.7 -87.5 0.7Z"},{"d":88.8,"c":[-15.8,87.4],"p":"M-16.2 85.4C-16.5 85.4 -16.7 85.6 -16.9 85.8C-17.2 85.9 -17.4 86.1 -17.5 86.4C-17.6 86.8 -17.7 87.4 -17.6 87.7C-17.6 88 -17.4 88.3 -17.3 88.5C-17.1 88.7 -17 88.9 -16.7 89.1C-16.3 89.2 -15.8 89.4 -15.4 89.3C-15.1 89.2 -14.6 88.9 -14.4 88.7C-14.1 88.4 -14.1 88.2 -14 87.9C-13.9 87.6 -13.9 87.3 -14 87C-14 86.8 -14.1 86.5 -14.3 86.2C-14.5 86 -14.6 85.8 -14.9 85.7C-15.2 85.5 -15.8 85.4 -16.2 85.4Z"},{"d":101.3,"c":[-76.4,66.5],"p":"M-77 63.6C-77.3 63.7 -77.5 63.7 -77.8 64C-78.1 64.2 -78.6 64.5 -78.9 64.9C-79.1 65.2 -79.3 65.8 -79.3 66.1C-79.4 66.5 -79.4 66.7 -79.3 67.1C-79.2 67.4 -79 68 -78.8 68.3C-78.5 68.6 -78.3 68.8 -78.1 68.9C-77.8 69.1 -77.6 69.3 -77.3 69.3C-76.9 69.4 -76.2 69.5 -75.9 69.4C-75.5 69.4 -75.3 69.3 -75 69.1C-74.7 68.9 -74.2 68.5 -74 68.2C-73.8 67.8 -73.6 67.3 -73.5 66.9C-73.5 66.5 -73.5 66.3 -73.6 66C-73.6 65.7 -73.7 65.4 -73.9 65.1C-74.1 64.8 -74.4 64.4 -74.8 64.1C-75.1 63.9 -75.7 63.7 -76 63.6C-76.4 63.5 -76.7 63.6 -77 63.6Z"}],"axis":-0.8,"bc":[7.1,-7.8],"hub":[0,0],"ext":104.4,"sparkR":null,"outs":[{"x":35.8,"y":-38.4,"a":-0.821,"k":"tail","path":[[0,0],[35.8,-38.4]]},{"x":-16.1,"y":88.9,"a":1.75,"k":"ray","path":[[0,0],[-15.8,87.4]]},{"x":-63.3,"y":-52.9,"a":-2.445,"k":"ray","path":[[0,0],[-62.1,-51.9]]},{"x":-88.7,"y":2.5,"a":3.113,"k":"ray","path":[[0,0],[-87.2,2.5]]},{"x":-77.5,"y":67.5,"a":2.425,"k":"ray","path":[[0,0],[-76.4,66.5]]}]},"c1":{"body":"M59.3 -17.5C59 -17.7 58.5 -17.8 58.1 -17.7C57.6 -17.6 59.6 -19.2 56.4 -16.9C53.2 -14.5 43.6 -7.2 38.9 -3.6C34.3 0.1 32.6 1.3 28.5 5.1C24.3 8.8 16.9 16.1 14.1 18.7C11.3 21.3 12.5 20.1 11.9 20.6C11.3 21 10.7 21.3 10.3 21.6C9.9 21.8 9.7 21.8 9.5 21.8C9.2 21.8 8.9 21.8 8.6 21.7C8.4 21.6 8.2 21.5 7.9 21.3C7.7 21 7.5 20.8 7.2 20.2C6.9 19.5 6.6 19 6.2 17.6C5.8 16.1 5 12.6 4.6 11.2C4.2 9.9 4.1 9.9 3.9 9.5C3.7 9.2 3.5 9.1 3.3 8.9C3.1 8.8 2.9 8.7 2.5 8.7C2.2 8.8 1.7 8.8 1.4 9.2C1.1 9.5 0.9 9.3 0.8 10.8C0.7 12.3 0.8 16.3 0.8 18.2C0.7 20.2 0.5 21.2 0.2 22.5C0 23.8 -0.3 24.9 -0.8 26.1C-1.3 27.3 -2.1 28.7 -2.7 29.8C-3.4 30.8 -4 31.5 -4.8 32.4C-5.7 33.3 -4.6 32.7 -7.6 35.2C-10.7 37.7 -20.1 44.9 -23.1 47.3C-26.1 49.7 -25 49 -25.6 49.7C-26.3 50.3 -26.6 50.7 -26.8 51.2C-27.1 51.6 -27.2 52 -27.3 52.4C-27.3 52.9 -27.3 53.4 -27.1 53.7C-27 54.1 -26.7 54.5 -26.3 54.6C-26 54.7 -25.5 54.7 -25.1 54.6C-24.6 54.4 -24.9 54.8 -23.4 53.7C-22 52.7 -18.1 49.7 -16.2 48.5C-14.3 47.3 -13.2 46.9 -12 46.4C-10.8 45.8 -9.9 45.6 -8.9 45.4C-8 45.1 -7 45 -6.1 44.9C-5.3 44.8 -4.4 44.8 -3.7 44.9C-3 44.9 -2.4 45.1 -1.9 45.3C-1.4 45.4 -1.1 45.6 -0.6 45.9C-0.2 46.2 0.3 46.6 0.8 47.1C1.3 47.6 1.8 48.3 2.2 49C2.6 49.8 3 50.2 3.5 51.5C4 52.8 4.7 54.9 5.1 56.8C5.5 58.7 5.7 61.1 5.8 63C5.9 65 5.8 66.6 5.6 68.5C5.4 70.3 5 72.2 4.6 74.1C4.2 75.9 3.6 77.6 3 79.4C2.3 81.1 1.7 82.7 0.8 84.5C-0.1 86.3 -1.3 88.2 -2.5 90.1C-3.7 92 -3.6 92.2 -6.6 96C-9.5 99.7 -17.4 109.1 -20.4 112.8C-23.3 116.5 -23.4 116.8 -24.3 118.1C-25.3 119.5 -25.6 120.1 -26 120.9C-26.4 121.8 -26.7 122.5 -26.8 123.1C-26.9 123.7 -26.9 124 -26.7 124.4C-26.6 124.8 -26.2 125.2 -26 125.4C-25.7 125.6 -25.5 125.7 -25.2 125.7C-24.8 125.7 -24.4 125.6 -23.9 125.4C-23.4 125.2 -22.9 124.8 -22.3 124.4C-21.8 123.9 -22 124.3 -20.5 122.7C-19.1 121.2 -15.9 117.9 -13.6 115.1C-11.2 112.3 -8.5 108.9 -6.4 106.1C-4.2 103.2 -2.4 100.6 -0.5 98C1.3 95.3 3.2 92.4 4.6 90.1C6 87.8 6.6 86.6 7.9 84C9.2 81.3 11.4 76 12.2 74.3C13.1 72.5 12.7 73.6 12.9 73.5C13.1 73.5 12.8 72.9 13.7 74C14.5 75.1 16.4 78.4 17.7 80.3C19.1 82.2 18.9 82.4 21.8 85.6C24.7 88.8 32.2 96.4 35.2 99.6C38.1 102.8 38.2 103 39.6 104.8C40.9 106.5 41.7 107.6 43.3 110.2C44.8 112.8 47.7 118.3 48.9 120.4C50.1 122.5 50 122.2 50.5 122.8C50.9 123.3 51.1 123.5 51.5 123.7C51.9 124 52.3 124.2 52.7 124.2C53.1 124.3 53.7 124.1 54 124C54.3 123.8 54.5 123.6 54.6 123.4C54.8 123.1 54.9 122.9 55 122.6C55.1 122.2 55.3 122 55.2 121.2C55.1 120.5 54.8 119.3 54.4 118.1C53.9 116.8 53.4 115.7 52.4 113.9C51.4 112 49.6 109 48.4 107C47.1 105.1 46.1 103.6 44.9 102C43.7 100.4 44.7 101.3 41.4 97.4C38 93.6 28.2 82.4 25 78.7C21.9 74.9 23.1 76.1 22.3 74.8C21.5 73.6 20.9 72.8 20.1 71.2C19.3 69.6 18.3 67.4 17.5 65.3C16.7 63.2 15.9 60.8 15.4 58.6C14.9 56.5 14.5 54.7 14.3 52.6C14.1 50.5 13.9 48.6 14 46.2C14.1 43.8 14.5 40.7 15 38.1C15.5 35.5 16.3 33 17.2 30.5C18.1 28.1 19.2 25.5 20.3 23.3C21.4 21.1 22.7 19.2 24 17.3C25.3 15.5 26.7 13.8 28.3 12.1C29.9 10.4 31.7 8.6 33.6 6.9C35.5 5.2 36.6 4.3 39.5 1.9C42.5 -0.4 48.4 -4.9 51.2 -7.3C54.1 -9.6 55.4 -10.7 56.8 -12.1C58.2 -13.4 59.1 -14.6 59.6 -15.3C60.2 -16 60 -16.2 59.9 -16.5C59.8 -16.9 59.6 -17.3 59.3 -17.5Z","spark":[{"d":0.0,"c":[0.0,0.0],"p":"M-0.5 -4.3C-1.1 -4.2 -1.7 -4 -2.2 -3.7C-2.7 -3.4 -3.2 -2.8 -3.6 -2.4C-3.9 -2 -4 -1.7 -4.1 -1.2C-4.2 -0.6 -4.3 0.2 -4.2 0.7C-4.2 1.2 -4.1 1.5 -3.8 2C-3.5 2.5 -3 3.1 -2.6 3.4C-2.2 3.8 -1.9 3.9 -1.4 4.1C-0.9 4.2 -0.1 4.3 0.5 4.3C1.1 4.2 1.7 3.9 2.2 3.7C2.7 3.4 3 3.1 3.3 2.8C3.6 2.4 3.8 2.1 4 1.6C4.2 1.1 4.3 0.4 4.3 -0.2C4.2 -0.8 4 -1.5 3.8 -2C3.6 -2.5 3.4 -2.8 3 -3.1C2.5 -3.5 1.9 -3.9 1.4 -4.1C0.8 -4.3 0.1 -4.3 -0.5 -4.3Z"},{"d":10.1,"c":[7.9,6.3],"p":"M5.2 3.8C5 3.9 4.9 4.2 4.8 4.5C4.8 4.7 4.9 5 4.9 5.3C5 5.6 5 5.7 5.4 6.1C5.8 6.5 6.5 7.3 7.2 7.8C7.8 8.4 8.6 9 9.1 9.2C9.5 9.4 9.7 9.3 9.9 9.2C10.2 9.2 10.4 9 10.6 8.8C10.8 8.6 10.9 8.3 10.9 8.1C11 7.8 11.2 7.8 10.8 7.3C10.4 6.7 9.3 5.4 8.6 4.8C7.9 4.1 7.2 3.6 6.7 3.4C6.3 3.2 6.1 3.3 5.9 3.4C5.6 3.4 5.4 3.6 5.2 3.8Z"},{"d":11.5,"c":[11.2,-2.6],"p":"M15.7 -2.8C15.7 -3 15.7 -3.3 15.5 -3.5C15.3 -3.8 15.4 -4.1 14.4 -4.2C13.4 -4.3 10.8 -4.2 9.6 -4.1C8.4 -4 7.8 -3.8 7.3 -3.6C6.8 -3.4 6.9 -3.2 6.8 -3C6.7 -2.8 6.6 -2.5 6.7 -2.2C6.7 -2 6.8 -1.7 7 -1.5C7.3 -1.3 7.2 -1 8.2 -1C9.1 -0.9 11.5 -1 12.6 -1.1C13.7 -1.1 14.4 -1.3 14.9 -1.5C15.4 -1.6 15.4 -1.8 15.5 -2C15.7 -2.2 15.7 -2.5 15.7 -2.8Z"},{"d":12.1,"c":[-7.0,9.9],"p":"M-5.4 6C-5.6 5.9 -5.9 5.8 -6.2 6C-6.5 6.1 -6.7 5.9 -7.2 6.8C-7.7 7.6 -8.8 10 -9.2 10.9C-9.6 11.9 -9.6 12.3 -9.6 12.7C-9.6 13.1 -9.4 13.2 -9.2 13.4C-9.1 13.6 -8.8 13.8 -8.6 13.9C-8.3 13.9 -8.1 14 -7.8 13.8C-7.5 13.7 -7.3 13.9 -6.8 13.1C-6.3 12.2 -5.1 9.9 -4.7 8.9C-4.4 7.9 -4.4 7.6 -4.4 7.1C-4.4 6.7 -4.6 6.6 -4.7 6.4C-4.9 6.2 -5.1 6 -5.4 6Z"},{"d":12.5,"c":[6.7,-10.5],"p":"M9.3 -14.3C9.1 -14.4 8.8 -14.5 8.5 -14.5C8.2 -14.4 8.1 -14.8 7.4 -14C6.7 -13.2 4.9 -10.8 4.2 -9.8C3.6 -8.9 3.6 -8.6 3.5 -8.2C3.4 -7.8 3.5 -7.6 3.7 -7.4C3.8 -7.1 4 -6.9 4.2 -6.8C4.4 -6.6 4.6 -6.5 5 -6.6C5.3 -6.6 5.4 -6.4 6.1 -7.1C6.8 -7.8 8.3 -9.9 8.9 -10.9C9.6 -11.8 9.8 -12.4 9.9 -12.9C10.1 -13.4 9.9 -13.5 9.8 -13.7C9.7 -13.9 9.5 -14.2 9.3 -14.3Z"},{"d":13.1,"c":[-12.9,2.7],"p":"M-8.2 1.2C-8.3 0.9 -8.4 0.7 -8.7 0.6C-9 0.4 -8.8 0.1 -10 0.3C-11.1 0.5 -14.3 1.3 -15.5 1.7C-16.7 2 -16.8 2.2 -17.1 2.5C-17.5 2.7 -17.5 2.9 -17.6 3.1C-17.7 3.4 -17.7 3.7 -17.6 4C-17.5 4.2 -17.4 4.5 -17.2 4.6C-16.9 4.8 -17.2 5.2 -16 5C-14.8 4.8 -11.3 3.9 -10 3.5C-8.8 3.2 -8.8 3 -8.4 2.7C-8.1 2.4 -8.1 2.2 -8.1 2C-8 1.7 -8.1 1.4 -8.2 1.2Z"},{"d":13.8,"c":[-11.3,-7.9],"p":"M-15.5 -10.4C-15.7 -10.2 -15.8 -10 -15.8 -9.6C-15.7 -9.3 -16.1 -9.1 -15.2 -8.5C-14.4 -7.9 -11.9 -6.4 -10.8 -5.8C-9.8 -5.2 -9.6 -5.2 -9.2 -5C-8.8 -4.8 -8.6 -4.8 -8.3 -4.9C-8 -4.9 -7.7 -4.9 -7.5 -5.1C-7.3 -5.2 -7.1 -5.4 -7 -5.7C-6.9 -5.9 -6.8 -6.1 -6.9 -6.5C-7 -6.8 -6.7 -6.9 -7.6 -7.5C-8.4 -8.2 -10.9 -9.6 -12 -10.2C-13.1 -10.8 -13.6 -10.9 -14.1 -11C-14.6 -11.2 -14.7 -11 -14.9 -10.9C-15.2 -10.8 -15.4 -10.6 -15.5 -10.4Z"},{"d":13.9,"c":[-2.0,-13.8],"p":"M-2.6 -18.3C-2.8 -18.3 -3.1 -18.2 -3.3 -18C-3.5 -17.9 -3.7 -17.9 -3.7 -17.4C-3.8 -16.8 -3.9 -15.7 -3.7 -14.6C-3.6 -13.4 -3.3 -11.2 -3.1 -10.4C-2.8 -9.5 -2.5 -9.6 -2.2 -9.4C-2 -9.2 -1.7 -9.2 -1.5 -9.3C-1.2 -9.3 -0.9 -9.4 -0.7 -9.6C-0.5 -9.7 -0.4 -9.7 -0.3 -10.2C-0.2 -10.7 -0.1 -11.4 -0.2 -12.5C-0.4 -13.7 -0.7 -16.3 -1 -17.2C-1.3 -18.2 -1.5 -18 -1.8 -18.2C-2.1 -18.4 -2.3 -18.4 -2.6 -18.3Z"},{"d":19.0,"c":[14.7,12.1],"p":"M14.4 10.9C14.1 11 13.7 11.3 13.5 11.6C13.3 11.8 13.3 12.1 13.5 12.3C13.6 12.6 13.9 13 14.2 13.2C14.5 13.4 14.7 13.3 15 13.3C15.2 13.3 15.5 13.2 15.6 12.9C15.8 12.7 16 12.2 15.9 11.9C15.8 11.5 15.4 11.2 15.1 11C14.9 10.8 14.6 10.8 14.4 10.9Z"},{"d":20.7,"c":[20.5,-2.9],"p":"M20.2 -4C20 -3.9 19.7 -3.8 19.6 -3.6C19.4 -3.4 19.4 -3 19.4 -2.8C19.4 -2.6 19.5 -2.3 19.7 -2.1C20 -2 20.5 -1.8 20.8 -1.9C21.1 -2 21.4 -2.4 21.6 -2.7C21.7 -2.9 21.6 -3.2 21.5 -3.4C21.4 -3.6 21.2 -3.8 21 -3.9C20.7 -4 20.4 -4.1 20.2 -4Z"},{"d":21.3,"c":[-10.9,18.3],"p":"M-11.2 17.1C-11.5 17.2 -11.9 17.6 -12.1 17.8C-12.3 18.1 -12.2 18.3 -12.2 18.6C-12.1 18.8 -12 19.1 -11.7 19.2C-11.5 19.4 -10.9 19.6 -10.6 19.5C-10.2 19.4 -9.9 19 -9.7 18.8C-9.5 18.5 -9.5 18.3 -9.6 18C-9.8 17.7 -10.2 17.3 -10.4 17.1C-10.7 17 -10.9 16.9 -11.2 17.1Z"},{"d":22.2,"c":[12.7,-18.2],"p":"M11.6 -19.7C11.3 -19.5 11 -19.1 10.9 -18.7C10.8 -18.3 10.9 -17.8 11.1 -17.5C11.2 -17.1 11.4 -17 11.7 -16.8C11.9 -16.7 12.1 -16.5 12.5 -16.5C12.8 -16.5 13.4 -16.5 13.8 -16.7C14.1 -16.9 14.3 -17.4 14.4 -17.8C14.6 -18.1 14.5 -18.3 14.4 -18.6C14.3 -18.9 14.3 -19.1 14 -19.4C13.7 -19.6 13.3 -19.9 12.9 -20C12.5 -20 11.9 -19.9 11.6 -19.7Z"},{"d":22.3,"c":[-21.7,5.4],"p":"M-21.9 4.1C-22.1 4.2 -22.4 4.2 -22.5 4.5C-22.7 4.7 -22.8 5.3 -22.8 5.6C-22.8 5.9 -22.6 6.1 -22.5 6.3C-22.3 6.5 -22 6.6 -21.7 6.6C-21.5 6.6 -21.2 6.6 -21 6.4C-20.8 6.1 -20.5 5.6 -20.5 5.3C-20.6 5 -20.9 4.5 -21.1 4.3C-21.3 4.1 -21.6 4.1 -21.9 4.1Z"},{"d":23.8,"c":[-19.9,-13.1],"p":"M-19.1 -14.4C-19.4 -14.5 -20 -14.6 -20.4 -14.4C-20.7 -14.3 -21.1 -13.9 -21.3 -13.6C-21.4 -13.2 -21.3 -12.6 -21.2 -12.4C-21.1 -12.1 -21 -11.9 -20.7 -11.8C-20.4 -11.7 -19.8 -11.6 -19.5 -11.8C-19.1 -11.9 -18.7 -12.3 -18.6 -12.7C-18.4 -13 -18.5 -13.6 -18.6 -13.9C-18.7 -14.2 -18.8 -14.4 -19.1 -14.4Z"},{"d":24.0,"c":[-3.2,-23.8],"p":"M-3.2 -25.2C-3.5 -25.2 -4 -25 -4.3 -24.7C-4.5 -24.4 -4.7 -23.9 -4.6 -23.6C-4.6 -23.2 -4.3 -22.8 -4 -22.6C-3.8 -22.4 -3.6 -22.3 -3.3 -22.4C-3 -22.4 -2.4 -22.6 -2.2 -22.9C-2 -23.2 -1.8 -23.7 -1.8 -24C-1.8 -24.3 -1.9 -24.5 -2.1 -24.8C-2.4 -25 -2.8 -25.2 -3.2 -25.2Z"},{"d":28.7,"c":[28.5,-3.5],"p":"M33.7 -4C33.7 -4.3 33.6 -4.5 33.4 -4.7C33.2 -4.9 33.2 -5.1 32.7 -5.2C32.2 -5.3 31.7 -5.4 30.3 -5.3C29 -5.2 25.7 -4.9 24.5 -4.7C23.4 -4.5 23.7 -4.2 23.5 -4C23.3 -3.8 23.2 -3.5 23.2 -3.2C23.2 -3 23.3 -2.7 23.5 -2.5C23.6 -2.2 23.8 -2 24.1 -1.9C24.3 -1.8 24.5 -1.7 25 -1.7C25.4 -1.7 25.6 -1.7 26.9 -1.8C28.2 -1.9 31.6 -2.2 32.7 -2.4C33.8 -2.7 33.4 -3 33.6 -3.2C33.8 -3.5 33.8 -3.8 33.7 -4Z"},{"d":29.2,"c":[-13.8,25.7],"p":"M-12.1 22.1C-12.4 22 -12.6 22 -12.9 22.1C-13.2 22.2 -13.5 22.1 -14 22.8C-14.5 23.4 -15.4 25.2 -15.8 26C-16.3 26.9 -16.4 27.3 -16.4 27.7C-16.5 28.2 -16.4 28.3 -16.3 28.6C-16.2 28.8 -15.9 29 -15.7 29.1C-15.5 29.3 -15.3 29.4 -14.9 29.3C-14.6 29.2 -14.4 29.4 -13.8 28.7C-13.3 28.1 -12.4 26.4 -11.9 25.5C-11.5 24.6 -11.3 23.9 -11.2 23.4C-11.2 22.9 -11.3 22.8 -11.5 22.6C-11.6 22.4 -11.9 22.2 -12.1 22.1Z"},{"d":30.2,"c":[17.7,-24.5],"p":"M20.7 -28C20.5 -28.2 20.2 -28.3 20 -28.4C19.7 -28.4 19.6 -28.5 19.1 -28.2C18.7 -27.9 18.2 -27.6 17.4 -26.7C16.6 -25.8 15 -23.7 14.4 -22.8C13.9 -22 14.2 -21.9 14.3 -21.6C14.3 -21.3 14.5 -21.1 14.7 -20.9C14.9 -20.8 15.2 -20.6 15.4 -20.6C15.7 -20.6 15.8 -20.4 16.2 -20.7C16.7 -21 17.2 -21.4 18 -22.3C18.8 -23.2 20.4 -25.3 21 -26.1C21.5 -27 21.2 -27 21.1 -27.4C21.1 -27.7 20.9 -27.9 20.7 -28Z"},{"d":31.0,"c":[-26.9,-15.3],"p":"M-30.3 -16.5C-30.4 -16.3 -30.5 -15.9 -30.4 -15.7C-30.4 -15.4 -30.4 -15.2 -30.1 -15C-29.8 -14.7 -29.4 -14.4 -28.5 -14.1C-27.7 -13.8 -25.7 -13.3 -24.9 -13.2C-24.2 -13.1 -24.3 -13.3 -24.1 -13.4C-23.9 -13.6 -23.7 -13.8 -23.6 -14C-23.5 -14.3 -23.4 -14.6 -23.5 -14.8C-23.5 -15.1 -23.5 -15.3 -23.8 -15.6C-24.1 -15.8 -24.5 -16.2 -25.3 -16.5C-26.2 -16.8 -28.2 -17.2 -29 -17.3C-29.7 -17.4 -29.6 -17.2 -29.8 -17.1C-30 -17 -30.2 -16.7 -30.3 -16.5Z"},{"d":31.9,"c":[-4.7,-31.5],"p":"M-5 -36.4C-5.3 -36.4 -5.5 -36.3 -5.8 -36.2C-6 -36 -6.2 -35.9 -6.3 -35.5C-6.4 -35.1 -6.6 -35 -6.5 -33.7C-6.4 -32.4 -6.1 -29.1 -5.9 -27.9C-5.6 -26.8 -5.4 -27.1 -5.1 -26.9C-4.9 -26.7 -4.6 -26.7 -4.4 -26.7C-4.1 -26.7 -3.9 -26.8 -3.6 -26.9C-3.4 -27 -3.2 -27.1 -3.1 -27.5C-3 -27.9 -2.8 -28.1 -2.9 -29.3C-3 -30.6 -3.3 -34 -3.5 -35.1C-3.7 -36.2 -4 -35.9 -4.2 -36.2C-4.5 -36.4 -4.7 -36.4 -5 -36.4Z"},{"d":32.6,"c":[-31.5,8.5],"p":"M-27 7C-27.1 6.8 -27.2 6.6 -27.5 6.4C-27.7 6.2 -27.7 5.9 -28.7 6.1C-29.6 6.2 -32 6.9 -33.1 7.3C-34.3 7.7 -35.1 8.1 -35.6 8.4C-36.1 8.7 -35.9 8.9 -36 9.1C-36.1 9.4 -36.1 9.7 -36 9.9C-35.9 10.2 -35.8 10.4 -35.5 10.6C-35.2 10.7 -35.3 11.1 -34.3 10.9C-33.4 10.7 -31 10 -29.9 9.7C-28.7 9.3 -27.9 8.8 -27.4 8.5C-26.9 8.2 -27 8.1 -27 7.8C-26.9 7.6 -26.9 7.3 -27 7Z"}],"axis":1.4,"bc":[12.4,58.0],"hub":[4.8,37.0],"ext":135.2,"sparkR":21.8,"outs":[{"x":-26.4,"y":125.4,"a":2.26,"k":"limb","path":[[0,0],[5.0,37.3],[7.9,42.3],[9.1,48.5],[9.8,54.7],[10.3,60.9],[11.0,67.1],[8.3,73.3],[6.3,79.5],[3.5,85.7],[0.0,91.9],[-4.4,98.1],[-9.1,104.3],[-14.1,110.5],[-19.3,116.7],[-24.3,122.9],[-26.4,125.4]]},{"x":54.2,"y":124.0,"a":1.071,"k":"limb","path":[[0,0],[5.0,37.3],[7.9,42.3],[9.1,48.5],[9.8,54.7],[10.3,60.9],[11.0,67.1],[16.3,71.4],[20.0,77.6],[24.8,83.8],[30.5,90.0],[36.2,96.2],[41.5,102.4],[45.8,108.6],[49.4,114.8],[52.7,121.0],[54.2,124.0]]},{"x":59.8,"y":-17.4,"a":-0.689,"k":"limb","path":[[0,0],[5.0,37.3],[6.9,33.5],[8.3,29.2],[12.7,26.4],[16.4,22.3],[19.7,17.9],[23.4,13.5],[27.6,9.2],[32.0,5.2],[36.4,1.5],[40.8,-2.0],[45.2,-5.5],[49.6,-8.9],[54.0,-12.3],[58.4,-16.3],[59.8,-17.4]]},{"x":-27.2,"y":54.0,"a":2.501,"k":"limb","path":[[0,0],[5.0,37.3],[2.8,38.1],[0.6,38.9],[-1.6,39.6],[-3.8,40.3],[-6.0,40.9],[-8.2,41.6],[-10.4,42.4],[-12.6,43.4],[-14.8,44.6],[-17.0,45.9],[-19.2,47.4],[-21.4,49.2],[-23.6,50.9],[-25.7,52.9],[-27.2,54.0]]}]},"c2":{"body":"M-30.7 -43.9C-30.9 -43.8 -31.1 -43.6 -31.3 -43.3C-31.5 -43.1 -31.6 -43.1 -31.7 -42.5C-31.7 -42 -32.3 -44.6 -31.8 -40.2C-31.3 -35.7 -29.3 -21.6 -28.6 -16C-27.9 -10.3 -27.9 -10.2 -27.6 -6.4C-27.4 -2.6 -27.2 3 -27.2 6.9C-27.2 10.9 -27.4 13.8 -27.7 17.2C-28 20.7 -28.7 25 -29.1 27.7C-29.5 30.3 -29.7 31.3 -30.2 33.2C-30.6 35.1 -30.9 36.4 -31.7 39.1C-32.5 41.8 -33.1 44.2 -34.9 49.3C-36.6 54.4 -40.8 65.4 -42.2 69.7C-43.7 74 -43.3 73 -43.8 75.1C-44.3 77.1 -44.8 79.3 -45.2 82C-45.7 84.6 -46.1 87.1 -46.4 91C-46.7 94.9 -47.1 101.9 -47.1 105.2C-47.2 108.5 -47.1 109.1 -46.9 110.6C-46.7 112.1 -46.3 113.4 -46 114.2C-45.7 115 -45.3 115.3 -44.9 115.6C-44.5 115.8 -44.1 115.9 -43.7 115.8C-43.3 115.7 -42.9 115.4 -42.6 115.1C-42.4 114.8 -42.3 115.2 -42 113.9C-41.8 112.6 -41.3 111.5 -40.9 107.4C-40.5 103.3 -39.8 93.2 -39.4 89.5C-39 85.8 -39.1 87.1 -38.7 85.3C-38.4 83.5 -38 81.3 -37.4 78.9C-36.7 76.4 -36 73.8 -35 70.8C-34.1 67.8 -32.8 64.1 -31.6 60.7C-30.3 57.4 -28.7 53 -27.8 50.8C-26.8 48.6 -26.5 47.9 -26.1 47.6C-25.7 47.2 -26.5 45.1 -25.6 48.5C-24.6 51.9 -22.5 58.7 -20.5 67.9C-18.4 77.1 -14.8 96.8 -13.3 104C-11.9 111.1 -12.2 109 -11.7 110.8C-11.2 112.5 -10.8 113.3 -10.4 114.2C-10 115.1 -9.5 115.7 -9.1 116.1C-8.7 116.5 -8.2 116.6 -7.9 116.6C-7.6 116.7 -7.3 116.6 -7.1 116.6C-6.8 116.5 -6.5 116.3 -6.3 116.1C-6.1 115.9 -6 115.9 -5.9 115.3C-5.7 114.8 -5.5 114.1 -5.5 113C-5.5 111.9 -4.6 115.8 -6 108.7C-7.4 101.6 -12.3 78.7 -13.8 70.5C-15.4 62.3 -15.1 63.1 -15.6 59.7C-16 56.3 -16.3 53.1 -16.5 50.1C-16.7 47.1 -16.7 44.1 -16.5 41.7C-16.4 39.3 -15.9 37 -15.6 35.6C-15.3 34.2 -15.1 34.1 -14.7 33.4C-14.4 32.8 -13.9 32 -13.4 31.5C-12.9 31 -12.4 30.7 -11.9 30.4C-11.4 30.2 -11.1 30.1 -10.5 30.1C-9.9 30.1 -9 30.1 -8.2 30.4C-7.4 30.6 -6.7 30.9 -5.7 31.5C-4.7 32.1 -3.6 32.9 -2.3 34C-0.9 35.1 0.9 36.7 2.5 38.2C4.1 39.8 5.4 41 7.5 43.1C9.5 45.3 12.8 48.8 14.8 51.1C16.8 53.4 18.2 55.2 19.6 57.1C21 58.9 21.8 59.9 23.1 62.2C24.4 64.4 26.4 68.3 27.4 70.4C28.4 72.4 28.6 73.2 29.2 74.6C29.7 76.1 30.2 77.7 30.6 79C31 80.4 31.2 81.3 31.5 82.7C31.8 84.1 31.9 83.8 32.2 87.4C32.5 90.9 33 100.9 33.3 103.9C33.6 107 33.8 105.2 34.1 105.5C34.3 105.8 34.6 105.8 34.8 105.9C35.1 105.9 35.4 105.9 35.6 105.8C35.9 105.8 36.1 105.7 36.3 105.4C36.6 105.2 36.7 105.2 37 104.3C37.2 103.4 37.5 101.8 37.7 100.1C37.8 98.3 38 96.2 38 93.7C38.1 91.3 37.9 87.6 37.8 85.3C37.6 83 37.5 81.9 37.2 80.1C36.9 78.2 36.7 76.4 36.2 74.5C35.8 72.6 35.2 70.5 34.6 68.6C34 66.8 33.3 65.1 32.6 63.4C31.9 61.8 31.2 60.4 30.4 58.9C29.6 57.4 28.8 55.9 27.8 54.4C26.9 52.9 25.8 51.3 24.7 49.7C23.5 48.1 22.5 46.6 20.9 44.8C19.4 42.9 18.9 42.1 15.4 38.6C12 35 3.4 26.8 0.2 23.5C-3 20.2 -2.8 20.3 -4 18.7C-5.1 17.2 -6.3 15.6 -7 14.5C-7.7 13.4 -7.9 12.8 -8.2 12C-8.5 11.2 -8.6 10.5 -8.7 9.7C-8.7 8.9 -8.7 8.3 -8.5 7.3C-8.3 6.4 -7.7 4.6 -7.5 3.8C-7.4 2.9 -7.5 2.8 -7.6 2.4C-7.7 2.1 -7.8 1.9 -8.1 1.7C-8.3 1.4 -8.2 1.2 -9.1 0.9C-10 0.5 -12.4 -0.1 -13.5 -0.6C-14.6 -1.1 -15.2 -1.5 -15.9 -2.1C-16.6 -2.7 -17.2 -3.4 -17.8 -4.2C-18.4 -5.1 -18.7 -5.3 -19.5 -7C-20.2 -8.8 -21.7 -12.3 -22.5 -14.8C-23.4 -17.3 -24.1 -19.9 -24.7 -21.9C-25.2 -23.9 -25.3 -24.3 -25.6 -27C-26 -29.7 -26.5 -35.5 -26.9 -38C-27.2 -40.4 -27.3 -40.7 -27.6 -41.7C-27.9 -42.6 -28.3 -43.2 -28.7 -43.6C-29.1 -44 -29.5 -44 -29.9 -44.1C-30.2 -44.1 -30.4 -44 -30.7 -43.9Z","spark":[{"d":0.0,"c":[0.0,0.0],"p":"M-0.6 -4.1C-1.1 -4 -1.9 -3.7 -2.3 -3.4C-2.8 -3.1 -3 -2.9 -3.3 -2.5C-3.6 -2 -3.9 -1.3 -4.1 -0.8C-4.2 -0.3 -4.2 0.1 -4.1 0.6C-4 1.1 -3.7 1.9 -3.4 2.3C-3.2 2.8 -2.9 3 -2.5 3.3C-2 3.6 -1.3 3.9 -0.8 4.1C-0.3 4.2 0.1 4.2 0.6 4.1C1.1 4 1.8 3.7 2.3 3.4C2.8 3.2 3 2.9 3.3 2.5C3.6 2 3.9 1.3 4.1 0.8C4.2 0.3 4.2 -0.1 4.1 -0.6C4 -1.1 3.7 -1.9 3.4 -2.3C3.1 -2.8 2.9 -3 2.5 -3.3C2 -3.6 1.3 -3.9 0.8 -4.1C0.3 -4.2 -0.1 -4.2 -0.6 -4.1Z"},{"d":10.2,"c":[7.5,6.9],"p":"M4.7 3.9C4.5 4.1 4.3 4.3 4.3 4.6C4.3 4.9 4.1 5.1 4.5 5.8C5 6.5 6.3 8 7 8.8C7.8 9.5 8.4 10 8.9 10.2C9.3 10.5 9.4 10.3 9.7 10.3C9.9 10.3 10.2 10.1 10.4 9.9C10.6 9.8 10.7 9.6 10.8 9.3C10.8 8.9 11 8.7 10.6 8C10.2 7.4 9.1 6.2 8.4 5.4C7.7 4.7 6.7 3.9 6.2 3.6C5.7 3.3 5.7 3.5 5.4 3.5C5.1 3.6 4.9 3.7 4.7 3.9Z"},{"d":10.6,"c":[10.6,-0.5],"p":"M15.2 -0.6C15.2 -0.8 15.2 -1.1 15 -1.3C14.8 -1.6 14.9 -1.9 14 -2.1C13.1 -2.2 10.8 -2.2 9.6 -2.1C8.4 -2 7.3 -1.8 6.8 -1.7C6.2 -1.5 6.3 -1.3 6.2 -1.1C6.1 -0.8 6 -0.5 6.1 -0.3C6.1 0 6.2 0.3 6.4 0.5C6.6 0.7 6.6 0.8 7.1 0.9C7.6 1 8.3 1.2 9.5 1.1C10.6 1.1 13 1 13.9 0.8C14.8 0.7 14.7 0.4 14.9 0.2C15.1 -0.1 15.2 -0.3 15.2 -0.6Z"},{"d":10.6,"c":[-0.9,10.6],"p":"M-1 6.7C-1.2 6.7 -1.5 6.8 -1.7 6.9C-1.9 7.1 -2.1 7 -2.2 7.6C-2.3 8.2 -2.5 9.6 -2.6 10.5C-2.6 11.5 -2.4 12.9 -2.3 13.5C-2.2 14.1 -2 14 -1.8 14.2C-1.6 14.3 -1.3 14.5 -1.1 14.5C-0.8 14.5 -0.5 14.5 -0.3 14.3C0 14.2 0.2 14.2 0.3 13.7C0.5 13.2 0.7 12.4 0.7 11.4C0.8 10.4 0.7 8.7 0.5 7.9C0.4 7.1 0.1 7.1 -0.2 6.9C-0.4 6.7 -0.7 6.6 -1 6.7Z"},{"d":10.9,"c":[-0.2,-10.9],"p":"M0 -15.5C-0.3 -15.5 -0.6 -15.5 -0.8 -15.3C-1 -15.2 -1.2 -15 -1.4 -14.8C-1.5 -14.6 -1.6 -14.4 -1.7 -14C-1.8 -13.5 -1.8 -13.1 -1.9 -12C-1.9 -11 -1.8 -8.5 -1.7 -7.6C-1.6 -6.7 -1.3 -6.7 -1 -6.5C-0.8 -6.3 -0.5 -6.3 -0.3 -6.3C0 -6.3 0.2 -6.3 0.5 -6.6C0.7 -6.8 1 -6.9 1.2 -7.6C1.3 -8.4 1.4 -9.9 1.4 -11C1.4 -12.2 1.3 -13.7 1.2 -14.4C1.1 -15.1 0.9 -15 0.7 -15.1C0.5 -15.3 0.2 -15.4 0 -15.5Z"},{"d":11.5,"c":[8.3,-8.0],"p":"M12.5 -10.8C12.3 -11 12.1 -11.2 11.9 -11.4C11.6 -11.5 11.5 -11.6 11.1 -11.5C10.6 -11.4 10.1 -11.2 9 -10.5C7.9 -9.8 5.3 -7.8 4.5 -7.1C3.7 -6.3 4 -6.2 4 -5.9C3.9 -5.6 4 -5.4 4.2 -5.1C4.3 -4.9 4.5 -4.7 4.7 -4.6C5 -4.5 5.1 -4.3 5.5 -4.5C6 -4.6 6.5 -4.7 7.6 -5.5C8.7 -6.2 11.3 -8.1 12.1 -8.9C13 -9.7 12.6 -9.7 12.7 -10C12.7 -10.4 12.6 -10.6 12.5 -10.8Z"},{"d":13.2,"c":[-9.6,-9.2],"p":"M-12.5 -12.6C-12.7 -12.4 -12.9 -12.2 -13 -11.9C-13 -11.7 -13.1 -11.5 -13 -11.1C-12.8 -10.7 -12.8 -10.3 -12.1 -9.5C-11.3 -8.6 -9.4 -6.6 -8.6 -5.9C-7.9 -5.3 -7.7 -5.5 -7.4 -5.5C-7.1 -5.5 -6.9 -5.6 -6.7 -5.8C-6.4 -5.9 -6.3 -6.1 -6.2 -6.4C-6.1 -6.6 -6 -6.8 -6.1 -7.2C-6.3 -7.6 -6.3 -8 -7.1 -8.8C-7.8 -9.7 -9.7 -11.7 -10.5 -12.4C-11.3 -13.1 -11.4 -12.8 -11.7 -12.8C-12.1 -12.8 -12.3 -12.7 -12.5 -12.6Z"},{"d":17.6,"c":[12.8,12.0],"p":"M12.5 11C12.2 11.1 11.8 11.5 11.7 11.8C11.6 12 11.7 12.3 11.8 12.5C11.9 12.7 12.1 13 12.3 13C12.5 13.1 12.9 13.2 13.1 13.1C13.3 13 13.6 12.9 13.7 12.6C13.8 12.4 13.8 11.8 13.8 11.5C13.7 11.3 13.4 11.1 13.2 11C13 10.9 12.7 10.9 12.5 11Z"},{"d":17.9,"c":[-1.3,17.9],"p":"M-1.6 16.8C-1.8 16.8 -2.1 16.9 -2.2 17.2C-2.4 17.4 -2.4 18 -2.4 18.3C-2.3 18.5 -2.1 18.7 -1.9 18.8C-1.7 18.9 -1.4 19 -1.1 18.9C-0.9 18.9 -0.6 18.7 -0.5 18.6C-0.3 18.4 -0.2 18.1 -0.3 17.8C-0.3 17.6 -0.6 17.1 -0.8 16.9C-1.1 16.7 -1.4 16.7 -1.6 16.8Z"},{"d":18.6,"c":[18.5,-1.0],"p":"M18.2 -2C18 -2 17.7 -1.8 17.6 -1.6C17.5 -1.4 17.4 -1.1 17.4 -0.8C17.4 -0.6 17.5 -0.3 17.7 -0.2C18 0 18.5 0.2 18.8 0.1C19.1 0 19.5 -0.4 19.6 -0.7C19.7 -0.9 19.6 -1.2 19.5 -1.4C19.4 -1.6 19.2 -1.9 19 -2C18.8 -2.1 18.5 -2.1 18.2 -2Z"},{"d":19.7,"c":[-0.2,-19.7],"p":"M-0.5 -21.1C-0.7 -21.1 -1 -21 -1.2 -20.7C-1.4 -20.5 -1.6 -20 -1.6 -19.6C-1.6 -19.2 -1.3 -18.7 -1 -18.5C-0.8 -18.2 -0.3 -18.1 0.1 -18.2C0.4 -18.2 0.8 -18.6 1 -18.9C1.2 -19.2 1.2 -19.8 1.1 -20.1C1 -20.5 0.6 -20.9 0.3 -21.1C0 -21.2 -0.2 -21.2 -0.5 -21.1Z"},{"d":19.7,"c":[14.8,-13.0],"p":"M14.6 -14.1C14.3 -14.1 13.9 -13.7 13.7 -13.4C13.6 -13.2 13.6 -12.9 13.7 -12.7C13.8 -12.5 13.9 -12.2 14.1 -12.1C14.3 -12 14.6 -11.9 14.9 -11.9C15.1 -12 15.4 -12.1 15.6 -12.3C15.7 -12.5 15.8 -12.8 15.8 -13C15.9 -13.2 15.8 -13.5 15.6 -13.7C15.4 -13.9 14.9 -14.2 14.6 -14.1Z"},{"d":21.0,"c":[-15.3,-14.4],"p":"M-16 -15.4C-16.2 -15.2 -16.4 -15 -16.5 -14.7C-16.5 -14.4 -16.3 -13.9 -16.1 -13.6C-16 -13.4 -15.7 -13.3 -15.4 -13.3C-15.1 -13.3 -14.6 -13.5 -14.3 -13.6C-14.1 -13.8 -14 -14.1 -14 -14.3C-14 -14.6 -14 -14.8 -14.2 -15.1C-14.4 -15.3 -15 -15.5 -15.3 -15.6C-15.6 -15.6 -15.8 -15.5 -16 -15.4Z"},{"d":23.6,"c":[17.3,16.0],"p":"M15.4 13.8C15.2 14 14.9 14.5 14.8 14.8C14.7 15.1 14.9 15.4 15 15.6C15.1 15.9 15 16 15.5 16.4C15.9 16.9 17.1 18 17.6 18.3C18.1 18.7 18.2 18.5 18.4 18.5C18.7 18.5 19 18.5 19.2 18.3C19.4 18.1 19.7 17.6 19.8 17.3C19.9 17 19.7 16.7 19.6 16.4C19.5 16.2 19.6 16.1 19.1 15.7C18.7 15.2 17.5 14.1 17 13.8C16.5 13.4 16.4 13.6 16.1 13.6C15.9 13.6 15.6 13.6 15.4 13.8Z"},{"d":25.4,"c":[25.4,-1.9],"p":"M29.2 -2C29.1 -2.3 29.1 -2.5 28.9 -2.8C28.7 -3 28.6 -3.3 27.9 -3.4C27.1 -3.5 25.4 -3.6 24.5 -3.5C23.5 -3.4 22.7 -3.2 22.2 -3C21.8 -2.8 21.8 -2.6 21.7 -2.4C21.6 -2.2 21.6 -1.9 21.6 -1.6C21.6 -1.4 21.8 -1.1 21.9 -0.9C22.1 -0.7 22 -0.5 22.7 -0.4C23.3 -0.4 25.1 -0.3 26 -0.3C27 -0.4 27.9 -0.6 28.3 -0.7C28.8 -0.9 28.8 -1.1 28.9 -1.3C29.1 -1.5 29.2 -1.8 29.2 -2Z"},{"d":25.9,"c":[0.1,-25.9],"p":"M-0.2 -29.2C-0.5 -29.1 -0.7 -28.9 -0.9 -28.7C-1.1 -28.6 -1.2 -28.7 -1.3 -28C-1.4 -27.3 -1.4 -25.3 -1.4 -24.6C-1.4 -23.9 -1.3 -23.9 -1.2 -23.7C-1.1 -23.4 -1 -23.1 -0.7 -23C-0.4 -22.8 0.1 -22.6 0.4 -22.6C0.7 -22.6 0.9 -22.8 1.1 -23C1.3 -23.2 1.5 -23.1 1.6 -23.8C1.6 -24.5 1.7 -26.5 1.7 -27.2C1.7 -28 1.6 -27.9 1.5 -28.2C1.3 -28.4 1.2 -28.7 1 -28.9C0.7 -29 0.1 -29.2 -0.2 -29.2Z"},{"d":27.2,"c":[20.7,-17.6],"p":"M23.3 -19.6C23.2 -19.8 22.9 -20 22.6 -20C22.4 -20.1 22.5 -20.3 21.8 -20C21.2 -19.7 19.3 -18.6 18.6 -18.1C18 -17.7 18.2 -17.7 18 -17.5C17.9 -17.3 17.7 -17 17.7 -16.7C17.7 -16.4 17.9 -15.9 18 -15.6C18.2 -15.4 18.5 -15.3 18.7 -15.2C19 -15.1 18.9 -14.9 19.6 -15.2C20.2 -15.5 21.7 -16.3 22.4 -16.8C23.1 -17.3 23.4 -17.8 23.6 -18.1C23.8 -18.5 23.7 -18.7 23.7 -18.9C23.6 -19.2 23.5 -19.5 23.3 -19.6Z"},{"d":27.4,"c":[-19.8,-18.8],"p":"M-22.2 -20.9C-22.4 -20.7 -22.5 -20.4 -22.5 -20.1C-22.5 -19.9 -22.6 -19.7 -22.3 -19.3C-22 -18.9 -21.2 -17.9 -20.7 -17.4C-20.2 -17 -19.6 -16.6 -19.2 -16.4C-18.8 -16.2 -18.6 -16.2 -18.3 -16.3C-18.1 -16.3 -17.8 -16.4 -17.6 -16.6C-17.4 -16.8 -17.3 -17 -17.2 -17.3C-17.2 -17.6 -17 -17.7 -17.3 -18.1C-17.5 -18.6 -18.2 -19.5 -18.7 -20C-19.3 -20.6 -20.2 -21.1 -20.7 -21.4C-21.2 -21.6 -21.3 -21.4 -21.6 -21.4C-21.8 -21.3 -22.1 -21.1 -22.2 -20.9Z"}],"axis":1.8,"bc":[-12.7,46.3],"hub":[-16.7,20.2],"ext":124.0,"sparkR":18.6,"outs":[{"x":-44.1,"y":116.1,"a":1.588,"k":"limb","path":[[0,0],[-17.1,21.1],[-21.3,26.4],[-22.7,33.2],[-23.5,40.0],[-29.5,44.9],[-32.0,51.7],[-34.5,58.5],[-37.0,65.3],[-39.2,72.1],[-41.1,78.9],[-42.4,85.7],[-43.2,92.5],[-43.7,99.3],[-44.1,106.1],[-44.1,112.9],[-44.1,116.1]]},{"x":-7.3,"y":116.8,"a":1.356,"k":"limb","path":[[0,0],[-17.1,21.1],[-21.3,26.3],[-22.6,33.0],[-23.5,39.7],[-20.9,46.4],[-20.0,53.1],[-18.9,59.8],[-17.6,66.5],[-16.4,73.2],[-15.1,79.9],[-13.8,86.6],[-12.4,93.3],[-11.0,100.0],[-9.5,106.7],[-7.8,113.4],[-7.3,116.8]]},{"x":35.2,"y":106.2,"a":1.588,"k":"limb","path":[[0,0],[-17.1,21.1],[-10.6,24.0],[-4.1,26.8],[2.4,32.2],[8.9,38.4],[15.2,44.9],[20.6,51.4],[25.1,57.9],[28.8,64.4],[31.6,70.9],[33.5,77.4],[34.7,83.9],[35.3,90.4],[35.3,96.9],[35.1,103.4],[35.2,106.2]]},{"x":-30.2,"y":-44.2,"a":-1.704,"k":"limb","path":[[0,0],[-17.1,21.1],[-18.0,16.9],[-18.0,12.4],[-19.4,7.9],[-21.7,3.4],[-22.9,-1.1],[-23.9,-5.6],[-24.8,-10.1],[-25.8,-14.6],[-26.7,-19.1],[-27.5,-23.6],[-28.1,-28.1],[-28.7,-32.6],[-29.2,-37.1],[-29.9,-41.6],[-30.2,-44.2]]}]},"c3":{"body":"M69.6 -21.7C69.3 -21.8 69.1 -21.9 68.8 -21.8C68.4 -21.7 69.1 -22.6 67.6 -21.2C66 -19.7 61.8 -15.4 59.5 -13.1C57.1 -10.8 55.2 -9.1 53.3 -7.4C51.4 -5.7 50.3 -4.8 48.1 -3.1C45.9 -1.3 44.2 0.1 40.1 3.1C36 6 27.1 12.4 23.5 14.9C19.9 17.3 19.9 17.1 18.3 18C16.7 18.8 15.1 19.4 14.1 19.9C13 20.3 12.6 20.3 11.8 20.5C11 20.6 10.1 20.7 9.4 20.6C8.7 20.6 8.2 20.4 7.6 20.2C7 20 6.5 19.6 6 19.2C5.6 18.8 5.2 18.4 4.8 17.8C4.4 17.2 4.3 17.3 3.8 15.7C3.3 14.1 2.3 9.4 1.9 8C1.4 6.6 1.3 7.3 1 7.1C0.8 6.9 0.5 6.9 0.2 6.9C0 6.9 -0.3 7 -0.6 7.2C-0.8 7.4 -0.9 7 -1.4 8.2C-1.9 9.4 -2.9 12.6 -3.6 14.3C-4.4 15.9 -5 17.1 -5.9 18.3C-6.8 19.5 -8 20.8 -8.8 21.5C-9.7 22.3 -10.4 22.7 -11.2 23C-12 23.2 -12.7 23.2 -13.7 23.2C-14.6 23.2 -14.3 23.3 -17 22.9C-19.8 22.5 -26.6 21.2 -30.1 20.6C-33.6 20.1 -35.8 19.8 -38.2 19.6C-40.6 19.3 -42.3 19.2 -44.5 19.2C-46.7 19.2 -49.1 19.1 -51.4 19.4C-53.8 19.6 -56.5 20.1 -58.9 20.7C-61.3 21.3 -63.8 22.1 -66 23C-68.1 23.8 -70.5 25.1 -71.8 25.8C-73.1 26.5 -73.2 26.8 -73.7 27.2C-74.2 27.7 -74.6 28.2 -74.9 28.6C-75.1 29.1 -75.2 29.5 -75.2 29.9C-75.1 30.2 -75 30.4 -74.8 30.6C-74.7 30.8 -74.4 31 -74.2 31C-73.9 31.1 -74.3 31.4 -73.3 31.1C-72.3 30.7 -69.7 29.5 -68.2 28.9C-66.7 28.3 -65.6 28 -64.3 27.6C-63 27.2 -61.8 26.8 -60.2 26.5C-58.6 26.2 -57.4 25.9 -54.6 25.6C-51.8 25.3 -46.3 24.8 -43.5 24.7C-40.6 24.6 -39.4 24.7 -37.5 24.8C-35.7 24.9 -34 25.1 -32.2 25.3C-30.5 25.6 -29 25.8 -27.1 26.2C-25.2 26.6 -22.9 27.1 -20.7 27.7C-18.6 28.4 -15.9 29.4 -14.2 30.1C-12.5 30.8 -11.5 31.3 -10.5 32C-9.4 32.6 -8.5 33.2 -7.7 33.8C-6.9 34.4 -6.3 34.9 -5.5 35.7C-4.8 36.4 -4 37.4 -3.3 38.3C-2.7 39.2 -2.1 40.1 -1.6 41.1C-1.1 42 -0.7 43 -0.4 44.1C-0.1 45.1 0.2 46.3 0.3 47.3C0.4 48.3 0.5 48.8 0.4 50.2C0.2 51.7 0.3 52.7 -0.5 55.9C-1.4 59 -3.7 65.8 -4.7 69.1C-5.7 72.5 -5.9 73.5 -6.5 75.9C-7 78.3 -7.6 81 -8 83.8C-8.5 86.5 -8.8 89.4 -9.1 92.3C-9.4 95.3 -9.6 98.2 -9.7 101.6C-9.7 105 -9.6 110 -9.5 112.5C-9.4 115 -9.2 115.6 -9 116.8C-8.8 118.1 -8.6 119.2 -8.4 120C-8.1 120.9 -8 121.3 -7.7 121.8C-7.4 122.2 -7.2 122.5 -6.8 122.7C-6.5 122.9 -5.9 122.9 -5.6 122.9C-5.3 122.9 -5.1 122.7 -4.9 122.6C-4.6 122.4 -4.5 122.2 -4.3 121.9C-4.2 121.6 -4 123.3 -4 120.6C-4 117.8 -4.3 109.5 -4.4 105.4C-4.4 101.3 -4.4 99 -4.2 96C-4 92.9 -3.5 89.6 -3.1 86.9C-2.6 84.3 -1.9 81.8 -1.4 80.1C-0.9 78.4 -0.6 77.7 -0.2 76.6C0.2 75.5 0.5 74.8 1.1 73.7C1.7 72.5 2.9 70.7 3.7 69.7C4.4 68.8 4.9 68.5 5.4 68C6 67.6 6.4 67.3 7 67C7.6 66.8 8.2 66.6 8.8 66.5C9.3 66.4 9.7 66.4 10.2 66.5C10.7 66.5 11.1 66.6 11.6 66.8C12.1 66.9 12.5 67 13.3 67.5C14 68.1 15.2 68.9 16.2 70C17.3 71.1 18.4 72.5 19.5 74.1C20.5 75.8 21.7 77.9 22.6 79.8C23.5 81.8 24.2 83.8 24.9 85.9C25.5 88.1 26.1 90.5 26.5 92.7C26.9 95 27 95.9 27.3 99.4C27.5 102.9 27.7 110.3 28 113.6C28.4 116.9 28.7 117.6 29.2 119.1C29.6 120.7 30.3 121.9 30.9 122.9C31.6 124 32.5 124.9 33.1 125.4C33.7 126 33.9 126 34.3 126.1C34.7 126.3 35.2 126.5 35.6 126.4C36 126.4 36.5 126.2 36.8 126C37.2 125.9 37.3 125.6 37.4 125.4C37.6 125.1 37.7 124.9 37.7 124.6C37.8 124.2 38 124.4 37.7 123.2C37.5 122 36.5 119.3 36.1 117.4C35.7 115.4 35.5 115.4 35.4 111.6C35.3 107.9 35.4 98.3 35.4 94.7C35.4 91.2 35.3 91.8 35.2 90.3C35 88.8 34.8 87.2 34.5 85.6C34.2 84 33.9 82.7 33.2 80.6C32.5 78.6 31.5 75.8 30.2 73.3C29 70.8 27.3 67.8 25.9 65.6C24.5 63.5 23.8 62.6 21.9 60.3C20 58 16.1 53.9 14.4 51.9C12.8 49.9 12.6 49.3 12.1 48.4C11.5 47.4 11.4 46.9 11.1 46.2C10.9 45.6 10.8 45.1 10.7 44.4C10.6 43.7 10.5 42.7 10.5 42C10.6 41.3 10.5 40.9 10.7 40.1C11 39.3 11.3 38.1 11.8 37C12.3 36 12.9 34.9 13.6 33.8C14.4 32.7 15.3 31.5 16.3 30.4C17.3 29.2 18.2 28.3 19.8 26.8C21.3 25.4 22.5 24.3 25.7 21.8C28.9 19.3 36.1 14.2 39.1 12C42.1 9.7 41.8 9.9 43.6 8.4C45.5 6.8 47.9 4.7 50.2 2.5C52.5 0.3 55.2 -2.4 57.6 -4.9C60 -7.4 62.5 -10.2 64.6 -12.5C66.6 -14.8 68.9 -17.5 69.9 -18.8C70.9 -20.1 70.4 -20.1 70.5 -20.5C70.5 -20.9 70.4 -21 70.2 -21.2C70.1 -21.4 69.8 -21.6 69.6 -21.7Z","spark":[{"d":0.0,"c":[0.0,0.0],"p":"M-0.5 -4.3C-1 -4.3 -1.3 -4.2 -1.8 -4C-2.3 -3.7 -2.9 -3.3 -3.3 -2.9C-3.7 -2.4 -4 -1.8 -4.2 -1.3C-4.4 -0.8 -4.4 -0.4 -4.4 0.1C-4.3 0.6 -4.1 1.4 -3.9 1.9C-3.7 2.4 -3.5 2.7 -3.1 3C-2.8 3.4 -2.2 3.8 -1.6 4.1C-1.1 4.3 -0.4 4.4 0.2 4.4C0.8 4.3 1.5 4.2 2 3.9C2.5 3.6 3.1 3.1 3.4 2.7C3.8 2.3 4 2 4.1 1.5C4.3 1 4.4 0.2 4.4 -0.3C4.3 -0.9 4.3 -1.2 4 -1.7C3.8 -2.2 3.4 -2.8 3 -3.2C2.5 -3.6 1.9 -3.9 1.4 -4.1C0.8 -4.3 0.1 -4.4 -0.5 -4.3Z"},{"d":9.8,"c":[-5.9,7.9],"p":"M-4.4 5.2C-4.7 5.1 -5 5.1 -5.2 5.2C-5.5 5.2 -5.6 5.1 -6 5.5C-6.4 5.9 -7.1 6.7 -7.4 7.3C-7.8 7.9 -8 8.6 -8.1 9C-8.2 9.4 -8.1 9.6 -8 9.8C-7.9 10 -7.7 10.3 -7.5 10.4C-7.3 10.5 -7 10.6 -6.7 10.6C-6.5 10.6 -6.4 10.8 -6 10.4C-5.5 10 -4.6 8.9 -4.2 8.3C-3.8 7.6 -3.7 7 -3.6 6.6C-3.6 6.1 -3.7 6 -3.8 5.8C-4 5.6 -4.2 5.3 -4.4 5.2Z"},{"d":10.3,"c":[8.8,5.4],"p":"M6.3 3.5C6.2 3.7 6.1 4 6.1 4.3C6.1 4.6 5.9 4.7 6.3 5.1C6.6 5.6 7.7 6.6 8.3 7C9 7.5 9.6 7.7 10 7.8C10.4 7.9 10.6 7.7 10.8 7.6C11.1 7.5 11.3 7.3 11.4 7.1C11.5 6.9 11.6 6.5 11.6 6.3C11.5 6 11.6 5.9 11.3 5.5C10.9 5.1 10.1 4.3 9.5 3.9C8.9 3.5 8.3 3.2 7.9 3.1C7.4 2.9 7.3 3 7 3.1C6.8 3.2 6.5 3.3 6.3 3.5Z"},{"d":10.4,"c":[10.0,-3.2],"p":"M13.4 -4.1C13.3 -4.4 13.2 -4.6 12.9 -4.8C12.6 -4.9 12.5 -5.2 11.7 -5.1C11 -5.1 9.3 -4.7 8.5 -4.5C7.7 -4.2 7.2 -3.9 6.9 -3.7C6.6 -3.4 6.6 -3.2 6.5 -3C6.4 -2.7 6.5 -2.4 6.5 -2.2C6.6 -2 6.8 -1.7 7 -1.6C7.2 -1.4 7 -1.2 7.7 -1.2C8.5 -1.3 10.5 -1.6 11.4 -1.9C12.3 -2.1 12.6 -2.4 13 -2.6C13.3 -2.9 13.3 -3.1 13.4 -3.3C13.5 -3.6 13.4 -3.9 13.4 -4.1Z"},{"d":10.9,"c":[5.8,-9.3],"p":"M8 -12.2C7.8 -12.4 7.5 -12.5 7.3 -12.6C7 -12.6 6.7 -12.5 6.5 -12.4C6.2 -12.3 6.1 -12.2 5.7 -11.9C5.4 -11.5 5 -11 4.6 -10.4C4.2 -9.7 3.4 -8.6 3.2 -8C3 -7.4 3.1 -7.1 3.2 -6.8C3.3 -6.5 3.5 -6.3 3.8 -6.2C4 -6.1 4.3 -6 4.5 -6C4.8 -6 4.9 -5.8 5.3 -6.2C5.7 -6.6 6.6 -7.6 7.1 -8.3C7.6 -9.1 8.2 -10.2 8.4 -10.7C8.7 -11.3 8.5 -11.3 8.4 -11.6C8.4 -11.8 8.2 -12.1 8 -12.2Z"},{"d":10.9,"c":[-10.8,1.4],"p":"M-7.3 0.5C-7.3 0.3 -7.4 0 -7.7 -0.2C-7.9 -0.4 -8.1 -0.6 -8.8 -0.6C-9.5 -0.6 -11.1 -0.2 -12 0C-12.8 0.3 -13.6 0.7 -14 1C-14.4 1.2 -14.4 1.4 -14.4 1.7C-14.5 1.9 -14.5 2.2 -14.4 2.5C-14.3 2.7 -14.1 2.9 -13.9 3.1C-13.7 3.2 -13.8 3.4 -13.1 3.4C-12.4 3.3 -10.8 3.1 -9.9 2.8C-9 2.6 -8.3 2.2 -7.8 2C-7.4 1.7 -7.4 1.6 -7.3 1.3C-7.2 1.1 -7.2 0.8 -7.3 0.5Z"},{"d":11.3,"c":[-9.0,-6.9],"p":"M-11.6 -8.6C-11.7 -8.4 -11.8 -8.1 -11.9 -7.8C-11.9 -7.6 -11.9 -7.4 -11.7 -7C-11.4 -6.7 -11 -6.2 -10.4 -5.9C-9.7 -5.5 -8.4 -4.9 -7.9 -4.7C-7.3 -4.5 -7.3 -4.7 -7 -4.8C-6.8 -4.9 -6.5 -5.1 -6.4 -5.3C-6.2 -5.5 -6.1 -5.8 -6.1 -6C-6.1 -6.3 -6.1 -6.5 -6.3 -6.8C-6.6 -7.1 -7 -7.6 -7.6 -8C-8.3 -8.4 -9.6 -8.9 -10.1 -9.1C-10.7 -9.3 -10.7 -9.1 -11 -9C-11.2 -8.9 -11.5 -8.8 -11.6 -8.6Z"},{"d":11.7,"c":[-2.1,-11.5],"p":"M-2.8 -14.7C-3.1 -14.7 -3.3 -14.5 -3.5 -14.3C-3.7 -14.1 -3.8 -14.2 -3.9 -13.6C-3.9 -13 -3.8 -11.7 -3.6 -10.8C-3.4 -10 -3 -9.2 -2.8 -8.7C-2.5 -8.3 -2.3 -8.3 -2.1 -8.3C-1.9 -8.2 -1.6 -8.2 -1.3 -8.2C-1.1 -8.3 -0.8 -8.4 -0.6 -8.6C-0.5 -8.8 -0.3 -8.8 -0.3 -9.4C-0.2 -9.9 -0.3 -11.3 -0.5 -12.1C-0.7 -12.9 -1.1 -13.8 -1.3 -14.2C-1.6 -14.6 -1.8 -14.6 -2 -14.7C-2.3 -14.8 -2.6 -14.8 -2.8 -14.7Z"},{"d":16.3,"c":[-9.3,13.3],"p":"M-9.7 12.3C-9.9 12.4 -10.2 12.5 -10.3 12.7C-10.4 13 -10.4 13.6 -10.3 13.8C-10.2 14.1 -10 14.3 -9.8 14.3C-9.5 14.4 -9.2 14.5 -9 14.4C-8.8 14.3 -8.5 14.2 -8.4 13.9C-8.3 13.7 -8.3 13.1 -8.4 12.8C-8.5 12.6 -8.7 12.4 -8.9 12.3C-9.1 12.2 -9.5 12.2 -9.7 12.3Z"},{"d":16.4,"c":[13.8,8.9],"p":"M13.6 7.8C13.3 7.8 13.1 8 12.9 8.2C12.8 8.4 12.6 8.6 12.7 8.9C12.8 9.2 13.1 9.7 13.3 9.9C13.5 10 13.8 10 14 10C14.3 9.9 14.5 9.8 14.7 9.6C14.8 9.3 14.9 8.8 14.8 8.5C14.8 8.2 14.5 8 14.3 7.9C14.1 7.8 13.8 7.8 13.6 7.8Z"},{"d":18.0,"c":[17.1,-5.6],"p":"M16.9 -6.7C16.7 -6.6 16.4 -6.5 16.2 -6.3C16.1 -6.1 16 -5.5 16.1 -5.2C16.1 -4.9 16.4 -4.8 16.6 -4.6C16.8 -4.5 17.1 -4.5 17.3 -4.5C17.6 -4.6 17.8 -4.7 18 -4.9C18.1 -5.2 18.2 -5.7 18.1 -6C18.1 -6.3 17.8 -6.5 17.6 -6.6C17.4 -6.7 17.1 -6.7 16.9 -6.7Z"},{"d":18.0,"c":[10.5,-14.5],"p":"M10.2 -15.6C10 -15.5 9.7 -15.4 9.6 -15.1C9.5 -14.9 9.5 -14.3 9.6 -14C9.6 -13.8 9.9 -13.6 10.1 -13.5C10.3 -13.4 10.6 -13.4 10.8 -13.5C11.1 -13.6 11.5 -14 11.6 -14.3C11.7 -14.5 11.6 -14.8 11.5 -15C11.4 -15.2 11.2 -15.5 11 -15.6C10.8 -15.6 10.4 -15.7 10.2 -15.6Z"},{"d":18.1,"c":[-15.1,-10.0],"p":"M-15.2 -11.1C-15.5 -11 -16 -10.6 -16.1 -10.4C-16.2 -10.1 -16.2 -9.9 -16.1 -9.6C-16 -9.4 -15.8 -9.2 -15.6 -9C-15.4 -8.9 -15.1 -8.9 -14.9 -8.9C-14.7 -8.9 -14.4 -9 -14.2 -9.3C-14.1 -9.5 -14 -10.1 -14 -10.3C-14.1 -10.6 -14.3 -10.8 -14.5 -10.9C-14.7 -11.1 -15 -11.2 -15.2 -11.1Z"},{"d":18.1,"c":[-17.7,4.0],"p":"M-18 2.9C-18.2 3 -18.5 3.2 -18.6 3.3C-18.7 3.5 -18.9 3.8 -18.8 4.1C-18.7 4.4 -18.3 4.8 -18.1 5C-17.9 5.1 -17.6 5.1 -17.4 5C-17.1 4.9 -16.7 4.5 -16.6 4.2C-16.5 4 -16.6 3.7 -16.7 3.5C-16.8 3.3 -17 3 -17.2 2.9C-17.4 2.9 -17.8 2.8 -18 2.9Z"},{"d":18.7,"c":[-3.2,-18.4],"p":"M-3.5 -19.5C-3.7 -19.4 -4 -19.2 -4.1 -19C-4.2 -18.9 -4.3 -18.5 -4.3 -18.3C-4.3 -18.1 -4.2 -17.8 -4 -17.6C-3.7 -17.5 -3.2 -17.3 -2.9 -17.4C-2.6 -17.4 -2.3 -17.9 -2.1 -18.1C-2 -18.4 -2.1 -18.7 -2.2 -18.9C-2.3 -19.1 -2.5 -19.3 -2.7 -19.4C-2.9 -19.5 -3.3 -19.6 -3.5 -19.5Z"},{"d":21.6,"c":[18.0,12.1],"p":"M16 10.3C15.8 10.5 15.7 10.8 15.7 11C15.7 11.3 15.6 11.4 15.8 11.8C16.1 12.2 16.6 12.8 17.1 13.2C17.5 13.6 18.3 13.9 18.7 14.1C19.1 14.2 19.2 14.1 19.5 14C19.7 14 19.9 13.9 20.1 13.6C20.2 13.3 20.3 12.9 20.2 12.5C20 12 19.5 11.5 19 11.1C18.5 10.7 17.6 10.1 17.1 10C16.6 9.9 16.2 10.2 16 10.3Z"},{"d":21.7,"c":[-12.1,18.0],"p":"M-10.9 15.7C-11.2 15.6 -11.5 15.6 -11.7 15.7C-12 15.7 -12.2 15.7 -12.5 16C-12.8 16.3 -13.4 17 -13.7 17.5C-14 18 -14.2 18.7 -14.2 19.2C-14.1 19.6 -13.7 20 -13.5 20.2C-13.3 20.4 -13 20.4 -12.7 20.3C-12.5 20.3 -12.3 20.4 -11.9 20.1C-11.6 19.7 -10.8 18.7 -10.5 18.3C-10.2 17.9 -10.2 17.7 -10.1 17.5C-10.1 17.2 -10 16.9 -10.2 16.6C-10.3 16.3 -10.7 15.9 -10.9 15.7Z"},{"d":23.9,"c":[22.9,-7.0],"p":"M26.1 -7.9C26 -8.2 25.8 -8.4 25.6 -8.6C25.4 -8.7 25.5 -8.9 24.8 -8.8C24.1 -8.8 22.3 -8.5 21.5 -8.3C20.7 -8.1 20.3 -7.7 19.9 -7.5C19.6 -7.2 19.6 -7 19.5 -6.8C19.5 -6.5 19.5 -6.2 19.6 -6C19.7 -5.8 19.9 -5.5 20.1 -5.4C20.3 -5.2 20.1 -5 20.9 -5.1C21.6 -5.1 23.8 -5.6 24.6 -5.8C25.3 -5.9 25.2 -6 25.4 -6.1C25.6 -6.3 25.9 -6.5 26 -6.8C26.1 -7.1 26.2 -7.6 26.1 -7.9Z"},{"d":24.4,"c":[-4.3,-24.0],"p":"M-5 -27C-5.3 -27 -5.5 -26.8 -5.7 -26.6C-5.9 -26.4 -6.1 -26.4 -6.1 -25.9C-6.1 -25.4 -6 -24.4 -5.9 -23.6C-5.7 -22.9 -5.3 -22 -5 -21.5C-4.8 -21.1 -4.6 -21.1 -4.3 -21.1C-4.1 -21 -3.8 -20.9 -3.5 -21C-3.3 -21.1 -3 -21.2 -2.9 -21.4C-2.7 -21.6 -2.5 -21.7 -2.5 -22.1C-2.5 -22.6 -2.4 -23.2 -2.6 -24C-2.8 -24.7 -3.3 -26 -3.6 -26.5C-3.8 -27 -4 -26.9 -4.2 -27C-4.5 -27.1 -4.8 -27.1 -5 -27Z"},{"d":24.4,"c":[-21.2,-12.0],"p":"M-23.8 -13.1C-23.9 -12.8 -24 -12.5 -23.9 -12.3C-23.9 -12 -23.9 -11.8 -23.6 -11.6C-23.3 -11.3 -22.8 -10.9 -22.2 -10.6C-21.5 -10.4 -20.4 -10.3 -19.9 -10.3C-19.4 -10.3 -19.3 -10.4 -19.1 -10.6C-18.9 -10.7 -18.7 -10.9 -18.6 -11.2C-18.6 -11.5 -18.5 -12 -18.8 -12.4C-19 -12.7 -19.5 -13.1 -20.1 -13.4C-20.7 -13.6 -21.9 -13.8 -22.4 -13.8C-22.9 -13.9 -23 -13.8 -23.2 -13.6C-23.4 -13.5 -23.6 -13.3 -23.8 -13.1Z"},{"d":24.8,"c":[14.3,-20.3],"p":"M16.6 -23.2C16.4 -23.4 16.2 -23.6 15.9 -23.6C15.6 -23.5 15.2 -23.7 14.7 -23.2C14.1 -22.7 13.1 -21.4 12.6 -20.6C12.1 -19.8 11.7 -19 11.6 -18.5C11.4 -18.1 11.6 -18 11.7 -17.7C11.8 -17.5 12 -17.3 12.2 -17.2C12.5 -17 12.7 -17 13 -17C13.3 -17 13.5 -17 13.8 -17.2C14.2 -17.5 14.6 -17.8 15.1 -18.6C15.7 -19.3 16.8 -21.1 17.1 -21.7C17.4 -22.4 17.1 -22.3 17.1 -22.6C17 -22.8 16.8 -23.1 16.6 -23.2Z"},{"d":25.3,"c":[-24.4,6.7],"p":"M-22.3 5.7C-22.5 5.4 -22.8 5.1 -23.2 5C-23.7 5 -24.4 5.2 -25 5.4C-25.5 5.6 -26.1 6.1 -26.4 6.4C-26.6 6.8 -26.6 7.3 -26.6 7.6C-26.5 7.8 -26.3 8 -26.1 8.1C-25.9 8.3 -25.7 8.4 -25.3 8.4C-24.9 8.3 -24.1 8.2 -23.6 7.9C-23.1 7.7 -22.5 7.2 -22.3 6.8C-22.1 6.4 -22.1 6 -22.3 5.7Z"}],"axis":1.4,"bc":[8.0,49.8],"hub":[3.5,30.0],"ext":131.3,"sparkR":18.0,"outs":[{"x":36.3,"y":126.5,"a":1.269,"k":"limb","path":[[0,0],[3.8,30.0],[4.8,37.1],[5.4,44.2],[5.7,51.3],[7.2,58.4],[13.7,61.5],[20.6,67.0],[25.1,74.1],[28.3,81.2],[30.3,88.3],[31.3,95.4],[31.4,102.5],[31.6,109.6],[32.4,116.7],[35.4,123.8],[36.3,126.5]]},{"x":-5.7,"y":123.2,"a":1.479,"k":"limb","path":[[0,0],[3.8,30.0],[4.7,36.5],[5.4,43.0],[5.5,49.5],[6.6,56.0],[4.0,61.6],[-0.5,68.1],[-3.0,74.6],[-4.7,81.1],[-6.0,87.6],[-6.7,94.1],[-7.0,100.6],[-7.0,107.1],[-6.7,113.6],[-6.0,120.1],[-5.7,123.2]]},{"x":-75.3,"y":30.3,"a":2.723,"k":"limb","path":[[0,0],[3.8,30.0],[-0.7,27.1],[-6.3,27.4],[-11.9,26.4],[-17.5,25.5],[-23.1,24.4],[-28.7,23.3],[-34.3,22.6],[-39.9,22.2],[-45.5,22.0],[-51.1,22.3],[-56.7,23.1],[-62.3,24.4],[-67.9,26.3],[-73.5,29.5],[-75.3,30.3]]},{"x":70.2,"y":-21.6,"a":-0.816,"k":"limb","path":[[0,0],[3.8,30.0],[7.3,27.1],[12.1,25.3],[16.9,23.2],[21.7,20.2],[26.5,16.9],[31.3,13.6],[36.1,10.1],[40.9,6.4],[45.7,2.5],[50.5,-1.5],[55.2,-5.8],[59.8,-10.5],[64.4,-15.2],[68.7,-20.0],[70.2,-21.6]]}]},"c4":{"body":"M91.4 23.5C91.2 23.2 90.7 22.9 90.3 22.8C89.9 22.6 90.8 22.3 89 22.7C87.2 23.1 82.3 24.4 79.5 25.1C76.6 25.7 74.5 26 72 26.4C69.5 26.8 67.1 27.1 64.4 27.3C61.6 27.5 57.9 27.7 55.6 27.7C53.2 27.8 52.2 27.7 50.1 27.6C48.1 27.4 46.3 27.3 43.4 27C40.5 26.7 36.4 26.2 32.9 25.8C29.3 25.3 24.7 24.6 22 24.1C19.4 23.7 18.5 23.5 17 23.1C15.5 22.7 14.1 22.3 13 21.9C11.8 21.5 10.9 21.2 10 20.7C9 20.2 8 19.6 7.2 19C6.4 18.4 5.7 17.7 5.1 17C4.5 16.3 4 15.5 3.5 14.6C3.1 13.8 2.8 13.2 2.4 12.1C2 10.9 1.5 8.5 1.1 7.7C0.8 6.8 0.5 7 0.2 6.8C0 6.6 -0.3 6.6 -0.5 6.6C-0.8 6.7 -1 6.7 -1.3 6.9C-1.5 7.2 -1.7 7 -2 8C-2.3 9 -2.7 11.7 -3 13.1C-3.4 14.4 -3.8 15.3 -4.2 16.1C-4.6 16.8 -4.8 17.1 -5.3 17.6C-5.8 18.1 -6.3 18.7 -7.1 19.2C-7.9 19.7 -8.9 20.2 -10 20.7C-11.2 21.1 -12.5 21.6 -14 21.9C-15.5 22.3 -16.1 22.5 -19 23C-22 23.6 -28.7 24.5 -31.7 25.1C-34.6 25.6 -35 25.8 -36.7 26.3C-38.4 26.8 -40.1 27.4 -41.9 28.1C-43.7 28.8 -45.8 29.8 -47.4 30.6C-49 31.4 -50.1 32 -51.5 32.8C-52.9 33.6 -54.4 34.6 -55.8 35.6C-57.3 36.6 -58.8 37.7 -60.1 38.7C-61.3 39.7 -62.3 40.5 -63.4 41.5C-64.5 42.5 -65.6 43.7 -66.5 44.7C-67.4 45.7 -68.3 46.9 -68.9 47.7C-69.5 48.5 -69.8 49.1 -70.1 49.7C-70.3 50.4 -70.3 51.1 -70.3 51.5C-70.3 51.9 -70.2 52.1 -70 52.3C-69.9 52.5 -69.7 52.7 -69.4 52.8C-69.2 52.9 -68.9 53 -68.6 52.9C-68.2 52.9 -68.2 53 -67.3 52.5C-66.5 52 -65.8 51.6 -63.5 49.7C-61.2 47.9 -56.1 43.2 -53.5 41.2C-51 39.1 -49.8 38.5 -48.1 37.4C-46.3 36.4 -44.6 35.5 -43.1 34.8C-41.7 34.1 -40.7 33.7 -39.3 33.2C-38 32.6 -36.5 32.1 -35 31.6C-33.5 31.2 -31.7 30.7 -30.4 30.5C-29.1 30.2 -28.3 30.1 -27.1 30C-26 29.9 -24.8 29.9 -23.7 30C-22.6 30.1 -21.4 30.3 -20.4 30.6C-19.4 30.8 -18.7 31 -17.7 31.4C-16.8 31.8 -15.8 32.2 -14.8 32.8C-13.9 33.3 -12.9 34 -12.1 34.7C-11.3 35.4 -10.7 36 -10 36.8C-9.4 37.5 -8.9 38.3 -8.5 39.1C-8.1 39.9 -7.7 40.8 -7.5 41.7C-7.3 42.6 -7.2 43.6 -7.1 44.5C-7.1 45.5 -7.2 46.4 -7.3 47.4C-7.5 48.5 -7.6 49.3 -8 50.6C-8.5 52 -9 53.3 -10.2 55.8C-11.4 58.2 -14.1 62.7 -15.4 65.1C-16.7 67.5 -17 68.2 -17.9 70.1C-18.7 72 -19.7 74.3 -20.4 76.5C-21.1 78.7 -21.7 80.9 -22.3 83.3C-22.8 85.6 -22.9 85.4 -23.8 90.6C-24.6 95.9 -26.6 110 -27.3 114.7C-28.1 119.3 -27.8 116.9 -28.5 118.7C-29.1 120.5 -30.6 124.1 -31.2 125.6C-31.8 127.1 -31.7 127.2 -31.8 127.8C-32 128.4 -32 128.7 -31.9 129.2C-31.8 129.6 -31.7 130.1 -31.5 130.4C-31.2 130.8 -30.9 131.1 -30.5 131.2C-30.1 131.4 -29.7 131.5 -29.2 131.3C-28.6 131.1 -27.8 130.8 -27.2 130.2C-26.5 129.7 -25.9 129.1 -25.2 128.1C-24.5 127.2 -23.5 125.8 -22.8 124.6C-22.2 123.4 -21.6 122.1 -21 120.8C-20.5 119.6 -20.1 118.3 -19.6 116.9C-19.2 115.5 -19.1 116.4 -18.4 112.4C-17.7 108.4 -16.1 97.5 -15.2 92.7C-14.2 88 -13.6 86.2 -12.8 83.7C-12 81.2 -11.3 79.8 -10.4 77.7C-9.4 75.6 -8 72.9 -7 71.1C-6 69.4 -5.2 68.2 -4.4 67.2C-3.5 66.2 -2.5 65.5 -1.8 65C-1.1 64.5 -0.7 64.4 -0.1 64.2C0.4 64.1 0.7 64.1 1.3 64.1C1.8 64.1 2.5 64.2 3.1 64.3C3.7 64.4 4 64.5 4.9 64.9C5.7 65.3 6.1 65.3 8.2 66.6C10.3 67.9 14.9 71.2 17.6 72.9C20.2 74.6 21.8 75.4 24 76.6C26.3 77.7 29.5 78.9 31.3 79.6C33.1 80.3 33.7 80.4 34.9 80.6C36 80.9 37.1 81.1 38.1 81.2C39.1 81.4 39.8 81.5 41 81.5C42.2 81.6 44.1 81.6 45.4 81.5C46.7 81.4 47.6 81.3 48.8 81C49.9 80.8 51.2 80.6 52.4 80.2C53.6 79.9 54.9 79.5 55.9 79C57 78.6 58 78.1 58.8 77.6C59.7 77.1 60.6 76.5 61.1 75.9C61.7 75.4 62 74.9 62.1 74.4C62.3 73.9 62.2 73.5 62.1 73.1C62.1 72.8 61.9 72.6 61.7 72.4C61.5 72.2 61.3 72 61 71.9C60.7 71.8 60.2 71.7 59.7 71.7C59.1 71.7 59.5 71.5 57.8 71.9C56.1 72.3 51.3 73.7 49.2 74.2C47.2 74.6 46.8 74.7 45.5 74.8C44.2 75 42.9 75.1 41.6 75.1C40.3 75.1 38.9 75 37.7 74.8C36.5 74.7 35.6 74.4 34.5 74.1C33.4 73.8 32.1 73.3 31 72.8C30 72.4 29.2 72 28.1 71.4C27.1 70.7 26 70.1 24.6 69.1C23.1 68 21.2 66.6 19.2 65C17.3 63.4 14.7 61.2 13 59.6C11.3 57.9 10.1 56.6 9 55.2C7.9 53.8 7.1 52.6 6.4 51.3C5.8 50 5.3 48.7 5 47.4C4.8 46 4.7 44.3 4.8 43C4.9 41.7 5.4 40.3 5.7 39.4C6 38.5 6.2 38.3 6.6 37.7C6.9 37.2 7.3 36.8 7.8 36.3C8.3 35.8 9 35.3 9.7 34.9C10.4 34.5 10.9 34.3 11.8 34C12.7 33.8 13.9 33.5 15 33.3C16.1 33.1 16.9 33 18.4 32.9C19.8 32.8 19 32.6 23.8 32.8C28.6 32.9 42.2 33.6 47.4 33.7C52.7 33.9 52.9 33.8 55.4 33.8C57.9 33.7 60 33.6 62.3 33.4C64.5 33.2 66.2 33.1 69 32.7C71.7 32.2 76.2 31.3 78.7 30.7C81.1 30.2 82.1 29.9 83.6 29.4C85.1 29 86.5 28.4 87.5 28C88.5 27.6 89 27.3 89.6 27C90.2 26.6 90.7 26.2 91.1 25.8C91.4 25.4 91.6 25 91.7 24.7C91.7 24.3 91.6 23.8 91.4 23.5ZM50.9 77.2C50.9 77.2 47.4 77.9 47.4 77.9C47.4 77.9 50.9 77.2 50.9 77.2Z","spark":[{"d":0.0,"c":[0.0,0.0],"p":"M-0.3 -4.2C-0.9 -4.2 -1.5 -3.9 -2 -3.7C-2.5 -3.5 -2.8 -3.3 -3.1 -2.8C-3.4 -2.4 -3.8 -1.8 -4 -1.3C-4.2 -0.7 -4.2 0.1 -4.2 0.6C-4.1 1.1 -4 1.5 -3.7 1.9C-3.5 2.4 -3 3 -2.6 3.3C-2.2 3.7 -1.9 3.8 -1.4 4C-0.9 4.1 -0.1 4.2 0.5 4.2C1.1 4.1 1.8 3.8 2.2 3.6C2.7 3.3 3 3.1 3.3 2.7C3.6 2.2 3.9 1.5 4.1 1C4.3 0.5 4.3 0.1 4.2 -0.4C4.1 -0.9 3.9 -1.7 3.6 -2.1C3.4 -2.6 3.1 -2.9 2.7 -3.2C2.4 -3.5 2 -3.7 1.5 -3.9C1 -4.1 0.3 -4.2 -0.3 -4.2Z"},{"d":9.7,"c":[7.4,6.3],"p":"M4.8 4.1C4.7 4.3 4.6 4.6 4.6 4.8C4.5 5.1 4.5 5.3 4.7 5.7C4.9 6 5.3 6.6 5.9 7.1C6.5 7.7 7.7 8.5 8.2 8.8C8.8 9.2 8.8 9 9.1 9C9.4 8.9 9.6 8.8 9.8 8.7C10 8.5 10.2 8.2 10.2 8C10.3 7.7 10.5 7.6 10.2 7.1C9.9 6.7 9.4 5.9 8.7 5.3C8.1 4.7 6.9 3.9 6.4 3.7C5.8 3.4 5.8 3.6 5.5 3.6C5.3 3.7 5 3.9 4.8 4.1Z"},{"d":9.8,"c":[5.8,-8.0],"p":"M8.7 -10.4C8.5 -10.6 8.3 -10.8 8 -10.8C7.8 -10.9 7.6 -11 7.2 -10.9C6.8 -10.7 6.3 -10.5 5.6 -9.9C4.9 -9.4 3.6 -8.1 3.1 -7.5C2.6 -6.9 2.7 -6.6 2.7 -6.3C2.6 -6 2.8 -5.7 2.9 -5.5C3.1 -5.3 3.3 -5.2 3.6 -5.1C3.8 -5 4 -4.9 4.4 -5C4.8 -5.2 5.3 -5.4 6 -6C6.7 -6.6 8 -7.8 8.5 -8.4C9 -9 8.9 -9.3 8.9 -9.6C9 -10 8.8 -10.2 8.7 -10.4Z"},{"d":9.9,"c":[9.8,-1.6],"p":"M13.4 -2.5C13.4 -2.8 13.2 -3 13 -3.1C12.7 -3.3 12.5 -3.5 11.7 -3.5C11 -3.5 9.3 -3.1 8.4 -2.9C7.6 -2.7 7.1 -2.5 6.7 -2.3C6.4 -2.1 6.3 -1.9 6.2 -1.6C6.1 -1.4 6.1 -1.1 6.1 -0.8C6.2 -0.6 6.2 -0.3 6.5 -0.1C6.8 0.1 6.9 0.3 7.7 0.3C8.4 0.3 10.1 0.1 11 -0.1C11.9 -0.4 12.6 -0.8 13.1 -1C13.5 -1.3 13.4 -1.5 13.5 -1.7C13.5 -2 13.5 -2.3 13.4 -2.5Z"},{"d":10.2,"c":[-8.2,-6.2],"p":"M-11.4 -8.1C-11.6 -7.9 -11.7 -7.6 -11.7 -7.4C-11.7 -7.1 -11.6 -6.8 -11.5 -6.6C-11.4 -6.4 -11.3 -6.2 -11 -5.9C-10.7 -5.7 -10.6 -5.6 -9.8 -5.2C-9 -4.9 -7.2 -4 -6.4 -3.7C-5.7 -3.5 -5.5 -3.8 -5.2 -4C-4.9 -4.1 -4.8 -4.4 -4.7 -4.6C-4.6 -4.8 -4.6 -5.1 -4.7 -5.4C-4.7 -5.7 -4.7 -5.8 -5.1 -6.1C-5.4 -6.5 -6.1 -7 -7 -7.4C-7.8 -7.8 -9.3 -8.4 -9.9 -8.6C-10.6 -8.8 -10.5 -8.7 -10.8 -8.6C-11 -8.5 -11.3 -8.3 -11.4 -8.1Z"},{"d":10.4,"c":[-7.4,7.3],"p":"M-5 4.4C-5.2 4.3 -5.4 4.1 -5.8 4.2C-6.1 4.2 -6.3 4.1 -7 4.6C-7.7 5.2 -9.3 6.9 -9.8 7.5C-10.4 8.1 -10.2 8 -10.3 8.3C-10.4 8.6 -10.5 8.8 -10.4 9.1C-10.4 9.4 -10.1 9.9 -9.9 10.2C-9.6 10.4 -9.4 10.4 -9.1 10.4C-8.8 10.4 -8.9 10.7 -8.3 10.2C-7.6 9.7 -6 8.2 -5.4 7.5C-4.7 6.7 -4.6 6.3 -4.4 5.9C-4.3 5.4 -4.4 5.3 -4.5 5C-4.6 4.8 -4.8 4.5 -5 4.4Z"},{"d":10.8,"c":[-10.7,0.9],"p":"M-6.8 0.2C-6.8 0 -6.9 -0.3 -7.2 -0.5C-7.5 -0.7 -7.6 -0.9 -8.4 -0.9C-9.2 -0.9 -11.3 -0.7 -12.2 -0.5C-13.2 -0.4 -13.6 -0.2 -14 0C-14.4 0.2 -14.4 0.3 -14.5 0.6C-14.7 0.8 -14.7 1.1 -14.7 1.4C-14.7 1.6 -14.6 1.9 -14.4 2.1C-14.2 2.3 -14.1 2.6 -13.3 2.7C-12.5 2.7 -10.5 2.5 -9.5 2.3C-8.5 2.2 -7.8 1.9 -7.3 1.7C-6.9 1.4 -6.9 1.2 -6.8 1C-6.7 0.8 -6.7 0.5 -6.8 0.2Z"},{"d":10.8,"c":[0.1,-10.8],"p":"M0.6 -14.6C0.3 -14.7 0 -14.6 -0.2 -14.5C-0.4 -14.4 -0.6 -14.4 -0.8 -14C-1 -13.5 -1.3 -12.7 -1.4 -11.8C-1.6 -10.8 -1.8 -9.2 -1.7 -8.4C-1.7 -7.7 -1.4 -7.5 -1.2 -7.3C-1 -7 -0.8 -6.9 -0.5 -6.9C-0.2 -6.9 0.1 -6.9 0.3 -7C0.5 -7.1 0.7 -7.1 0.9 -7.5C1.1 -8 1.4 -8.8 1.6 -9.8C1.7 -10.7 1.8 -12.4 1.8 -13.1C1.8 -13.9 1.5 -14 1.3 -14.3C1.1 -14.5 0.8 -14.6 0.6 -14.6Z"},{"d":16.5,"c":[12.6,10.7],"p":"M12.5 9.6C12.3 9.7 11.8 10 11.6 10.2C11.5 10.4 11.5 10.7 11.5 10.9C11.6 11.2 11.8 11.4 12 11.6C12.1 11.7 12.4 11.8 12.7 11.8C12.9 11.8 13.2 11.6 13.4 11.5C13.5 11.3 13.7 11.1 13.7 10.8C13.7 10.5 13.4 10 13.2 9.8C13.1 9.6 12.8 9.5 12.5 9.6Z"},{"d":17.0,"c":[10.9,-13.1],"p":"M10.5 -14.1C10.3 -14 10.1 -13.9 10 -13.6C9.8 -13.4 9.8 -12.8 9.9 -12.5C10 -12.3 10.3 -12.1 10.5 -12C10.7 -11.9 11 -11.9 11.2 -12C11.5 -12.1 11.7 -12.2 11.8 -12.5C11.9 -12.7 11.9 -13.3 11.9 -13.6C11.8 -13.8 11.5 -14 11.3 -14.1C11.1 -14.2 10.8 -14.2 10.5 -14.1Z"},{"d":17.5,"c":[-15.0,-9.1],"p":"M-15.3 -10.1C-15.5 -10.1 -15.8 -9.9 -15.9 -9.7C-16 -9.5 -16.1 -9.2 -16 -8.9C-16 -8.7 -15.6 -8.2 -15.4 -8.1C-15.2 -7.9 -14.9 -7.9 -14.6 -8C-14.4 -8.1 -14 -8.6 -13.9 -8.8C-13.8 -9.1 -13.9 -9.4 -14 -9.6C-14.1 -9.8 -14.3 -10 -14.5 -10.1C-14.7 -10.2 -15 -10.2 -15.3 -10.1Z"},{"d":17.6,"c":[17.2,-3.6],"p":"M17.1 -4.7C16.8 -4.7 16.3 -4.3 16.2 -4.1C16.1 -3.8 16.1 -3.5 16.2 -3.3C16.2 -3.1 16.4 -2.8 16.6 -2.7C16.8 -2.6 17.1 -2.5 17.4 -2.5C17.6 -2.6 17.9 -2.7 18 -2.9C18.2 -3.1 18.3 -3.4 18.3 -3.6C18.3 -3.8 18.3 -4.1 18.1 -4.3C17.9 -4.5 17.4 -4.8 17.1 -4.7Z"},{"d":17.9,"c":[-17.7,2.7],"p":"M-18 1.6C-18.2 1.6 -18.5 1.7 -18.6 2C-18.7 2.2 -18.8 2.8 -18.7 3.1C-18.6 3.4 -18.4 3.5 -18.2 3.6C-18 3.7 -17.7 3.8 -17.4 3.7C-17.2 3.6 -16.9 3.5 -16.8 3.3C-16.7 3 -16.6 2.5 -16.7 2.2C-16.8 1.9 -17 1.7 -17.2 1.6C-17.4 1.5 -17.8 1.5 -18 1.6Z"},{"d":18.0,"c":[-13.3,12.2],"p":"M-13.5 11.1C-13.8 11.1 -14 11.2 -14.1 11.5C-14.3 11.7 -14.3 12.3 -14.3 12.6C-14.2 12.8 -14 13 -13.8 13.1C-13.6 13.2 -13.3 13.3 -13 13.2C-12.8 13.2 -12.5 13 -12.4 12.9C-12.3 12.7 -12.2 12.4 -12.2 12.1C-12.2 11.9 -12.2 11.6 -12.4 11.4C-12.7 11.3 -13.2 11.1 -13.5 11.1Z"},{"d":18.2,"c":[0.9,-18.2],"p":"M0.6 -19.2C0.4 -19.2 0.1 -19 0 -18.8C-0.1 -18.6 -0.2 -18.3 -0.2 -18C-0.1 -17.8 0.3 -17.3 0.5 -17.2C0.7 -17 1 -17 1.3 -17.1C1.5 -17.2 1.9 -17.7 2 -17.9C2.1 -18.2 2 -18.5 1.9 -18.7C1.8 -18.9 1.6 -19.1 1.4 -19.2C1.2 -19.3 0.8 -19.3 0.6 -19.2Z"},{"d":22.2,"c":[16.9,14.3],"p":"M14.8 12.7C14.7 13 14.5 13.4 14.8 13.9C15 14.4 15.7 15.3 16.3 15.7C16.8 16.1 17.4 16.4 17.9 16.5C18.3 16.5 18.7 16.3 18.9 16.1C19.2 15.9 19.2 15.6 19.2 15.4C19.3 15.1 19.3 14.9 19.1 14.6C18.8 14.2 18.3 13.6 17.8 13.2C17.4 12.8 16.7 12.4 16.3 12.2C15.9 12.1 15.7 12.2 15.4 12.3C15.2 12.3 15 12.4 14.8 12.7Z"},{"d":22.6,"c":[14.6,-17.2],"p":"M16.7 -19.5C16.5 -19.7 16.2 -19.8 16 -19.9C15.7 -19.9 15.6 -20.1 15.1 -19.8C14.6 -19.4 13.5 -18.5 13 -17.9C12.5 -17.3 12.2 -16.7 12 -16.3C11.9 -15.9 12 -15.7 12.1 -15.5C12.2 -15.2 12.4 -15 12.6 -14.9C12.8 -14.7 13.1 -14.6 13.3 -14.6C13.6 -14.6 13.7 -14.5 14.2 -14.8C14.6 -15.1 15.5 -15.9 16 -16.4C16.4 -16.9 16.8 -17.6 17 -18C17.2 -18.4 17.1 -18.5 17.1 -18.8C17 -19.1 16.9 -19.3 16.7 -19.5Z"},{"d":23.7,"c":[23.1,-5.4],"p":"M26.4 -6.4C26.3 -6.6 26.1 -6.9 25.9 -7C25.7 -7.2 25.6 -7.3 25.2 -7.3C24.7 -7.4 24.2 -7.3 23.4 -7.1C22.6 -6.9 20.9 -6.3 20.3 -6C19.7 -5.7 19.9 -5.6 19.8 -5.3C19.7 -5.1 19.7 -4.8 19.7 -4.6C19.8 -4.3 19.9 -4 20.1 -3.9C20.3 -3.7 20.3 -3.5 20.8 -3.4C21.3 -3.4 22.3 -3.5 23 -3.7C23.7 -3.8 24.3 -4 24.8 -4.2C25.3 -4.4 25.7 -4.7 26 -4.9C26.2 -5.1 26.3 -5.3 26.4 -5.6C26.5 -5.8 26.5 -6.1 26.4 -6.4Z"},{"d":23.7,"c":[-16.7,16.8],"p":"M-15 14.8C-15.3 14.6 -15.8 14.4 -16.2 14.5C-16.7 14.7 -17.3 15.1 -17.8 15.6C-18.2 16 -18.6 16.7 -18.8 17.1C-19 17.5 -19 17.7 -18.9 18C-18.9 18.2 -18.7 18.5 -18.5 18.7C-18.4 18.9 -18.1 19 -17.8 19.1C-17.6 19.1 -17.4 19.2 -17 19C-16.6 18.8 -15.9 18.3 -15.5 17.9C-15.1 17.4 -14.7 16.7 -14.6 16.3C-14.4 15.9 -14.5 15.7 -14.6 15.4C-14.7 15.2 -14.8 14.9 -15 14.8Z"},{"d":23.8,"c":[-21.2,-10.8],"p":"M-24 -11.5C-24.1 -11.2 -24 -10.9 -23.9 -10.7C-23.8 -10.4 -23.9 -10.3 -23.4 -10C-23 -9.8 -21.9 -9.3 -21.3 -9.2C-20.6 -9 -19.9 -9 -19.4 -9C-19 -9.1 -18.9 -9.2 -18.7 -9.4C-18.5 -9.6 -18.4 -9.9 -18.3 -10.1C-18.3 -10.4 -18.3 -10.7 -18.4 -11C-18.5 -11.2 -18.5 -11.4 -18.9 -11.6C-19.4 -11.9 -20.4 -12.3 -21.1 -12.5C-21.8 -12.6 -22.5 -12.6 -22.9 -12.6C-23.3 -12.6 -23.5 -12.4 -23.6 -12.2C-23.8 -12 -24 -11.7 -24 -11.5Z"},{"d":24.2,"c":[-23.8,4.6],"p":"M-20.6 3.4C-20.7 3.1 -20.9 2.9 -21.1 2.8C-21.3 2.6 -21.5 2.5 -21.9 2.5C-22.3 2.5 -22.9 2.6 -23.7 2.9C-24.4 3.2 -26 3.9 -26.6 4.2C-27.1 4.6 -27 4.7 -27 4.9C-27.1 5.2 -27.1 5.5 -27.1 5.7C-27 6 -26.8 6.2 -26.6 6.4C-26.4 6.6 -26.4 6.8 -25.9 6.7C-25.4 6.7 -24.3 6.5 -23.7 6.3C-23 6.1 -22.4 5.9 -21.9 5.6C-21.5 5.4 -21.1 5.1 -20.8 4.9C-20.6 4.6 -20.5 4.4 -20.5 4.1C-20.5 3.9 -20.5 3.6 -20.6 3.4Z"},{"d":24.4,"c":[0.8,-24.4],"p":"M1.4 -27.7C1.1 -27.7 0.8 -27.7 0.6 -27.5C0.3 -27.4 0.1 -27.3 0 -27C-0.2 -26.7 -0.4 -26.3 -0.5 -25.7C-0.7 -25.2 -0.8 -24.5 -0.9 -23.9C-0.9 -23.2 -0.9 -22.5 -0.8 -22.1C-0.7 -21.7 -0.5 -21.6 -0.3 -21.4C0 -21.3 0.2 -21.2 0.5 -21.2C0.8 -21.2 1.1 -21.3 1.3 -21.4C1.5 -21.5 1.6 -21.5 1.8 -22C2.1 -22.6 2.4 -24 2.5 -24.7C2.6 -25.5 2.6 -26.2 2.5 -26.6C2.4 -27 2.3 -27.1 2.1 -27.3C1.9 -27.5 1.6 -27.6 1.4 -27.7Z"}],"axis":1.5,"bc":[3.2,52.8],"hub":[-1.4,29.2],"ext":134.8,"sparkR":17.6,"outs":[{"x":-30.8,"y":131.3,"a":2.017,"k":"limb","path":[[0,0],[-1.4,29.2],[-1.3,36.4],[-1.2,43.6],[-1.2,50.8],[-2.0,57.7],[-8.4,63.5],[-12.6,70.7],[-15.8,77.9],[-18.1,85.1],[-19.6,92.3],[-20.8,99.5],[-21.8,106.7],[-23.2,113.9],[-25.4,121.1],[-29.4,128.3],[-30.8,131.3]]},{"x":91.7,"y":23.7,"a":-0.301,"k":"limb","path":[[0,0],[-1.4,29.2],[4.8,27.8],[11.3,28.0],[17.8,28.5],[24.3,29.0],[30.8,29.4],[37.3,29.9],[43.8,30.4],[50.3,30.7],[56.8,30.7],[63.3,30.3],[69.8,29.6],[76.3,28.5],[82.8,26.9],[89.3,24.5],[91.7,23.7]]},{"x":62.4,"y":73.3,"a":-0.183,"k":"limb","path":[[0,0],[-1.4,29.2],[-1.3,35.5],[-1.2,41.8],[-1.2,48.1],[-1.1,54.4],[2.6,58.8],[8.9,62.0],[15.2,66.8],[21.5,71.3],[27.8,74.9],[34.1,77.2],[40.4,78.1],[46.7,76.2],[53.0,75.3],[59.3,74.0],[62.4,73.3]]},{"x":-70.2,"y":52.5,"a":2.388,"k":"limb","path":[[0,0],[-1.4,29.2],[-5.9,28.0],[-10.7,27.3],[-15.5,27.0],[-20.3,26.9],[-25.1,27.2],[-29.9,27.7],[-34.7,28.6],[-39.5,30.2],[-44.3,32.3],[-49.1,34.7],[-53.9,37.8],[-58.7,41.5],[-63.5,45.8],[-67.8,50.2],[-70.2,52.5]]}]},"c5":{"body":"M44.7 -102C44.5 -102.3 44.4 -102.4 44 -102.5C43.7 -102.6 43.1 -102.5 42.8 -102.4C42.5 -102.4 42.4 -102.2 42.1 -102C41.8 -101.7 42.9 -104 41.2 -100.9C39.5 -97.8 34.4 -88 31.9 -83.3C29.3 -78.6 27.9 -76 25.9 -72.7C23.9 -69.5 21.9 -66.2 20.1 -63.6C18.3 -61 16.8 -59.2 15.1 -57.2C13.4 -55.2 11.9 -53.4 9.8 -51.4C7.7 -49.4 4.5 -46.7 2.8 -45.4C1.1 -44 0.6 -43.9 -0.3 -43.3C-1.3 -42.8 -2.1 -42.4 -2.8 -42.1C-3.5 -41.7 -4 -41.6 -4.6 -41.5C-5.2 -41.4 -5.9 -41.4 -6.5 -41.4C-7 -41.5 -7.3 -41.6 -7.8 -41.9C-8.2 -42.2 -8.8 -42.6 -9.2 -43.1C-9.7 -43.6 -10.1 -44.2 -10.6 -45C-11.1 -45.8 -11.4 -46.3 -12 -47.9C-12.6 -49.6 -13.6 -52.4 -14.2 -55.1C-14.8 -57.7 -15.3 -61.3 -15.6 -64C-16 -66.6 -16 -68.4 -16.1 -70.8C-16.2 -73.1 -16.3 -74.9 -16.2 -78.2C-16.2 -81.5 -16.1 -84.7 -15.7 -90.4C-15.2 -96.2 -14.1 -108.3 -13.8 -112.7C-13.5 -117 -13.7 -115.6 -13.9 -116.6C-14 -117.6 -14.3 -118.3 -14.5 -118.8C-14.7 -119.3 -14.9 -119.2 -15.2 -119.4C-15.4 -119.5 -15.7 -119.6 -16 -119.6C-16.2 -119.6 -16.5 -119.5 -16.8 -119.4C-17 -119.3 -17.2 -119.3 -17.5 -118.9C-17.7 -118.6 -18.1 -118.2 -18.4 -117.3C-18.7 -116.5 -18.9 -115.7 -19.2 -113.7C-19.5 -111.8 -19.8 -109.7 -20.2 -105.6C-20.6 -101.5 -21.1 -93.6 -21.5 -89.1C-21.9 -84.7 -22 -83.2 -22.5 -79.1C-23 -75 -24.1 -67 -24.5 -64.5C-24.9 -62.1 -24.7 -64.2 -24.8 -64.2C-25 -64.2 -24.7 -63.7 -25.5 -64.8C-26.2 -66 -28.2 -69.2 -29.4 -71.1C-30.7 -73 -30.6 -73.2 -33.1 -76.1C-35.5 -79 -41.7 -85.6 -44.2 -88.5C-46.7 -91.4 -46.7 -91.5 -48 -93.4C-49.3 -95.3 -49.7 -96 -51.8 -99.9C-53.8 -103.8 -58.6 -113.4 -60.4 -116.8C-62.1 -120.2 -61.8 -119.3 -62.3 -120C-62.8 -120.7 -62.9 -120.8 -63.2 -121.1C-63.6 -121.3 -64.1 -121.6 -64.4 -121.7C-64.8 -121.8 -65 -121.8 -65.3 -121.7C-65.6 -121.6 -66.1 -121.4 -66.4 -121.1C-66.7 -120.8 -66.9 -120.4 -67.1 -119.9C-67.2 -119.5 -67.3 -119.6 -67.2 -118.5C-67 -117.4 -66.9 -115.8 -66.1 -113.5C-65.4 -111.1 -63.6 -106.6 -62.8 -104.4C-61.9 -102.2 -61.5 -101.5 -60.8 -100.2C-60.2 -98.8 -59.9 -98.2 -58.6 -96.1C-57.4 -94 -55.2 -90.3 -53.5 -87.7C-51.9 -85.1 -50.4 -82.9 -48.8 -80.6C-47.2 -78.4 -46.6 -77.5 -43.9 -74.2C-41.2 -70.8 -35 -63.4 -32.6 -60.4C-30.2 -57.3 -30.3 -57.2 -29.4 -55.7C-28.4 -54.2 -27.7 -53 -26.9 -51.2C-26.1 -49.5 -25.1 -47.2 -24.5 -45.2C-23.8 -43.3 -23.3 -41.3 -22.9 -39.4C-22.5 -37.5 -22.2 -35.4 -22.1 -33.7C-21.9 -32.1 -22.1 -30.5 -22.2 -29.4C-22.3 -28.3 -22.5 -27.7 -22.7 -27.1C-22.9 -26.4 -22.9 -26.2 -23.4 -25.4C-23.9 -24.5 -24.7 -23.2 -25.9 -21.9C-27 -20.6 -28.5 -19.2 -30.5 -17.6C-32.5 -16 -34.8 -14.2 -37.8 -12.2C-40.8 -10.2 -44.7 -7.8 -48.6 -5.6C-52.5 -3.4 -57.8 -0.6 -61.3 1.2C-64.8 2.9 -65.9 3.5 -69.7 5C-73.5 6.5 -81.3 9.2 -84 10.3C-86.6 11.5 -85.4 11.3 -85.7 11.8C-86 12.2 -85.9 12.7 -85.9 13C-85.9 13.3 -85.7 13.5 -85.6 13.8C-85.4 14 -85.2 14.1 -84.9 14.3C-84.5 14.4 -84.4 14.6 -83.5 14.5C-82.7 14.4 -82.1 14.5 -79.8 13.8C-77.6 13.2 -73.5 11.9 -70.1 10.7C-66.8 9.5 -63.4 8.3 -59.7 6.8C-56.1 5.3 -51.3 3.2 -48.3 1.9C-45.3 0.5 -45.4 0.7 -41.6 -1.3C-37.8 -3.3 -28.9 -8.4 -25.3 -10.2C-21.7 -12 -21.5 -11.9 -20.1 -12.3C-18.7 -12.7 -17.9 -12.7 -16.9 -12.8C-15.8 -12.8 -14.9 -12.6 -14 -12.4C-13.2 -12.2 -12.6 -12 -11.5 -11.3C-10.4 -10.7 -8.2 -8.9 -7.2 -8.4C-6.3 -7.8 -6.3 -8.2 -5.9 -8.2C-5.6 -8.3 -5.4 -8.4 -5.2 -8.6C-4.9 -8.7 -4.8 -8.9 -4.6 -9.2C-4.5 -9.6 -4.3 -9.4 -4.3 -10.6C-4.2 -11.7 -4.5 -14.9 -4.4 -16.4C-4.4 -17.9 -4.3 -18.3 -4.1 -19.3C-4 -20.2 -3.7 -21 -3.4 -22C-3 -22.9 -2.7 -23.7 -2 -24.9C-1.3 -26.1 -0.3 -27.7 0.8 -29.2C1.9 -30.8 1.8 -30.9 4.6 -34.1C7.4 -37.4 14.5 -45.4 17.5 -48.8C20.5 -52.2 21 -52.9 22.4 -54.8C23.9 -56.6 25 -58.1 26.1 -59.7C27.3 -61.4 27.7 -61.8 29.2 -64.5C30.7 -67.2 33.3 -71.9 35.3 -76C37.3 -80 39.8 -86 41.2 -89C42.5 -92 42.6 -92.5 43.2 -94.2C43.8 -95.8 44.5 -97.9 44.8 -99C45.1 -100.1 45.1 -100.3 45.1 -100.8C45.1 -101.3 44.9 -101.7 44.7 -102Z","spark":[{"d":0.0,"c":[0.0,0.0],"p":"M-0.2 -4.3C-0.7 -4.3 -1.1 -4.3 -1.6 -4C-2.1 -3.8 -2.7 -3.4 -3.1 -2.9C-3.4 -2.4 -3.8 -1.8 -3.9 -1.3C-4.1 -0.8 -4.1 -0.3 -4.1 0.1C-4.1 0.6 -4.1 1 -3.9 1.5C-3.7 2 -3.4 2.7 -2.9 3.1C-2.5 3.5 -1.9 3.9 -1.4 4.1C-0.9 4.3 -0.5 4.4 0 4.4C0.4 4.4 0.8 4.3 1.3 4.1C1.8 3.9 2.5 3.5 2.9 3.1C3.3 2.6 3.6 2.1 3.8 1.5C4.1 0.9 4.2 0.3 4.1 -0.3C4.1 -0.9 3.9 -1.6 3.6 -2.1C3.4 -2.6 3.2 -2.9 2.8 -3.3C2.4 -3.6 1.7 -4 1.2 -4.2C0.7 -4.4 0.2 -4.4 -0.2 -4.3Z"},{"d":11.3,"c":[11.3,1.0],"p":"M6.1 1C6.1 1.2 6.1 1.5 6.3 1.7C6.6 1.9 6.3 2.2 7.4 2.4C8.6 2.5 12 2.7 13.4 2.7C14.7 2.8 15.2 2.6 15.7 2.4C16.2 2.3 16.2 2.1 16.3 1.9C16.4 1.7 16.5 1.4 16.5 1.1C16.5 0.8 16.4 0.6 16.2 0.4C15.9 0.1 16.3 -0.1 15.1 -0.3C13.8 -0.5 10 -0.7 8.7 -0.7C7.3 -0.7 7.2 -0.5 6.8 -0.4C6.4 -0.2 6.4 0 6.2 0.2C6.1 0.4 6 0.7 6.1 1Z"},{"d":11.5,"c":[5.3,10.2],"p":"M3 6.1C2.8 6.2 2.6 6.4 2.5 6.7C2.4 7 2 6.9 2.4 8C2.8 9 4.3 11.9 4.9 13C5.5 14 5.7 14.1 6 14.3C6.4 14.6 6.6 14.6 6.8 14.6C7.1 14.6 7.4 14.5 7.6 14.4C7.8 14.2 8 14.1 8.1 13.7C8.2 13.4 8.5 13.5 8.1 12.5C7.7 11.5 6.3 8.6 5.7 7.5C5.1 6.4 4.8 6.4 4.5 6.1C4.2 5.9 4 5.9 3.7 5.9C3.5 5.9 3.2 6 3 6.1Z"},{"d":12.1,"c":[7.8,-9.2],"p":"M11.3 -13.1C11.1 -13.3 10.9 -13.4 10.5 -13.4C10.2 -13.4 10.3 -13.8 9.3 -13C8.4 -12.2 5.8 -9.4 4.9 -8.4C4 -7.4 4.1 -7.2 3.9 -6.8C3.8 -6.4 3.9 -6.2 3.9 -6C4 -5.7 4.2 -5.5 4.4 -5.4C4.6 -5.2 4.8 -5.1 5.2 -5.1C5.5 -5.1 5.4 -4.6 6.4 -5.5C7.3 -6.3 9.9 -9 10.8 -10.1C11.7 -11.1 11.6 -11.2 11.8 -11.6C11.9 -12 11.8 -12.2 11.7 -12.5C11.7 -12.7 11.5 -13 11.3 -13.1Z"},{"d":12.1,"c":[-5.8,10.7],"p":"M-3.5 6.7C-3.7 6.6 -3.9 6.5 -4.2 6.6C-4.5 6.6 -4.8 6.4 -5.3 7.1C-5.9 7.8 -7.1 9.7 -7.7 10.7C-8.2 11.7 -8.6 12.6 -8.8 13.2C-8.9 13.7 -8.7 13.8 -8.6 14C-8.5 14.2 -8.3 14.4 -8.1 14.6C-7.9 14.7 -7.6 14.8 -7.3 14.7C-7 14.7 -6.8 15 -6.2 14.2C-5.6 13.5 -4.2 11.3 -3.6 10.3C-3 9.2 -2.9 8.6 -2.8 8.1C-2.6 7.6 -2.8 7.5 -2.9 7.3C-3 7.1 -3.2 6.9 -3.5 6.7Z"},{"d":12.7,"c":[-12.5,1.9],"p":"M-7.6 0.6C-7.7 0.3 -7.8 0.1 -8 -0.1C-8.3 -0.3 -8.1 -0.7 -9.2 -0.5C-10.2 -0.4 -13.4 0.5 -14.6 0.8C-15.8 1.1 -15.9 1.2 -16.3 1.4C-16.7 1.6 -16.8 1.7 -17 1.9C-17.2 2.1 -17.4 2.3 -17.4 2.6C-17.5 2.8 -17.5 3.1 -17.4 3.4C-17.3 3.6 -17.2 3.8 -16.9 4C-16.6 4.1 -16.8 4.5 -15.7 4.3C-14.6 4.1 -11.5 3.3 -10.3 2.9C-9 2.6 -8.6 2.3 -8.2 2.1C-7.7 1.8 -7.8 1.6 -7.7 1.4C-7.6 1.1 -7.6 0.8 -7.6 0.6Z"},{"d":20.5,"c":[10.3,17.7],"p":"M10 16.5C9.8 16.5 9.5 16.6 9.4 16.9C9.2 17.2 9.1 17.7 9.1 18C9.1 18.3 9.2 18.5 9.5 18.7C9.7 18.8 10.3 19 10.5 18.9C10.8 18.9 11 18.8 11.2 18.5C11.3 18.3 11.5 17.7 11.5 17.4C11.4 17.1 11 16.7 10.8 16.5C10.5 16.4 10.3 16.4 10 16.5Z"},{"d":21.0,"c":[21.0,1.2],"p":"M20.7 0.1C20.4 0.2 20.1 0.6 19.9 0.8C19.8 1.1 19.9 1.4 20 1.6C20.1 1.8 20.3 2 20.5 2.1C20.7 2.2 21 2.3 21.2 2.2C21.5 2.2 21.7 2 21.9 1.8C22 1.6 22.1 1.4 22.1 1.1C22.1 0.9 22 0.6 21.8 0.4C21.6 0.3 21.1 0 20.7 0.1Z"},{"d":22.4,"c":[-11.8,19.1],"p":"M-12 18C-12.2 18 -12.5 18.2 -12.7 18.4C-12.8 18.5 -12.9 18.8 -12.9 19.1C-12.9 19.3 -12.9 19.6 -12.7 19.8C-12.5 20 -11.9 20.2 -11.6 20.2C-11.4 20.2 -11.1 20.1 -11 19.8C-10.8 19.6 -10.7 19 -10.8 18.7C-10.8 18.4 -11 18.3 -11.2 18.1C-11.5 18 -11.8 18 -12 18Z"},{"d":23.0,"c":[-22.7,4.1],"p":"M-22.8 3C-23.1 3 -23.3 3.1 -23.5 3.3C-23.6 3.6 -23.7 4.1 -23.7 4.4C-23.7 4.7 -23.4 4.9 -23.2 5C-23 5.1 -22.7 5.2 -22.5 5.2C-22.3 5.1 -22 5 -21.8 4.8C-21.7 4.6 -21.6 4.4 -21.6 4.1C-21.6 3.9 -21.6 3.6 -21.8 3.4C-22 3.2 -22.5 3 -22.8 3Z"},{"d":23.3,"c":[15.0,-17.8],"p":"M14.8 -18.9C14.6 -18.9 14.3 -18.8 14.2 -18.5C14.1 -18.3 14 -17.7 14 -17.4C14.1 -17.1 14.3 -17 14.5 -16.9C14.7 -16.7 15 -16.7 15.3 -16.7C15.5 -16.8 15.8 -16.9 15.9 -17.1C16 -17.4 16.1 -18 16.1 -18.2C16 -18.5 15.8 -18.7 15.6 -18.8C15.4 -18.9 15.1 -19 14.8 -18.9Z"},{"d":26.0,"c":[13.5,22.2],"p":"M12.1 19.6C11.9 19.7 11.7 20 11.6 20.2C11.5 20.4 11.4 20.5 11.5 21C11.7 21.5 12 22.5 12.4 23.1C12.7 23.7 13.1 24.2 13.4 24.5C13.7 24.8 13.9 24.8 14.2 24.8C14.4 24.9 14.7 24.8 14.9 24.7C15.1 24.6 15.3 24.4 15.4 24.1C15.5 23.9 15.6 23.7 15.5 23.3C15.5 22.9 15.2 22.2 14.9 21.6C14.6 21 13.9 20.1 13.6 19.8C13.2 19.4 13.1 19.5 12.8 19.5C12.6 19.4 12.3 19.5 12.1 19.6Z"},{"d":27.1,"c":[27.1,0.9],"p":"M30.5 0.7C30.5 0.4 30.4 0.1 30.2 -0.1C30.1 -0.3 30 -0.5 29.5 -0.6C29.1 -0.7 28.5 -0.8 27.7 -0.7C26.8 -0.6 25.1 -0.2 24.4 0C23.8 0.2 24 0.3 23.8 0.5C23.7 0.8 23.7 1 23.7 1.3C23.7 1.5 23.9 1.8 24.1 1.9C24.3 2.1 24.2 2.3 24.8 2.3C25.4 2.4 27 2.4 27.8 2.3C28.6 2.3 29.2 2.1 29.6 2C30 1.8 30.1 1.6 30.3 1.4C30.4 1.2 30.5 0.9 30.5 0.7Z"},{"d":29.2,"c":[-16.6,24.0],"p":"M-14 21.6C-14.2 21.4 -14.5 21.3 -14.7 21.2C-15 21.2 -15 21 -15.5 21.4C-16 21.7 -17.2 22.5 -17.8 23.1C-18.4 23.7 -19.1 24.6 -19.3 25C-19.6 25.4 -19.5 25.6 -19.5 25.8C-19.4 26.1 -19.3 26.3 -19.1 26.5C-18.9 26.7 -18.7 26.8 -18.4 26.8C-18.2 26.8 -18.2 27 -17.6 26.7C-17 26.3 -15.6 25.2 -14.9 24.6C-14.3 24 -14 23.5 -13.8 23.1C-13.6 22.7 -13.6 22.5 -13.7 22.3C-13.7 22 -13.8 21.8 -14 21.6Z"},{"d":29.6,"c":[-29.0,5.8],"p":"M-26.1 5.4C-26.2 5.1 -26.4 4.6 -26.8 4.4C-27.1 4.2 -27.8 4.1 -28.5 4.2C-29.2 4.3 -30.6 4.7 -31.2 4.9C-31.7 5.1 -31.6 5.2 -31.8 5.5C-31.9 5.7 -32 6 -32 6.2C-31.9 6.4 -31.8 6.7 -31.6 6.9C-31.5 7.1 -31.4 7.2 -30.9 7.3C-30.5 7.3 -29.8 7.4 -29.1 7.3C-28.4 7.2 -27.3 6.9 -26.9 6.7C-26.4 6.5 -26.4 6.4 -26.3 6.2C-26.2 5.9 -26 5.7 -26.1 5.4Z"},{"d":29.9,"c":[18.9,-23.2],"p":"M20.7 -25.5C20.5 -25.7 20.2 -25.8 19.9 -25.8C19.7 -25.8 19.5 -25.8 19.1 -25.6C18.8 -25.3 18.2 -24.8 17.8 -24.3C17.4 -23.7 16.9 -22.7 16.7 -22.2C16.5 -21.7 16.7 -21.6 16.8 -21.4C16.9 -21.2 17 -20.9 17.3 -20.8C17.5 -20.7 17.7 -20.6 18 -20.7C18.3 -20.7 18.4 -20.6 18.8 -21C19.2 -21.3 20 -22.2 20.3 -22.8C20.7 -23.3 21 -24 21.1 -24.4C21.1 -24.9 20.8 -25.3 20.7 -25.5Z"}],"axis":-1.9,"bc":[-20.2,-52.5],"hub":[-11.1,-31.2],"ext":138.3,"sparkR":22.4,"outs":[{"x":-65.9,"y":-121.7,"a":-1.961,"k":"limb","path":[[0,0],[-11.7,-32.4],[-15.9,-37.5],[-17.7,-44.0],[-19.5,-50.5],[-21.3,-57.0],[-27.3,-60.4],[-31.9,-66.7],[-37.0,-73.2],[-42.5,-79.7],[-47.8,-86.2],[-52.2,-92.7],[-55.9,-99.2],[-59.3,-105.7],[-62.2,-112.2],[-64.9,-118.7],[-65.9,-121.7]]},{"x":-15.8,"y":-119.8,"a":-1.47,"k":"limb","path":[[0,0],[-11.7,-32.4],[-15.8,-37.1],[-17.5,-43.2],[-19.2,-49.3],[-20.8,-55.4],[-20.1,-61.5],[-19.9,-67.6],[-19.6,-73.7],[-19.3,-79.8],[-18.9,-85.9],[-18.5,-92.0],[-18.0,-98.1],[-17.4,-104.2],[-16.8,-110.3],[-16.1,-116.4],[-15.8,-119.8]]},{"x":-86.0,"y":13.4,"a":2.817,"k":"limb","path":[[0,0],[-11.7,-32.4],[-13.2,-27.0],[-13.8,-21.2],[-19.6,-18.0],[-25.4,-15.3],[-31.2,-11.7],[-37.0,-8.0],[-42.8,-4.7],[-48.6,-1.7],[-54.4,1.2],[-60.2,3.9],[-66.0,6.4],[-71.8,8.6],[-77.6,10.6],[-83.4,12.6],[-86.0,13.4]]},{"x":44.4,"y":-102.6,"a":-1.145,"k":"limb","path":[[0,0],[-11.7,-32.4],[-6.3,-34.9],[-0.9,-37.0],[4.5,-41.1],[9.7,-45.9],[14.8,-51.3],[19.3,-56.7],[23.4,-62.1],[26.9,-67.5],[29.9,-72.9],[32.8,-78.3],[35.5,-83.7],[38.2,-89.1],[40.7,-94.5],[43.1,-99.9],[44.4,-102.6]]}]},"c6":{"body":"M-67.7 -109.7C-68 -109.6 -68.5 -109.5 -68.8 -109.1C-69.1 -108.8 -69.4 -108.2 -69.5 -107.5C-69.6 -106.7 -69.6 -105.8 -69.4 -104.6C-69.3 -103.5 -69.2 -102.6 -68.6 -100.5C-68.1 -98.4 -67.8 -96.7 -66 -92C-64.3 -87.3 -59.6 -76 -58.1 -72.3C-56.6 -68.6 -57.4 -70.3 -57.3 -69.7C-57.1 -69.1 -57.1 -68.8 -57.2 -68.7C-57.4 -68.5 -57.6 -68.4 -58 -68.5C-58.4 -68.6 -56.7 -67.5 -59.6 -69.3C-62.6 -71 -72 -76.9 -75.6 -79C-79.3 -81.1 -80 -81.3 -81.4 -81.9C-82.8 -82.5 -83.4 -82.5 -84.1 -82.6C-84.9 -82.8 -85.4 -82.8 -85.9 -82.7C-86.5 -82.5 -87.1 -82.1 -87.5 -81.8C-87.8 -81.5 -87.8 -81.3 -87.9 -81C-88 -80.8 -88 -80.5 -88 -80.2C-87.9 -79.8 -87.8 -79.3 -87.6 -78.9C-87.3 -78.5 -87.3 -78.3 -86.7 -77.7C-86.1 -77.1 -85.1 -76.1 -83.8 -75.2C-82.6 -74.2 -82.8 -74.3 -79.1 -72C-75.5 -69.8 -65.5 -64.2 -61.8 -61.9C-58.1 -59.6 -58.5 -59.6 -56.8 -58.3C-55.2 -56.9 -53.6 -55.6 -52.1 -54C-50.5 -52.5 -48.9 -50.8 -47.4 -49C-45.9 -47.2 -44.6 -45.3 -43.2 -43.2C-41.8 -41.1 -40.2 -38.5 -39.2 -36.4C-38.1 -34.3 -37.5 -32.8 -36.8 -30.9C-36.2 -29 -35.7 -27.2 -35.4 -25C-35 -22.7 -34.7 -20.1 -34.7 -17.3C-34.6 -14.4 -34.7 -11 -35 -7.9C-35.2 -4.8 -35.5 -1.6 -36 1.2C-36.4 4 -37.1 6.7 -37.7 9C-38.4 11.3 -39.1 13.2 -39.9 15.1C-40.6 16.9 -41 17.6 -42.4 20C-43.8 22.4 -47.2 27.5 -48.5 29.5C-49.7 31.6 -49.6 31.7 -49.9 32.4C-50.2 33.1 -50.1 33.4 -50.1 33.7C-50 34.1 -49.9 34.3 -49.7 34.5C-49.6 34.7 -49.4 34.9 -49.1 35.1C-48.9 35.2 -48.6 35.3 -48.3 35.2C-48 35.2 -47.5 35 -47.1 34.7C-46.6 34.4 -46.3 34.2 -45.7 33.4C-45.1 32.7 -44.1 31.5 -43.4 30.4C-42.7 29.3 -42.2 28.5 -41.2 26.8C-40.2 25 -39.4 23.7 -37.5 19.8C-35.7 15.9 -31.4 6.3 -30 3.5C-28.7 0.7 -30 3.1 -29.6 3.1C-29.2 3.1 -28.4 3.4 -27.7 3.4C-27 3.4 -26 3.2 -25.4 3.1C-24.8 3 -24.4 2.8 -24.1 2.7C-23.8 2.5 -23.6 2.4 -23.5 2.1C-23.3 1.8 -23.2 1.3 -23.3 1C-23.4 0.7 -23.8 0.3 -24.2 0.2C-24.6 0.1 -24.9 0.1 -25.5 0.1C-26.2 0.2 -27.6 0.6 -28.1 0.5C-28.5 0.5 -29 1.4 -28.4 0C-27.8 -1.4 -25.5 -6.1 -24.6 -7.8C-23.7 -9.6 -23.4 -9.8 -22.8 -10.6C-22.3 -11.3 -21.8 -11.9 -21.3 -12.4C-20.7 -12.9 -20.3 -13.3 -19.7 -13.6C-19.2 -13.9 -18.6 -14.1 -18 -14.2C-17.4 -14.4 -16.8 -14.4 -16.1 -14.4C-15.4 -14.4 -14.6 -14.2 -13.8 -14C-13.1 -13.8 -12.3 -13.6 -11.6 -13.2C-11 -12.9 -10.2 -12.4 -9.7 -11.9C-9.1 -11.5 -8.9 -11.2 -8.4 -10.5C-7.8 -9.8 -7 -8.4 -6.6 -7.8C-6.1 -7.1 -6 -7 -5.6 -6.8C-5.3 -6.7 -4.8 -6.6 -4.5 -6.7C-4.1 -6.8 -3.8 -7.3 -3.6 -7.5C-3.5 -7.8 -3.4 -8 -3.5 -8.4C-3.5 -8.7 -2.9 -8 -3.8 -9.6C-4.6 -11.3 -7.5 -15.9 -8.6 -18.2C-9.7 -20.4 -10 -21.6 -10.3 -22.9C-10.7 -24.3 -10.8 -25.1 -10.9 -26.2C-11 -27.2 -11.1 -28.1 -11.1 -29.1C-11 -30.1 -11 -31 -10.9 -32.1C-10.8 -33.1 -10.7 -34 -10.3 -35.3C-10 -36.7 -9.5 -38.3 -8.7 -40.2C-8 -42 -7.4 -43.4 -5.9 -46.5C-4.4 -49.6 -3 -52.5 0.4 -58.9C3.8 -65.3 12 -80.3 14.5 -85C17.1 -89.8 15.5 -86.8 15.7 -87.6C15.9 -88.3 16 -88.8 15.9 -89.3C15.9 -89.8 15.6 -90.2 15.3 -90.4C15 -90.6 14.5 -90.7 14.1 -90.7C13.7 -90.7 13.4 -90.6 12.9 -90.2C12.5 -89.8 12.2 -89.6 11.4 -88.4C10.5 -87.3 10.7 -87.8 7.9 -83.4C5.1 -78.9 -2.7 -66.3 -5.5 -61.9C-8.3 -57.5 -7.7 -58.6 -9.1 -56.9C-10.4 -55.2 -12.2 -53.1 -13.6 -51.7C-15 -50.4 -16.1 -49.5 -17.3 -48.6C-18.5 -47.7 -19.8 -47.1 -20.9 -46.6C-22.1 -46.1 -22.9 -45.8 -24.1 -45.7C-25.3 -45.6 -26.7 -45.7 -27.9 -46C-29.2 -46.2 -30.1 -46.6 -31.4 -47.4C-32.6 -48.1 -34 -49.1 -35.6 -50.5C-37.1 -51.9 -39.2 -54.2 -40.6 -55.9C-42.1 -57.6 -43 -59 -44.2 -60.9C-45.5 -62.8 -46 -62.7 -48.1 -67.2C-50.3 -71.7 -54.5 -81.4 -57.2 -88C-59.9 -94.5 -62.9 -103 -64.3 -106.5C-65.8 -110 -65.3 -108.4 -65.8 -108.9C-66.2 -109.4 -66.6 -109.5 -66.9 -109.6C-67.2 -109.8 -67.4 -109.8 -67.7 -109.7Z","spark":[{"d":0.0,"c":[0.0,0.0],"p":"M-1.1 -4.3C-1.6 -4.1 -2.3 -3.8 -2.7 -3.4C-3.2 -3.1 -3.6 -2.5 -3.9 -2C-4.2 -1.5 -4.3 -1.2 -4.3 -0.7C-4.4 -0.1 -4.4 0.6 -4.2 1.2C-4.1 1.8 -3.7 2.4 -3.4 2.8C-3 3.3 -2.4 3.7 -1.9 3.9C-1.5 4.2 -1.1 4.3 -0.6 4.3C0 4.4 0.7 4.4 1.3 4.2C1.9 4 2.4 3.7 2.9 3.3C3.4 2.9 3.8 2.3 4 1.8C4.2 1.3 4.3 1 4.3 0.5C4.4 -0.1 4.3 -0.9 4.1 -1.4C4 -1.9 3.8 -2.2 3.5 -2.6C3.2 -3 2.6 -3.6 2.1 -3.8C1.6 -4.1 0.8 -4.3 0.3 -4.4C-0.2 -4.4 -0.6 -4.4 -1.1 -4.3Z"},{"d":10.2,"c":[-3.9,9.4],"p":"M-1.7 5.3C-2 5.1 -2.2 5.1 -2.5 5.2C-2.8 5.3 -3.1 5.3 -3.6 5.9C-4 6.5 -4.7 7.6 -5.2 8.7C-5.8 9.7 -6.5 11.3 -6.7 12C-6.9 12.8 -6.7 12.9 -6.6 13.2C-6.5 13.5 -6.3 13.6 -6.1 13.7C-5.8 13.8 -5.6 13.9 -5.3 13.8C-5 13.7 -5 14.1 -4.3 13.1C-3.6 12.1 -1.8 9 -1.2 7.8C-0.7 6.7 -0.9 6.6 -1 6.2C-1 5.8 -1.5 5.5 -1.7 5.3Z"},{"d":10.6,"c":[10.4,-2.3],"p":"M14.7 -2.8C14.6 -3.1 14.5 -3.3 14.3 -3.5C14 -3.7 14 -4 13.1 -4C12.2 -4 9.9 -3.8 8.8 -3.7C7.8 -3.5 7.1 -3.3 6.6 -3.2C6.1 -3 6.2 -2.8 6 -2.6C5.9 -2.4 5.9 -2.1 5.9 -1.8C6 -1.6 6.1 -1.4 6.3 -1.2C6.6 -1 6.4 -0.8 7.5 -0.7C8.6 -0.7 11.8 -0.9 12.9 -1C13.9 -1.1 13.5 -1.1 13.8 -1.2C14 -1.3 14.3 -1.4 14.4 -1.7C14.6 -1.9 14.7 -2.5 14.7 -2.8Z"},{"d":10.8,"c":[2.5,-10.5],"p":"M3.5 -14.5C3.2 -14.6 3 -14.6 2.7 -14.5C2.4 -14.3 2.1 -14.3 1.8 -13.6C1.5 -13 1.1 -11.3 0.9 -10.5C0.7 -9.7 0.6 -9.1 0.6 -8.6C0.5 -8.1 0.6 -7.6 0.7 -7.2C0.7 -6.9 0.9 -6.7 1.1 -6.5C1.3 -6.4 1.6 -6.3 1.8 -6.2C2 -6.2 2.3 -6.3 2.5 -6.5C2.7 -6.6 2.7 -6.1 3.1 -7.1C3.4 -8.1 4.3 -11.4 4.5 -12.5C4.7 -13.6 4.5 -13.4 4.4 -13.8C4.2 -14.1 3.7 -14.4 3.5 -14.5Z"},{"d":11.1,"c":[8.0,7.8],"p":"M4.2 4.5C4 4.7 3.9 4.9 3.9 5.3C4 5.6 3.6 5.4 4.4 6.4C5.3 7.3 8 10.1 9 11C10 11.8 9.8 11.5 10.2 11.6C10.6 11.6 11.1 11.4 11.3 11.2C11.6 11.1 11.7 10.9 11.7 10.5C11.7 10.2 11.9 9.9 11.5 9.3C11 8.6 10.1 7.5 9.2 6.7C8.3 5.9 6.8 4.7 6.1 4.3C5.4 3.9 5.2 4.1 4.8 4.1C4.5 4.2 4.3 4.3 4.2 4.5Z"},{"d":11.3,"c":[-11.3,0.2],"p":"M-7.4 -0.2C-7.5 -0.4 -7.5 -0.7 -7.8 -0.9C-8 -1.1 -8.1 -1.3 -8.9 -1.4C-9.7 -1.4 -11.8 -1.3 -12.7 -1.2C-13.6 -1 -14.1 -0.9 -14.5 -0.7C-14.9 -0.6 -14.9 -0.4 -15.1 -0.2C-15.2 0 -15.3 0.3 -15.2 0.5C-15.2 0.8 -15.2 1 -14.9 1.2C-14.7 1.4 -14.6 1.7 -13.8 1.7C-12.9 1.8 -10.8 1.8 -9.9 1.7C-8.9 1.6 -8.5 1.4 -8.1 1.2C-7.7 1 -7.7 0.8 -7.6 0.6C-7.4 0.4 -7.4 0.1 -7.4 -0.2Z"},{"d":18.5,"c":[18.2,-2.9],"p":"M18.2 -4C17.9 -4.1 17.6 -4 17.5 -3.7C17.3 -3.5 17.1 -3 17.1 -2.7C17.2 -2.4 17.4 -2.2 17.5 -2.1C17.7 -1.9 18 -1.8 18.3 -1.8C18.5 -1.8 18.8 -2 19 -2.1C19.1 -2.3 19.3 -2.6 19.3 -2.8C19.3 -3 19.3 -3.3 19.1 -3.5C19 -3.7 18.4 -4 18.2 -4Z"},{"d":18.7,"c":[-7.4,17.1],"p":"M-7.6 16.1C-7.8 16.1 -8.1 16.2 -8.2 16.5C-8.3 16.7 -8.4 17.3 -8.4 17.5C-8.3 17.8 -8.1 18 -7.9 18.1C-7.7 18.2 -7.4 18.3 -7.1 18.2C-6.9 18.2 -6.6 18.1 -6.5 17.8C-6.4 17.6 -6.3 17 -6.3 16.7C-6.4 16.5 -6.6 16.3 -6.8 16.2C-7 16.1 -7.3 16 -7.6 16.1Z"},{"d":19.4,"c":[13.5,13.9],"p":"M13.3 12.9C13.1 12.9 12.8 13 12.7 13.2C12.5 13.5 12.5 14.1 12.5 14.3C12.6 14.6 12.8 14.8 13 14.9C13.2 15 13.5 15.1 13.8 15C14 15 14.3 14.8 14.4 14.6C14.5 14.4 14.7 14.2 14.6 13.9C14.6 13.6 14.3 13.2 14.1 13C13.8 12.8 13.5 12.8 13.3 12.9Z"},{"d":19.5,"c":[-19.4,1.3],"p":"M-20.1 0.3C-20.3 0.4 -20.6 0.6 -20.6 0.9C-20.6 1.2 -20.6 1.8 -20.4 2C-20.2 2.3 -19.6 2.5 -19.3 2.5C-19 2.6 -18.8 2.4 -18.6 2.2C-18.4 2.1 -18.3 1.8 -18.2 1.5C-18.2 1.3 -18.2 1 -18.4 0.8C-18.6 0.5 -19.1 0.2 -19.4 0.1C-19.7 0 -19.9 0.2 -20.1 0.3Z"},{"d":19.6,"c":[4.2,-19.2],"p":"M3.9 -20.3C3.7 -20.2 3.4 -20 3.3 -19.9C3.1 -19.7 3 -19.4 3.1 -19.1C3.1 -18.9 3.4 -18.4 3.7 -18.2C3.9 -18 4.2 -18.1 4.4 -18.1C4.6 -18.2 4.9 -18.3 5.1 -18.5C5.2 -18.8 5.3 -19.3 5.2 -19.6C5.1 -19.9 4.9 -20.1 4.7 -20.2C4.5 -20.3 4.2 -20.3 3.9 -20.3Z"},{"d":26.0,"c":[25.7,-3.7],"p":"M29.7 -4.1C29.7 -4.3 29.6 -4.6 29.4 -4.8C29.3 -5 29.2 -5.2 28.7 -5.2C28.2 -5.3 27.4 -5.4 26.4 -5.3C25.4 -5.2 23.4 -4.9 22.7 -4.7C21.9 -4.4 21.9 -4.1 21.7 -3.9C21.6 -3.6 21.6 -3.4 21.7 -3.1C21.7 -2.9 21.9 -2.6 22.1 -2.5C22.3 -2.3 22 -2.2 22.9 -2.1C23.7 -2.1 26.2 -2.2 27.2 -2.3C28.2 -2.4 28.6 -2.6 29 -2.8C29.4 -2.9 29.4 -3.1 29.6 -3.3C29.7 -3.6 29.8 -3.8 29.7 -4.1Z"},{"d":26.0,"c":[18.0,18.8],"p":"M15.7 16.1C15.5 16.2 15.3 16.5 15.3 16.7C15.2 17 15.1 17.1 15.3 17.5C15.5 17.9 15.7 18.4 16.3 19.1C16.8 19.7 18.1 21 18.6 21.4C19.2 21.9 19.2 21.7 19.4 21.7C19.7 21.7 20 21.7 20.2 21.5C20.4 21.3 20.7 20.9 20.7 20.4C20.7 20 20.6 19.5 20 18.8C19.5 18.1 17.9 16.6 17.3 16.1C16.7 15.6 16.7 15.9 16.4 15.9C16.2 15.9 15.9 16 15.7 16.1Z"},{"d":26.6,"c":[-10.5,24.5],"p":"M-9.1 22C-9.3 21.9 -9.6 21.8 -9.8 21.8C-10.1 21.9 -10.3 21.8 -10.6 22.1C-10.9 22.4 -11.3 22.9 -11.6 23.5C-11.9 24.1 -12.3 25.2 -12.4 25.7C-12.5 26.1 -12.4 26.2 -12.3 26.4C-12.1 26.7 -12 26.9 -11.7 27C-11.4 27 -11 27.2 -10.6 26.9C-10.1 26.6 -9.5 25.7 -9.2 25.1C-8.8 24.6 -8.6 23.9 -8.5 23.4C-8.4 23 -8.5 22.9 -8.6 22.6C-8.7 22.4 -8.9 22.2 -9.1 22Z"},{"d":27.4,"c":[5.8,-26.8],"p":"M6.2 -30.4C6 -30.5 5.7 -30.3 5.5 -30.2C5.3 -30 5.2 -30.3 4.9 -29.6C4.7 -28.8 4.2 -26.8 4.1 -25.8C4 -24.9 4 -24.4 4.1 -24C4.2 -23.6 4.4 -23.5 4.6 -23.3C4.8 -23.2 5 -23.1 5.3 -23.1C5.5 -23.1 5.8 -23.2 6 -23.3C6.2 -23.5 6.3 -23.2 6.5 -24C6.8 -24.8 7.4 -27.2 7.5 -28.1C7.6 -29.1 7.5 -29.5 7.3 -29.8C7.1 -30.2 6.5 -30.4 6.2 -30.4Z"}],"axis":-2.2,"bc":[-33.9,-44.1],"hub":[-23.9,-32.8],"ext":129.2,"sparkR":19.0,"outs":[{"x":-68.2,"y":-109.9,"a":-1.872,"k":"limb","path":[[0,0],[-23.0,-32.8],[-27.7,-37.2],[-33.3,-40.6],[-38.7,-46.0],[-43.4,-51.6],[-47.9,-57.2],[-52.5,-62.7],[-53.5,-68.3],[-55.1,-73.9],[-57.4,-79.5],[-59.7,-85.1],[-62.0,-90.7],[-64.0,-96.3],[-65.9,-101.9],[-67.5,-107.5],[-68.2,-109.9]]},{"x":-87.7,"y":-81.8,"a":-2.597,"k":"limb","path":[[0,0],[-23.0,-32.8],[-26.8,-36.6],[-31.5,-39.5],[-36.2,-43.3],[-40.3,-48.0],[-44.3,-52.7],[-48.1,-57.4],[-52.0,-62.0],[-56.3,-64.4],[-61.0,-65.8],[-65.7,-68.6],[-70.4,-71.4],[-75.1,-74.2],[-79.8,-77.0],[-84.5,-80.0],[-87.7,-81.8]]},{"x":-49.5,"y":35.0,"a":2.145,"k":"limb","path":[[0,0],[-23.0,-32.8],[-22.9,-28.1],[-25.9,-23.4],[-28.2,-18.7],[-29.5,-14.0],[-30.5,-9.3],[-31.6,-4.6],[-32.7,0.0],[-34.0,4.7],[-35.6,9.4],[-37.3,14.1],[-39.4,18.8],[-41.9,23.5],[-44.9,28.2],[-48.1,32.9],[-49.5,35.0]]},{"x":15.3,"y":-90.7,"a":-1.033,"k":"limb","path":[[0,0],[-23.0,-32.8],[-20.0,-36.8],[-16.1,-40.7],[-12.8,-44.7],[-9.9,-48.7],[-7.3,-52.7],[-4.8,-56.7],[-2.4,-60.7],[0.0,-64.7],[2.3,-68.7],[4.6,-72.7],[6.9,-76.7],[9.2,-80.7],[11.6,-84.7],[14.1,-88.7],[15.3,-90.7]]}]} };
+const LNW_KEYS = ['c1','c2','c3','c4','c5','c6'];
+const LNW_PALETTE = ['#1E1B18','#A0644F','#5E7A64','#56708F','#A9884C','#7F6380','#4F7F7B','#8E6A58'];
+const LNW_GLOW = '242,179,91';
+const LNW_STORE = 'learning-network-v2';
+
+function lnwRng(seed){ let a = seed >>> 0; return function(){ a = (a + 0x6D2B79F5) >>> 0; let t = a; t = Math.imul(t ^ (t >>> 15), t | 1); t ^= t + Math.imul(t ^ (t >>> 7), t | 61); return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }
+function lnwClamp(v,a,b){ return v < a ? a : v > b ? b : v; }
+function lnwEaseOutCubic(t){ t = lnwClamp(t,0,1); return 1 - Math.pow(1 - t, 3); }
+function lnwEaseInOut(t){ t = lnwClamp(t,0,1); return t < 0.5 ? 4*t*t*t : 1 - Math.pow(-2*t + 2, 3) / 2; }
+function lnwEaseOutBack(t){ t = lnwClamp(t,0,1); const c1 = 1.70158, c3 = c1 + 1; return 1 + c3*Math.pow(t-1,3) + c1*Math.pow(t-1,2); }
+function lnwAngDiff(a,b){ let d = (a - b) % (Math.PI*2); if (d > Math.PI) d -= Math.PI*2; if (d < -Math.PI) d += Math.PI*2; return d; }
+const LNW_DEFAULT_TOPICS = [{"id":"L0:T001","title":"The Zeigarnik Effect","category":"Mind & Behavior","minutes":10,"intro":"Why do unfinished tasks keep tapping us on the shoulder?","questions":["What did Bluma Zeigarnik originally observe?","How does interrupted work influence recall, and what are the limitations of the finding?","What role do goals and motivation play?","How might this effect relate to your own unfinished tasks?"],"code":"T001"},{"id":"L0:T002","title":"Cryptomnesia","category":"Mind & Behavior","minutes":20,"intro":"Could an idea you swear is yours be a forgotten memory?","questions":["What distinguishes cryptomnesia from deliberate plagiarism?","What does research say about failures of source memory?","Which circumstances make unconscious plagiarism more likely?","How could creators check the origins of an apparently original idea?"],"code":"T002"},{"id":"L0:T003","title":"The Doorway Effect","category":"Mind & Behavior","minutes":10,"intro":"Why does walking into a room sometimes erase your purpose?","questions":["What is the doorway effect in memory experiments?","How might changes in context mark event boundaries?","Does it occur with virtual doorways or imagined movements?","What practical strategies could help retrieve a forgotten intention?"],"code":"T003"},{"id":"L0:T004","title":"Choice Blindness","category":"Mind & Behavior","minutes":20,"intro":"Could you explain a preference for something you never chose?","questions":["How did the classic choice-blindness experiments work?","When do people fail to notice a swapped outcome?","How do participants justify decisions they did not actually make?","What does this suggest—and not suggest—about introspection?"],"code":"T004"},{"id":"L0:T005","title":"Trompe-l'œil","category":"Art & Aesthetics","minutes":20,"intro":"When does a painting stop looking like a painting?","questions":["What techniques create the illusion of three-dimensional space?","How was trompe-l'œil used in different historical periods?","Which artworks demonstrate particularly convincing visual tricks?","How does viewing angle change the illusion?"],"code":"T005"},{"id":"L0:T006","title":"The Pre-Raphaelite Brotherhood","category":"Art & Aesthetics","minutes":40,"intro":"Why did a group of young artists turn against the academic art of their day?","questions":["Who founded the Brotherhood and what did they oppose?","What visual traits distinguish its early paintings?","How did literature, medievalism and nature shape its subjects?","How did women contribute as artists and models, and how has that history been reassessed?"],"code":"T006"},{"id":"L0:T007","title":"International Klein Blue","category":"Art & Aesthetics","minutes":20,"intro":"How did a single intense blue become an artistic identity?","questions":["How did Yves Klein develop and use International Klein Blue?","What role did pigments and binders play in its appearance?","How does Klein's use of blue connect to his artistic philosophy?","What does the story reveal about color, authorship and branding?"],"code":"T007"},{"id":"L0:T008","title":"Lover's Eye Miniatures","category":"Art & Aesthetics","minutes":20,"intro":"Why would someone wear a portrait of just one eye?","questions":["When and where did lover's eye jewelry become fashionable?","How could depicting only an eye conceal identity?","What materials and formats were used for these miniatures?","How do these objects express intimacy and secrecy?"],"code":"T008"},{"id":"L0:T009","title":"The Ship of Theseus","category":"Philosophy & Ideas","minutes":20,"intro":"If every part changes, what makes something the same thing?","questions":["What is the original Ship of Theseus puzzle?","How do material continuity and functional continuity differ?","What happens if the old parts are rebuilt into a second ship?","How could the paradox apply to bodies, cities or digital products?"],"code":"T009"},{"id":"L0:T010","title":"The Experience Machine","category":"Philosophy & Ideas","minutes":20,"intro":"Would a perfect simulated life be enough for happiness?","questions":["How does Robert Nozick's experience-machine thought experiment work?","What objection to hedonism was Nozick exploring?","Why might people refuse to plug in?","How does the question change when considering modern virtual worlds?"],"code":"T010"},{"id":"L0:T011","title":"The Sorites Paradox","category":"Philosophy & Ideas","minutes":10,"intro":"Exactly when do a few grains become a heap?","questions":["How is the sorites paradox constructed?","What is a vague predicate, and why is it difficult to define?","What are two philosophical responses to the paradox?","Where do vague boundaries appear in everyday classifications?"],"code":"T011"},{"id":"L0:T012","title":"Wabi-Sabi","category":"Philosophy & Ideas","minutes":20,"intro":"Can impermanence and imperfection change what we find beautiful?","questions":["What ideas are commonly associated with wabi and sabi?","How did Japanese tea culture shape these aesthetics?","What are concrete examples in crafts, spaces or objects?","How can we avoid reducing wabi-sabi to a trendy visual style?"],"code":"T012"},{"id":"L0:T013","title":"Crown Shyness","category":"Science & Nature","minutes":20,"intro":"Why do some treetops leave delicate channels of empty sky?","questions":["What is crown shyness and which trees show it?","What explanations have researchers proposed?","How might wind-driven abrasion or light competition contribute?","What evidence would distinguish these explanations?"],"code":"T013"},{"id":"L0:T014","title":"The Wood Wide Web","category":"Science & Nature","minutes":40,"intro":"How much do trees really share through underground fungi?","questions":["What are mycorrhizal networks and how do they form?","What evidence exists for nutrient or carbon transfer between plants?","Which popular claims about tree communication are contested?","How could experiments separate fungal-network effects from other mechanisms?"],"code":"T014"},{"id":"L0:T015","title":"Tardigrades","category":"Science & Nature","minutes":20,"intro":"How can an almost microscopic animal survive extraordinary conditions?","questions":["What are tardigrades and where do they live?","What is cryptobiosis and how does it work?","Which extreme-condition survival claims are supported by experiments?","What are the limits of tardigrade resilience?"],"code":"T015"},{"id":"L0:T016","title":"Petrichor","category":"Science & Nature","minutes":10,"intro":"What makes the air smell so distinctive after rain?","questions":["Where did the word petrichor originate?","What roles do geosmin and plant-derived compounds play?","How can raindrops release tiny scented aerosols from soil?","Why does the smell differ across places and weather conditions?"],"code":"T016"},{"id":"L0:T017","title":"The Library of Ashurbanipal","category":"Culture & History","minutes":20,"intro":"What can ancient clay tablets reveal about a vanished empire?","questions":["Who was Ashurbanipal, and why did he gather texts?","What kinds of writings were preserved on the tablets?","How did the collection survive the destruction of Nineveh?","How have modern scholars reconstructed and interpreted the library?"],"code":"T017"},{"id":"L0:T018","title":"Floriography","category":"Culture & History","minutes":20,"intro":"Can a bouquet carry a message without any words?","questions":["How did flower-language guides become popular in the nineteenth century?","Did flower meanings stay consistent across books and cultures?","How were flowers used in social or romantic communication?","What is the difference between historical practice and modern myth?"],"code":"T018"},{"id":"L0:T019","title":"The Dancing Plague of 1518","category":"Culture & History","minutes":20,"intro":"What happened when people reportedly danced for days in Strasbourg?","questions":["What do surviving accounts actually say about the event?","What social and medical conditions shaped Strasbourg in 1518?","Which explanations have historians proposed?","Why should we be cautious about dramatic details repeated online?"],"code":"T019"},{"id":"L0:T020","title":"Kintsugi","category":"Culture & History","minutes":20,"intro":"What happens when repair becomes part of an object's beauty?","questions":["What materials and techniques are used in traditional kintsugi?","How does lacquer repair differ from modern DIY substitutes?","What do we know about the craft's historical development?","How have contemporary interpretations shaped its symbolism?"],"code":"T020"},{"id":"L0:T021","title":"Japanese Jazz Kissa","category":"Sound & Music","minutes":20,"intro":"What if listening to a record were the entire reason to visit a café?","questions":["How did jazz kissa develop in Japan?","What makes their listening etiquette and sound systems distinctive?","How did imported recordings shape their cultural role?","How are traditional venues evolving today?"],"code":"T021"},{"id":"L0:T022","title":"The Shepard Tone","category":"Sound & Music","minutes":10,"intro":"How can a sound seem to rise forever without getting higher?","questions":["How is a Shepard tone constructed from layered pitches?","Why does the sound create an illusion of endless ascent or descent?","How does a Shepard tone differ from a Shepard–Risset glissando?","Where has this auditory illusion been used in film or music?"],"code":"T022"},{"id":"L0:T023","title":"Musique Concrète","category":"Sound & Music","minutes":40,"intro":"How did trains, voices and everyday noises become musical material?","questions":["Who pioneered musique concrète, and in what context?","How were recorded sounds cut, looped and transformed?","How does it differ from traditional instrumental composition?","Which influential works are worth listening to closely?"],"code":"T023"},{"id":"L0:T024","title":"The Theremin","category":"Sound & Music","minutes":20,"intro":"How do you play an instrument without touching it?","questions":["Who invented the theremin and how does it work?","How do hand positions control pitch and volume?","Why is accurate intonation especially challenging?","How has the instrument been used in concert and film music?"],"code":"T024"},{"id":"L0:T025","title":"The QWERTY Keyboard","category":"Design & Technology","minutes":20,"intro":"Why are our keys arranged this way rather than alphabetically?","questions":["How did the QWERTY layout emerge in early typewriters?","Which popular explanations of its origins are disputed?","What roles did training, compatibility and network effects play?","How does evidence compare QWERTY with alternative layouts?"],"code":"T025"},{"id":"L0:T026","title":"CAPTCHA History","category":"Design & Technology","minutes":20,"intro":"How did proving you're human become an everyday web ritual?","questions":["What problem were early CAPTCHAs designed to solve?","How did text puzzles evolve into image challenges and risk scoring?","What accessibility issues do CAPTCHA systems introduce?","How has generative AI changed the challenge of distinguishing bots?"],"code":"T026"},{"id":"L0:T027","title":"The Eames House","category":"Design & Technology","minutes":40,"intro":"How can a house become a lifelong experiment in living?","questions":["Why was Case Study House No. 8 designed and built?","How did Charles and Ray Eames use industrial materials?","How did the interiors change through daily life and collecting?","What can its design teach us about flexibility and personal space?"],"code":"T027"},{"id":"L0:T028","title":"The History of the GIF","category":"Design & Technology","minutes":20,"intro":"How did an old image format become a language of online expression?","questions":["When and why was the GIF format created?","How does its palette and animation mechanism work?","What role did early web culture play in its popularity?","How did memes and reaction GIFs transform its cultural meaning?"],"code":"T028"},{"id":"L0:T029","title":"The Voynich Manuscript","category":"The Unexpected","minutes":40,"intro":"Why has this strange illustrated book resisted decipherment?","questions":["What do we know about the manuscript's date and provenance?","What kinds of plants, diagrams and scenes appear in it?","What have statistical and linguistic analyses found about its writing?","Which decipherment claims remain unverified, and why?"],"code":"T029"},{"id":"L0:T030","title":"Cabinets of Curiosities","category":"The Unexpected","minutes":20,"intro":"What did people collect before the modern museum existed?","questions":["What were cabinets of curiosities, or Wunderkammern?","What natural, artistic and scientific objects did they contain?","How did collecting express wealth, exploration and power?","How did these collections influence later museums?"],"code":"T030"},{"id":"L0:T031","title":"Suminagashi","category":"The Unexpected","minutes":20,"intro":"How can floating ink capture the movement of water?","questions":["What are the historical roots of Japanese suminagashi?","How are ink and water manipulated to create patterns?","What materials affect how patterns transfer to paper?","How does suminagashi differ from other marbling techniques?"],"code":"T031"},{"id":"L0:T032","title":"The Antikythera Mechanism","category":"The Unexpected","minutes":40,"intro":"How did ancient engineers build a device that modeled the heavens?","questions":["Where and when was the mechanism discovered?","What astronomical cycles could its gears represent?","How have imaging techniques helped reconstruct its workings?","What remains uncertain about its purpose and design?"],"code":"T032"}];
+const LNW_DEFAULT_IMPORT = { id: 'L0', name: 'morning_knowledge_topics.xlsx', date: '2026-11-12T16:30:00.000Z', count: LNW_DEFAULT_TOPICS.length };
+function lnwDefaultLibrary(){ return { topics: LNW_DEFAULT_TOPICS.slice(), imports: [Object.assign({}, LNW_DEFAULT_IMPORT)] }; }
+function lnwNorm(s){ return String(s === undefined || s === null ? '' : s).toLowerCase().replace(/\s+/g, ' ').trim(); }
+
+// ---- tiny local .xlsx / .csv reader (no libraries, nothing leaves the browser) ----
+async function lnwUnzip(buf){
+  const u8 = new Uint8Array(buf); const dv = new DataView(buf);
+  let e = -1;
+  for (let i = u8.length - 22; i >= Math.max(0, u8.length - 65558); i--){ if (dv.getUint32(i, true) === 0x06054b50){ e = i; break; } }
+  if (e < 0) throw new Error('That file isn’t a valid .xlsx workbook.');
+  const n = dv.getUint16(e + 10, true); let p = dv.getUint32(e + 16, true); const files = {};
+  for (let k = 0; k < n; k++){
+    if (dv.getUint32(p, true) !== 0x02014b50) break;
+    const method = dv.getUint16(p + 10, true), csize = dv.getUint32(p + 20, true);
+    const nlen = dv.getUint16(p + 28, true), xlen = dv.getUint16(p + 30, true), clen = dv.getUint16(p + 32, true), off = dv.getUint32(p + 42, true);
+    const name = new TextDecoder().decode(u8.subarray(p + 46, p + 46 + nlen));
+    files[name] = { method: method, csize: csize, off: off };
+    p += 46 + nlen + xlen + clen;
+  }
+  const read = async (name) => {
+    const f = files[name]; if (!f) return null;
+    const ln = dv.getUint16(f.off + 26, true), lx = dv.getUint16(f.off + 28, true);
+    const start = f.off + 30 + ln + lx; const data = u8.slice(start, start + f.csize);
+    if (f.method === 0) return new TextDecoder().decode(data);
+    if (f.method === 8){
+      if (typeof DecompressionStream === 'undefined') throw new Error('This browser can’t open .xlsx files. Save the sheet as .csv and import that instead.');
+      const out = await new Response(new Blob([data]).stream().pipeThrough(new DecompressionStream('deflate-raw'))).arrayBuffer();
+      return new TextDecoder().decode(out);
+    }
+    throw new Error('Unsupported compression in this workbook.');
+  };
+  return { names: Object.keys(files), read: read };
+}
+function lnwSheetRows(doc, ss){
+  const rows = [];
+  const rs = doc.getElementsByTagNameNS('*', 'row');
+  for (let ri = 0; ri < rs.length; ri++){
+    const arr = []; const cs = rs[ri].getElementsByTagNameNS('*', 'c');
+    for (let ci = 0; ci < cs.length; ci++){
+      const c = cs[ci]; const ref = c.getAttribute('r') || ''; const m = ref.match(/^[A-Z]+/);
+      let col = arr.length;
+      if (m){ col = 0; for (const ch of m[0]) col = col * 26 + (ch.charCodeAt(0) - 64); col -= 1; }
+      const t = c.getAttribute('t'); let v = '';
+      if (t === 'inlineStr'){ const ts = c.getElementsByTagNameNS('*', 't'); for (let x = 0; x < ts.length; x++) v += ts[x].textContent; }
+      else { const ve = c.getElementsByTagNameNS('*', 'v')[0]; v = ve ? ve.textContent : ''; if (t === 's') v = ss[parseInt(v, 10)] || ''; }
+      arr[col] = v;
+    }
+    for (let i = 0; i < arr.length; i++) if (arr[i] === undefined) arr[i] = '';
+    if (arr.some((x) => String(x).trim())) rows.push(arr);
+  }
+  return rows;
+}
+async function lnwXlsxRows(buf){
+  const z = await lnwUnzip(buf);
+  const xml = (s) => new DOMParser().parseFromString(s, 'application/xml');
+  const ss = []; const ssTxt = await z.read('xl/sharedStrings.xml');
+  if (ssTxt){ const sis = xml(ssTxt).getElementsByTagNameNS('*', 'si'); for (let i = 0; i < sis.length; i++){ let t = ''; const ts = sis[i].getElementsByTagNameNS('*', 't'); for (let j = 0; j < ts.length; j++) t += ts[j].textContent; ss.push(t); } }
+  const sheets = [];
+  const wbTxt = await z.read('xl/workbook.xml'); const relTxt = await z.read('xl/_rels/workbook.xml.rels');
+  if (wbTxt && relTxt){
+    const rel = {}; const rs = xml(relTxt).getElementsByTagNameNS('*', 'Relationship');
+    for (let i = 0; i < rs.length; i++) rel[rs[i].getAttribute('Id')] = rs[i].getAttribute('Target');
+    const sh = xml(wbTxt).getElementsByTagNameNS('*', 'sheet');
+    for (let i = 0; i < sh.length; i++){
+      const rid = sh[i].getAttribute('r:id') || sh[i].getAttributeNS('http://schemas.openxmlformats.org/officeDocument/2006/relationships', 'id');
+      let tg = rel[rid]; if (!tg) continue;
+      tg = tg.charAt(0) === '/' ? tg.slice(1) : 'xl/' + tg.replace(/^\.\//, '');
+      sheets.push(tg);
+    }
+  }
+  if (!sheets.length) z.names.filter((nm) => /^xl\/worksheets\/sheet\d+\.xml$/.test(nm)).sort().forEach((nm) => sheets.push(nm));
+  let fallback = null;
+  for (const pth of sheets){
+    const txt = await z.read(pth); if (!txt) continue;
+    const rows = lnwSheetRows(xml(txt), ss);
+    if (!fallback && rows.length) fallback = rows;
+    if (rows.length > 1 && rows.slice(0, 5).some((r) => r.some((c) => /^\s*(topic|title|topic name)\s*$/i.test(String(c))))) return rows;
+  }
+  return fallback || [];
+}
+function lnwCsvRows(txt){
+  const first = txt.split('\n')[0] || ''; const sep = first.split(';').length > first.split(',').length ? ';' : ',';
+  const rows = []; let row = [], f = '', q = false;
+  for (let i = 0; i < txt.length; i++){
+    const ch = txt[i];
+    if (q){ if (ch === '"'){ if (txt[i+1] === '"'){ f += '"'; i++; } else q = false; } else f += ch; }
+    else if (ch === '"') q = true;
+    else if (ch === sep){ row.push(f); f = ''; }
+    else if (ch === '\n'){ row.push(f); rows.push(row); row = []; f = ''; }
+    else if (ch !== '\r') f += ch;
+  }
+  if (f || row.length){ row.push(f); rows.push(row); }
+  return rows.filter((r) => r.some((x) => String(x).trim()));
+}
+function lnwRowsToTopics(rows, libId){
+  let hi = rows.findIndex((r) => r.some((c) => /^\s*(topic|title|topic name)\s*$/i.test(String(c))));
+  if (hi < 0) hi = rows.findIndex((r) => r.some((c) => /topic|title/i.test(String(c))));
+  if (hi < 0) return [];
+  const H = rows[hi].map((h) => lnwNorm(h));
+  const find = (re, not) => H.findIndex((h) => re.test(h) && !(not && not.test(h)));
+  const iId = find(/(^| )id$|^id\b/);
+  let iTitle = H.findIndex((h) => /^(topic|title|topic name|name)$/.test(h));
+  if (iTitle < 0) iTitle = find(/topic|title/, /\bid\b|categ|time|min|question|hook/);
+  const iCat = find(/categ|theme|area|subject/);
+  const iMin = find(/min|time|duration/);
+  const iIntro = find(/hook|intro|description|summary|about|why/, /question/);
+  const iQs = H.map((h, i) => /question/.test(h) ? i : -1).filter((i) => i >= 0);
+  const out = []; const seen = {};
+  rows.slice(hi + 1).forEach((r, n) => {
+    const title = String(r[iTitle] || '').trim(); if (!title) return;
+    let code = (iId >= 0 && String(r[iId] || '').trim()) || ('R' + (n + 1));
+    if (seen[code]) code = code + '-' + (n + 1); seen[code] = 1;
+    let m = parseFloat(String(iMin >= 0 ? r[iMin] : '').replace(',', '.')); if (!(m > 0)) m = 20; m = Math.min(240, Math.max(1, Math.round(m)));
+    out.push({ id: libId + ':' + code, code: code, title: title,
+      category: (iCat >= 0 && String(r[iCat] || '').trim()) || 'General', minutes: m,
+      intro: iIntro >= 0 ? String(r[iIntro] || '').trim() : '',
+      questions: iQs.map((i) => String(r[i] || '').trim()).filter(Boolean).slice(0, 6) });
+  });
+  return out;
+}
+
+function lnwPad(n, w){ let s = String(Math.max(0, Math.floor(n))); while (s.length < w) s = '0' + s; return s; }
+function lnwHM(sec){ const m = Math.round(sec / 60); const h = Math.floor(m / 60); return h > 0 ? h + 'h ' + lnwPad(m % 60, 2) + 'm' : m + 'm'; }
+function lnwMinLabel(sec){ if (sec < 60) return Math.round(sec) + ' SEC'; return Math.round(sec / 60) + ' MIN'; }
+function lnwDateLabel(d){ const M = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC']; const D = ['SUN','MON','TUE','WED','THU','FRI','SAT']; return D[d.getDay()] + ' ' + lnwPad(d.getDate(), 2) + ' ' + M[d.getMonth()] + ' ' + d.getFullYear(); }
+
+class Component extends DCLogic {
+  // ---------- lifecycle ----------
+  ensureHandlers(){
+    if (this._h) return this._h;
+    this._h = {
+      setCanvas: (el) => { if (el && el !== this.canvas) { this.canvas = el; this.lnw_boot(); } },
+      setPrimary: (el) => { if (el) { try { el.focus({ preventScroll: true }); } catch (e) {} } },
+      setLogArea: (el) => { if (el) { try { el.focus({ preventScroll: true }); } catch (e) {} } },
+      openTopic: () => this.openTopic(),
+      openLibrary: () => this.openLibrary(false),
+      setFileInput: (el) => { if (el) this.fileEl = el; },
+      pickFile: () => { if (this.fileEl) { try { this.fileEl.click(); } catch (e) {} } },
+      onFile: (e) => { const f = e && e.target && e.target.files ? e.target.files[0] : null; this.importFile(f); try { e.target.value = ''; } catch (x) {} },
+      onDragOver: (e) => { if (e) { e.preventDefault(); try { e.dataTransfer.dropEffect = 'copy'; } catch (x) {} } if (!(this.state && this.state.dragging)) this.setState({ dragging: true }); },
+      onDragLeave: () => this.setState({ dragging: false }),
+      onDrop: (e) => { if (e) e.preventDefault(); this.setState({ dragging: false }); const f = e && e.dataTransfer && e.dataTransfer.files ? e.dataTransfer.files[0] : null; this.importFile(f); },
+      closeTopic: () => this.goHome(),
+      shuffleTopic: () => this.openTopic(true),
+      dialogKey: (e) => { if (e && e.key === 'Escape') this.goHome(); },
+      startLearning: () => this.startSession(),
+      togglePause: () => this.togglePause(),
+      toggleQs: () => this.setState({ showQs: !(this.state && this.state.showQs) }),
+      finishEarly: () => this.finishSession(false),
+      toLog: () => this.openLog(),
+      onLogA: (e) => this.setState({ logA: e && e.target ? e.target.value : '', logErr: false }),
+      submitLog: (e) => { if (e && e.preventDefault) e.preventDefault(); this.submitLog(); },
+      discardLog: () => this.discardLog(),
+      zoomIn: () => { this.zoomBy(1.35); },
+      zoomOut: () => { this.zoomBy(1/1.35); },
+      fit: () => { this.fitAll(); }
+    };
+    return this._h;
+  }
+  componentWillUnmount(){ this.lnw_teardown(); }
+  componentDidUpdate(prev){
+    const a = prev ? prev.previewScreen : undefined, b = this.props ? this.props.previewScreen : undefined;
+    if (a !== b && this.figs) this.applyPreview(b);
+  }
+  renderVals(){
+    const h = this.ensureHandlers();
+    const s = this.state || {};
+    const screen = s.screen || 'home';
+    const t = s.topic || LNW_DEFAULT_TOPICS[0];
+    const n = s.completed || 0;
+    const hv = s.hov || null;
+    const d = s.digits || '0000';
+    const fp = s.flaps || [0,0,0,0];
+    const fc = (i) => fp[i] ? 'lnw-flap-a' : 'lnw-flap-b';
+    const timerDone = !!s.timerDone;
+    return Object.assign({}, h, {
+      ariaLabel: 'A hand-drawn neural network of ' + n + ' learned topics',
+      completedLabel: lnwPad(n, 3),
+      timeLabel: lnwHM(s.spentTotal || 0),
+      clusters: (s.clusters || [{ color: LNW_PALETTE[0] }]).map((c) => ({ color: c.color })),
+      dateLabel: lnwDateLabel(new Date()),
+      savedLabel: s.savedAt ? 'SAVED LOCALLY · ' + s.savedAt : 'STORED ON THIS DEVICE',
+      zoomLabel: Math.round((s.zoom || 1) * 100) + '%',
+      hintOpacity: s.hintGone ? 0 : 1,
+      nextLabel: (s.libLeft === 0) ? 'LIBRARY COMPLETE · IMPORT MORE' : 'NEXT · TOPIC № ' + lnwPad(n + 1, 3),
+      showLibrary: screen === 'library', libBanner: !!s.libBanner,
+      libTotal: lnwPad(s.libTotal || 0, 2), libLeft: lnwPad(s.libLeft || 0, 2), libLearned: lnwPad((s.libTotal || 0) - (s.libLeft || 0), 2),
+      libImports: (s.libImports || []).map((im) => ({ name: im.name, meta: im.count + ' TOPICS · ' + lnwDateLabel(new Date(im.date)).slice(4) })),
+      importLabel: s.libBusy ? 'Reading file…' : 'Choose file',
+      libHasMsg: !!s.libMsg, libMsgText: s.libMsg ? s.libMsg.text : '', libMsgColor: s.libMsg && s.libMsg.err ? '#9A4A33' : '#3E5A45',
+      dropBorder: s.dragging ? '#1E1B18' : 'rgba(30,27,24,0.35)', dropBg: s.dragging ? 'rgba(30,27,24,0.05)' : 'transparent',
+      // hover card
+      hovShow: !!hv && screen === 'home', hovX: hv ? hv.x : 0, hovY: hv ? hv.y : 0,
+      hovNo: hv ? hv.no : '', hovCat: hv ? hv.cat : '', hovDur: hv ? hv.dur : '', hovTitle: hv ? hv.title : '',
+      hovDate: hv ? hv.date : '', hovA: hv ? hv.a : '',
+      toastShow: !!s.toast, toastText: s.toast ? s.toast.text : '',
+      // topic
+      showTopic: screen === 'topic', showTimer: screen === 'timer', showLog: screen === 'log',
+      tNo: lnwPad(s.topicNo || n + 1, 3), tTitle: t.title, tIntro: t.intro, tCat: t.category.toUpperCase(), tCatPlain: t.category,
+      tTime: t.minutes + ' MIN', tQCount: lnwPad(t.questions.length, 2),
+      tQs: t.questions.map((q, i) => ({ n: 'Q.' + lnwPad(i + 1, 2), text: q })),
+      swapClass: s.swap ? 'lnw-swap-a' : 'lnw-swap-b',
+      // timer
+      d0: d[0], d1: d[1], d2: d[2], d3: d[3], f0: fc(0), f1: fc(1), f2: fc(2), f3: fc(3),
+      running: !timerDone && !s.paused, paused: !timerDone && !!s.paused, timerDone: timerDone, notDone: !timerDone,
+      pauseLabel: s.paused ? 'RESUME' : 'PAUSE',
+      digitOpacity: s.paused ? 0.45 : 1,
+      progPct: Math.round((s.prog || 0) * 1000) / 10,
+      elapsedLabel: s.elapsed || '00:00',
+      timeLeftAria: d.slice(0,2) + ' minutes ' + d.slice(2) + ' seconds left',
+      showQs: !!s.showQs, showQsAria: s.showQs ? 'true' : 'false',
+      // log
+      logA: s.logA || '', logErr: !!s.logErr,
+      logBgClass: s.logClosing ? 'lnw-backdrop lnw-out-bg' : 'lnw-backdrop', logCardClass: s.logClosing ? 'lnw-out-card' : 'lnw-card',
+      logDate: lnwDateLabel(new Date()),
+      logSpent: lnwMinLabel(s.logSpentSec || 0),
+    });
+  }
+  lnw_prop(name, def){ const v = this.props ? this.props[name] : undefined; return (v === undefined || v === null) ? def : v; }
+  get lnwSpeed(){ return lnwClamp(Number(this.lnw_prop('speed', 1)) || 1, 0.2, 4); }
+  get gapU(){ return Number(this.lnw_prop('gap', 6)); }
+  get perCluster(){ return Math.max(1, Math.round(Number(this.lnw_prop('perCluster', 5)) || 5)); }
+  lnw_dur(ms){ return ms / this.lnwSpeed; }
+
+  lnw_boot(){
+    this.lnw_teardown();
+    const cv = this.canvas; if (!cv) return;
+    this.ctx = cv.getContext('2d');
+    this.dpr = Math.min(window.devicePixelRatio || 1, 2.5);
+    this.W = cv.clientWidth || 1200; this.H = cv.clientHeight || 800;
+    this.paths = {};
+    for (const k in LNW_ASSETS){
+      const a = LNW_ASSETS[k];
+      this.paths[k] = { body: new Path2D(a.body), spark: a.spark.map((p) => new Path2D(p.p)) };
+      a.maxD = a.spark.reduce((m,p) => Math.max(m, p.d), 1);
+      // "hands": the two limb tips closest to the head
+      a.arms = a.outs.map((o, i) => [Math.hypot(o.x, o.y), i]).sort((u, v) => u[0] - v[0]).slice(0, 2).map((x) => x[1]);
+    }
+    this.reduced = false;
+    try { this.reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) {}
+    this.cam = { x: 0, y: 0, z: 1 }; this.tgt = { x: 0, y: 0, z: 1 }; this.camRate = 3;
+    this.lastUser = -1e9; this.lastZoomLabel = 0; this.hover = null; this.growDelay = 0;
+    this.bindInput();
+    this.ro = (typeof ResizeObserver !== 'undefined') ? new ResizeObserver(() => this.lnw_resize()) : null;
+    if (this.ro) this.ro.observe(cv); else window.addEventListener('resize', this._onResize = () => this.lnw_resize());
+    this.lnw_resize();
+    this.loadWorld();
+    const pv = this.lnw_prop('previewScreen', 'live');
+    if (pv && pv !== 'live') this.applyPreview(pv);
+    const loop = (t) => { this.raf = requestAnimationFrame(loop); this.lnw_frame(t); };
+    this.raf = requestAnimationFrame(loop);
+  }
+  lnw_teardown(){
+    if (this.raf) cancelAnimationFrame(this.raf); this.raf = 0;
+    if (this.timerIv) { clearInterval(this.timerIv); this.timerIv = 0; }
+    if (this.ro) { this.ro.disconnect(); this.ro = null; }
+    if (this._onResize) { window.removeEventListener('resize', this._onResize); this._onResize = null; }
+    if (this._unbind) { this._unbind(); this._unbind = null; }
+  }
+  lnw_resize(){
+    const cv = this.canvas; if (!cv) return;
+    this.W = cv.clientWidth || this.W; this.H = cv.clientHeight || this.H;
+    cv.width = Math.round(this.W * this.dpr); cv.height = Math.round(this.H * this.dpr);
+  }
+
+  // ---------- persistence (everything lives in this browser's localStorage) ----------
+  serialize(){
+    return {
+      v: 2, layout: 'hands', nextId: this.nextId,
+      clusters: this.clusters.map((c) => ({ id: c.id, color: c.color })),
+      figs: this.figs.map((f) => ({
+        id: f.id, t: f.type, k: f.key, x: f.x, y: f.y, r: f.rot, f: f.flip, s: f.s, c: f.color, cl: f.cluster.id,
+        sw: f.sweepFrom || 0, p: f.parent === undefined ? null : f.parent, po: f.po === undefined ? -1 : f.po,
+        u: f.outs.map((o) => o.used ? 1 : 0), sid: f.sid || null, ii: f.ii === undefined ? -1 : f.ii
+      })),
+      sessions: this.sessions,
+      library: this.library,
+      active: this.active || null
+    };
+  }
+  lnw_save(){
+    try { window.localStorage.setItem(LNW_STORE, JSON.stringify(this.serialize())); return true; }
+    catch (e) { return false; }
+  }
+  loadWorld(){
+    let raw = null, data = null;
+    try { raw = window.localStorage.getItem(LNW_STORE); } catch (e) { raw = null; }
+    if (raw){ try { data = JSON.parse(raw); } catch (e) { data = null; } }
+    this.rng = lnwRng((Math.random() * 1e9) | 0);
+    let ok = false;
+    if (data && data.v === 2 && Array.isArray(data.figs) && data.figs.length){
+      try {
+        this.restoreWorld(data); ok = true;
+        if (data.layout !== 'hands' && this.figs.some((f) => f.type === 'fig' && f.ii < 0)) { this.relayoutHands(); this.lnw_save(); }
+      }
+      catch (e) { ok = false; try { window.localStorage.setItem(LNW_STORE + '-backup-' + Date.now(), raw); } catch (e2) {} }
+    }
+    if (!ok){
+      this.resetState();
+      this.sessions = []; this.active = null; this.library = lnwDefaultLibrary();
+      this.addStart(null, null, performance.now() + 250);
+      this.lnw_save();
+    }
+    // camera
+    if (this.figs.length <= 1){ const z0 = lnwClamp(Math.min(this.W, this.H) / 620, 0.55, 1.35); this.cam = { x: 40, y: 10, z: z0 }; }
+    else { const fr = this.frameFor(this.figs, 0.9); this.cam = { x: fr.x, y: fr.y, z: fr.z }; }
+    this.tgt = { x: this.cam.x, y: this.cam.y, z: this.cam.z };
+    this.pushState();
+    if (this.active) this.resumeActive();
+  }
+  resetState(){
+    this.figs = []; this.clusters = []; this.edges = []; this.pulses = []; this.bursts = []; this.tl = [];
+    this.nFigs = 0; this.busyUntil = 0; this.nextIdle = performance.now() + 2500; this.nextId = 1;
+  }
+  // one-time rebuild: same order, shapes, clusters and notes, now connected hand to hand (no animation)
+  relayoutHands(){
+    const oldClusters = this.clusters.slice();
+    const seq = this.figs.filter((f) => f.type === 'fig').map((f) => ({ key: f.key, sid: f.sid, cl: f.cluster.id }));
+    this.resetState();
+    this.addStart(null, null, -1e9);
+    let cur = oldClusters.length ? oldClusters[0].id : 0;
+    const byS = {}; (this.sessions || []).forEach((x) => { byS[x.id] = x; });
+    for (const it of seq){
+      let cl = this.clusters[this.clusters.length - 1];
+      if (it.cl !== cur || cl.figs.length >= this.perCluster){ this.spawnStart(cl, false); cur = it.cl; cl = this.clusters[this.clusters.length - 1]; }
+      let plan = this.planFig(cl, it.key) || this.planFig(cl);
+      if (!plan){ this.spawnStart(cl, false); cl = this.clusters[this.clusters.length - 1]; plan = this.planFig(cl, it.key) || this.planFig(cl); }
+      if (!plan) continue;
+      const f = this.commitFig(cl, plan, false);
+      f.sid = it.sid || null;
+      if (f.sid && byS[f.sid]) byS[f.sid].figId = f.id;
+    }
+  }
+  restoreWorld(data){
+    this.resetState();
+    this.nextId = data.nextId || 1;
+    this.sessions = Array.isArray(data.sessions) ? data.sessions : [];
+    this.library = (data.library && Array.isArray(data.library.topics)) ? data.library : lnwDefaultLibrary();
+    this.active = data.active || null;
+    const clById = {}, byId = {};
+    (data.clusters || []).forEach((c) => { const cl = { id: c.id, color: c.color, figs: [] }; clById[c.id] = cl; this.clusters.push(cl); });
+    data.figs.forEach((d) => {
+      const a = LNW_ASSETS[d.k]; const cl = clById[d.cl]; if (!a || !cl) throw new Error('bad figure');
+      const f = { id: d.id, type: d.t, key: d.k, a: a, x: d.x, y: d.y, rot: d.r, flip: d.f, s: d.s, color: d.c,
+        sweepFrom: d.sw || 0, parent: d.p, po: d.po, sid: d.sid || null, ii: (d.ii === undefined || d.ii === null) ? -1 : d.ii, cluster: cl, tBorn: -1e9, tPulse: -1e9 };
+      this.finalizeFig(f);
+      (d.u || []).forEach((u, i) => { if (f.outs[i]) f.outs[i].used = !!u; });
+      if (f.type === 'start') cl.start = f; else { cl.figs.push(f); this.nFigs++; }
+      byId[f.id] = f;
+      if (d.p !== null && d.p !== undefined && byId[d.p]){
+        const P = byId[d.p]; const ou = P.outs[d.po];
+        if (ou) this.edges.push({ from: P, oi: d.po, to: f, tip: this.tf(P, ou.o.x, ou.o.y), dir: this.outAng(P, ou.o) });
+      }
+      if (f.id >= this.nextId) this.nextId = f.id + 1;
+    });
+    this.clusters.forEach((c) => { if (!c.start) throw new Error('cluster without start'); });
+  }
+  pushState(){
+    const spent = (this.sessions || []).reduce((m, s) => m + (s.spentSec || 0), 0);
+    const lib = this.library || lnwDefaultLibrary();
+    this.setState({ libTotal: lib.topics.length, libLeft: this.remainingTopics().length, libImports: lib.imports.slice().reverse(),
+      completed: (this.sessions || []).length, spentTotal: spent, clusters: this.clusters.map((c) => ({ color: c.color })), zoom: this.tgt.z });
+  }
+  markSaved(ok){
+    const d = new Date();
+    this.setState({ savedAt: ok ? lnwPad(d.getHours(), 2) + ':' + lnwPad(d.getMinutes(), 2) : null });
+  }
+
+  // ---------- flow: topic → timer → log → grow ----------
+  libTopics(){ return (this.library && this.library.topics) || LNW_DEFAULT_TOPICS; }
+  doneMaps(){ const k = {}, t = {}; (this.sessions || []).forEach((x) => { k[x.topicId] = 1; t[lnwNorm(x.title)] = 1; }); return { k: k, t: t }; }
+  remainingTopics(){ const d = this.doneMaps(); return this.libTopics().filter((x) => !d.k[x.id] && !d.t[lnwNorm(x.title)]); }
+  pickTopic(excludeId){
+    const rem = this.remainingTopics(); if (!rem.length) return null;
+    let pool = rem.filter((t) => t.id !== excludeId); if (!pool.length) pool = rem;
+    return pool[Math.floor(Math.random() * pool.length)];
+  }
+  topicById(id){ return this.libTopics().find((t) => t.id === id) || (this.active && this.active.topic) || LNW_DEFAULT_TOPICS[0]; }
+  openLibrary(banner){ this.hover = null; this.setState({ screen: 'library', libBanner: !!banner, libMsg: null, hov: null, dragging: false }); }
+  async importFile(file){
+    if (!file || (this.state && this.state.libBusy)) return;
+    this.setState({ libBusy: true, libMsg: null });
+    try {
+      const name = file.name || 'topics';
+      let rows;
+      if (/\.csv$/i.test(name) || file.type === 'text/csv') rows = lnwCsvRows(await file.text());
+      else if (/\.xls$/i.test(name)) throw new Error('Old .xls files can\u2019t be read. Save it as .xlsx or .csv first.');
+      else rows = await lnwXlsxRows(await file.arrayBuffer());
+      const libId = 'L' + Date.now().toString(36);
+      const parsed = lnwRowsToTopics(rows, libId);
+      if (!parsed.length) throw new Error('No topics found. The first row needs a column called \u201cTopic\u201d.');
+      const have = {}; this.libTopics().forEach((t) => { have[lnwNorm(t.title)] = 1; });
+      const d = this.doneMaps(); const add = []; let skipped = 0;
+      parsed.forEach((t) => { const k = lnwNorm(t.title); if (have[k] || d.t[k]) { skipped++; return; } have[k] = 1; add.push(t); });
+      const lib = this.library || lnwDefaultLibrary();
+      this.library = { topics: lib.topics.concat(add), imports: lib.imports.concat([{ id: libId, name: name, date: new Date().toISOString(), count: add.length }]) };
+      const ok = this.lnw_save(); this.markSaved(ok);
+      const msg = 'Imported ' + add.length + ' new topic' + (add.length === 1 ? '' : 's') + (skipped ? ' · ' + skipped + ' skipped (already in your library or learned)' : '');
+      this.setState({ libBusy: false, libMsg: { text: msg, err: false }, libBanner: false });
+      this.pushState();
+      this.showToast(msg);
+    } catch (e) {
+      this.setState({ libBusy: false, libMsg: { text: (e && e.message) || 'Could not read that file.', err: true } });
+    }
+  }
+  openTopic(shuffle){
+    const s = this.state || {};
+    const cur = s.topic ? s.topic.id : null;
+    const t = this.pickTopic(shuffle ? cur : null);
+    if (!t) { this.openLibrary(true); return; }
+    this.hover = null;
+    this.setState({ screen: 'topic', topic: t, topicNo: (this.sessions || []).length + 1, swap: !s.swap, hov: null, hintGone: true });
+  }
+  goHome(){ this.setState({ screen: 'home', showQs: false, confirmDiscard: false }); }
+  unlockAudio(){
+    try {
+      const AC = window.AudioContext || window.webkitAudioContext;
+      if (!this.audio && AC) this.audio = new AC();
+      if (this.audio && this.audio.state === 'suspended') this.audio.resume();
+    } catch (e) {}
+  }
+  startSession(){
+    const t = (this.state && this.state.topic) || this.pickTopic(null) || LNW_DEFAULT_TOPICS[0];
+    this.unlockAudio();
+    const quick = !!this.lnw_prop('quickTimer', false);
+    const total = quick ? 10 : t.minutes * 60;
+    this.active = { topicId: t.id, topic: t, stage: 'timer', total: total, remaining: total, endAt: Date.now() + total * 1000, running: true, spentSec: 0 };
+    this.lnw_save();
+    this.enterTimer();
+  }
+  enterTimer(){
+    this.lastDigits = null;
+    const t = this.topicById(this.active.topicId);
+    this.setState({ screen: 'timer', topic: t, topicNo: (this.sessions || []).length + 1, paused: !this.active.running, timerDone: false, showQs: false, hov: null });
+    this.hover = null;
+    if (this.timerIv) clearInterval(this.timerIv);
+    this.timerIv = setInterval(() => this.tick(), 200);
+    this.tick();
+  }
+  remainingNow(){
+    const A = this.active; if (!A) return 0;
+    return A.running ? Math.max(0, (A.endAt - Date.now()) / 1000) : A.remaining;
+  }
+  tick(){
+    const A = this.active; if (!A || A.stage !== 'timer') return;
+    const rem = this.remainingNow();
+    if (A.running) A.remaining = rem;
+    const secs = Math.max(0, Math.ceil(rem - 1e-6));
+    const mm = Math.min(99, Math.floor(secs / 60)), ss = secs % 60;
+    const digits = lnwPad(mm, 2) + lnwPad(ss, 2);
+    if (digits !== this.lastDigits){
+      const prev = this.lastDigits; const flaps = ((this.state && this.state.flaps) || [0,0,0,0]).slice();
+      for (let i = 0; i < 4; i++) if (!prev || prev[i] !== digits[i]) flaps[i] = flaps[i] ? 0 : 1;
+      this.lastDigits = digits;
+      const el = Math.max(0, Math.round(A.total - rem));
+      this.setState({ digits: digits, flaps: flaps, prog: A.total ? 1 - rem / A.total : 1, elapsed: lnwPad(Math.floor(el / 60), 2) + ':' + lnwPad(el % 60, 2) });
+    }
+    if (rem <= 0 && A.running){
+      A.running = false; A.remaining = 0; A.done = true;
+      if (this.timerIv) { clearInterval(this.timerIv); this.timerIv = 0; }
+      this.lnw_save();
+      this.chime();
+      this.setState({ timerDone: true, paused: false, prog: 1 });
+    }
+  }
+  togglePause(){
+    const A = this.active; if (!A || A.done) return;
+    if (A.running){ A.remaining = this.remainingNow(); A.running = false; }
+    else { A.endAt = Date.now() + A.remaining * 1000; A.running = true; this.unlockAudio(); }
+    this.lnw_save();
+    this.setState({ paused: !A.running });
+  }
+  finishSession(){
+    const A = this.active; if (!A) return;
+    if (A.running) A.remaining = this.remainingNow();
+    A.running = false;
+    this.openLog();
+  }
+  openLog(){
+    const A = this.active; if (!A) return;
+    if (this.timerIv) { clearInterval(this.timerIv); this.timerIv = 0; }
+    A.stage = 'log';
+    A.spentSec = Math.max(0, Math.round(A.total - A.remaining));
+    this.lnw_save();
+    this.setState({ screen: 'log', topic: this.topicById(A.topicId), topicNo: (this.sessions || []).length + 1, logA: '', logErr: false, logSpentSec: A.spentSec, confirmDiscard: false, showQs: false });
+  }
+  resumeActive(){
+    const A = this.active; if (!A) return;
+    if (A.stage === 'log'){ this.setState({ screen: 'log', topic: this.topicById(A.topicId), topicNo: (this.sessions || []).length + 1, logA: '', logSpentSec: A.spentSec || 0 }); return; }
+    // timer: if it ran out while away, land on the completed state (no chime)
+    const rem = this.remainingNow();
+    this.enterTimer();
+    if (rem <= 0){ A.running = false; A.remaining = 0; A.done = true; if (this.timerIv) { clearInterval(this.timerIv); this.timerIv = 0; } this.setState({ timerDone: true, paused: false, prog: 1 }); this.lnw_save(); }
+  }
+  discardLog(){
+    if (this.state && this.state.logClosing) return;
+    this.active = null; this.lnw_save();
+    this.goHome();
+    this.showToast('Session discarded · nothing was saved');
+  }
+  showToast(text){
+    const id = Date.now();
+    this.setState({ toast: { id: id, text: text } });
+    setTimeout(() => { if (this.state && this.state.toast && this.state.toast.id === id) this.setState({ toast: null }); }, 3100);
+  }
+  submitLog(){
+    const s = this.state || {};
+    const a = (s.logA || '').trim();
+    if (!a){ this.setState({ logErr: true }); return; }
+    const A = this.active; const t = this.topicById(A ? A.topicId : (s.topic && s.topic.id));
+    const sess = {
+      id: 's' + Date.now().toString(36), topicId: t.id, title: t.title, category: t.category,
+      date: new Date().toISOString(), plannedMin: t.minutes, spentSec: A ? A.spentSec : 0,
+      interesting: a, figId: null
+    };
+    // 1) place the figure (position, rotation, type, connection) without starting it yet
+    if (s.logClosing) return;
+    this.growDelay = 700;
+    const f = this.growOne(true);
+    this.growDelay = 0;
+    if (f){ f.sid = sess.id; sess.figId = f.id; }
+    this.sessions.push(sess);
+    this.active = null;
+    // 2) save; the growth animation is timed to begin after the card closes
+    const ok = this.lnw_save();
+    this.markSaved(ok);
+    this.setState({ logClosing: true });
+    setTimeout(() => { this.setState({ screen: 'home', logA: '', logClosing: false }); this.pushState(); }, 330);
+  }
+  applyPreview(v){
+    if (!v || v === 'live') { if (this.active && this.active.preview) { this.active = null; if (this.timerIv) { clearInterval(this.timerIv); this.timerIv = 0; } } if (!this.active) this.goHome(); return; }
+    if (v === 'topic') { this.openTopic(); return; }
+    const t = (this.state && this.state.topic) || this.pickTopic(null) || LNW_DEFAULT_TOPICS[0];
+    if (v === 'timer') {
+      this.active = { topicId: t.id, topic: t, stage: 'timer', total: t.minutes * 60, remaining: t.minutes * 60 - 192, endAt: 0, running: false, spentSec: 0, preview: true };
+      this.enterTimer();
+    }
+    if (v === 'log') {
+      this.active = { topicId: t.id, topic: t, stage: 'log', total: t.minutes * 60, remaining: 0, running: false, spentSec: t.minutes * 60, preview: true };
+      this.resumeActive();
+    }
+  }
+  chime(){
+    try {
+      this.unlockAudio(); const ac = this.audio; if (!ac) return;
+      const t0 = ac.currentTime + 0.06;
+      const out = ac.createGain(); out.gain.value = 0.2;
+      const lp = ac.createBiquadFilter(); lp.type = 'lowpass'; lp.frequency.value = 2300; lp.Q.value = 0.4;
+      const dl = ac.createDelay(1); dl.delayTime.value = 0.19; const fb = ac.createGain(); fb.gain.value = 0.28; const wet = ac.createGain(); wet.gain.value = 0.35;
+      out.connect(lp); lp.connect(ac.destination);
+      out.connect(dl); dl.connect(fb); fb.connect(dl); dl.connect(wet); wet.connect(lp);
+      // soft major arpeggio, sine partials, slow bell-like decay
+      const notes = [[523.25, 0, 1], [659.25, 0.18, 0.85], [783.99, 0.36, 0.8], [1046.5, 0.7, 0.55]];
+      notes.forEach((nt) => {
+        [[1, 1], [2, 0.16], [3.01, 0.05]].forEach((hp, j) => {
+          const o = ac.createOscillator(); o.type = 'sine'; o.frequency.value = nt[0] * hp[0];
+          const g = ac.createGain(); const start = t0 + nt[1]; const peak = 0.5 * nt[2] * hp[1];
+          g.gain.setValueAtTime(0.0001, start);
+          g.gain.linearRampToValueAtTime(peak, start + 0.03);
+          g.gain.exponentialRampToValueAtTime(0.0001, start + 3.2 - j * 0.9);
+          o.connect(g); g.connect(out); o.start(start); o.stop(start + 3.4);
+        });
+      });
+    } catch (e) {}
+  }
+
+  // ---------- hover recall ----------
+  hoverAt(p){
+    if (!this.figs || ((this.state && this.state.screen) || 'home') !== 'home') return;
+    const z = this.cam.z; const wx = this.cam.x + (p[0] - this.W/2) / z, wy = this.cam.y + (p[1] - this.H/2) / z;
+    const now = performance.now(); let hit = null;
+    for (let i = this.figs.length - 1; i >= 0 && !hit; i--){
+      const f = this.figs[i];
+      if (f.type !== 'fig' || !f.sid || f.tBorn > now - 300) continue;
+      if (Math.hypot(wx - f.cx, wy - f.cy) > f.R + 10) continue;
+      for (const c of f.circ){ if (Math.hypot(wx - c[0], wy - c[1]) < c[2] * 1.25 + 6 / z) { hit = f; break; } }
+    }
+    this.setHover(hit);
+  }
+  setHover(f){
+    if (f === this.hover) return;
+    this.hover = f;
+    if (this.canvas) this.canvas.style.cursor = f ? 'pointer' : 'grab';
+    if (!f){ this.setState({ hov: null }); return; }
+    f.flashT = performance.now();
+    const sIdx = (this.sessions || []).findIndex((x) => x.id === f.sid); const sess = this.sessions[sIdx];
+    if (!sess){ this.hover = null; this.setState({ hov: null }); return; }
+    this.hovInfo = { no: lnwPad(sIdx + 1, 3), cat: (sess.category || '').toUpperCase(), dur: lnwMinLabel(sess.spentSec || 0), title: sess.title,
+      date: lnwDateLabel(new Date(sess.date)), a: sess.interesting };
+    this.hovPos = null; this.updateHoverCard(true);
+  }
+  updateHoverCard(force){
+    const f = this.hover; if (!f) return;
+    const z = this.cam.z; const W = 288, Hh = 230;
+    const sx = (f.cx - this.cam.x) * z + this.W/2, sy = (f.cy - this.cam.y) * z + this.H/2, r = f.R * z * 0.7;
+    let x = sx + r + 16, y = sy - Hh / 2;
+    if (x + W > this.W - 16) x = sx - r - 16 - W;
+    x = lnwClamp(x, 16, this.W - W - 16); y = lnwClamp(y, 96, this.H - Hh - 110);
+    if (!force && this.hovPos && Math.abs(this.hovPos[0] - x) < 0.5 && Math.abs(this.hovPos[1] - y) < 0.5) return;
+    this.hovPos = [x, y];
+    this.setState({ hov: Object.assign({ x: Math.round(x), y: Math.round(y) }, this.hovInfo) });
+  }
+
+  // ---------- world ----------
+  tf(f, lx, ly){ const c = Math.cos(f.rot), s = Math.sin(f.rot); const x = lx * f.flip * f.s, y = ly * f.s; return [f.x + x*c - y*s, f.y + x*s + y*c]; }
+  outAng(f, o){ return (f.flip < 0 ? Math.PI - o.a : o.a) + f.rot; }
+  localCircles(type, a){
+    const L = [];
+    if (type === 'start'){
+      L.push([0,0,24,'core']);
+      a.outs.forEach((o,i) => { L.push([o.x,o.y,8,'tip'+i]); L.push([o.x*0.55,o.y*0.55,8,'mid'+i]); });
+    } else {
+      L.push([0,0,a.sparkR*0.9,'spark']);
+      L.push([a.bc[0],a.bc[1],a.ext*0.2,'bc']);
+      L.push([a.hub[0],a.hub[1],15,'hub']);
+      a.outs.forEach((o,i) => {
+        L.push([o.x,o.y,9,'tip'+i]);
+        const p = o.path; [0.4,0.7].forEach((k) => { const q = p[Math.floor(k*(p.length-1))]; L.push([q[0],q[1],10,'limb'+i]); });
+      });
+    }
+    return L;
+  }
+  worldCircles(f){ return this.localCircles(f.type, f.a).map((c) => { const p = this.tf(f, c[0], c[1]); return [p[0], p[1], c[2]*f.s, c[3]]; }); }
+  clearance(circ, skip){
+    // skip: {fig, own:[tags of candidate to ignore vs fig], theirs:[tags on fig to ignore]}
+    let best = 1e9;
+    for (const g of this.figs){
+      const dx0 = g.cx - circ.cx, dy0 = g.cy - circ.cy;
+      if (dx0*dx0 + dy0*dy0 > (g.R + circ.R + 60) * (g.R + circ.R + 60)) continue;
+      const isP = skip && skip.fig === g;
+      for (const a of circ.list){
+        if (isP && skip.own.indexOf(a[3]) >= 0) continue;
+        for (const b of g.circ){
+          if (isP && skip.theirs.indexOf(b[3]) >= 0) continue;
+          const d = Math.hypot(a[0]-b[0], a[1]-b[1]) - a[2] - b[2];
+          if (d < best) best = d;
+        }
+      }
+    }
+    return best;
+  }
+  finalizeFig(f){
+    f.circ = this.worldCircles(f);
+    const c = f.type === 'start' ? [f.x, f.y] : this.tf(f, f.a.bc[0], f.a.bc[1]);
+    f.cx = c[0]; f.cy = c[1]; f.R = (f.a.ext + 12) * f.s;
+    f.outs = f.a.outs.map((o) => ({ o: o, used: false }));
+    f.phase = this.rng() * Math.PI * 2;
+    if (f.type === 'fig' && f.ii >= 0 && f.a.outs[f.ii]){
+      const io = f.a.outs[f.ii];
+      f.piv = this.tf(f, io.x, io.y);
+      f.gx = io.x; f.gy = io.y;
+      f.GR = f.a.ext + Math.hypot(io.x, io.y);
+    } else { f.piv = [f.x, f.y]; f.gx = 0; f.gy = 0; f.GR = f.a.ext; f.ii = -1; }
+    this.figs.push(f);
+  }
+  addStart(parent, plan, tBorn){
+    const cl = { id: this.clusters.length, color: LNW_PALETTE[this.clusters.length % LNW_PALETTE.length], figs: [] };
+    const a = LNW_ASSETS.start;
+    let f;
+    if (!plan) f = { type: 'start', key: 'start', a: a, x: 0, y: 0, rot: 0, flip: 1, s: 1, sweepFrom: Math.PI*0.75 };
+    else f = Object.assign({ type: 'start', key: 'start', a: a }, plan.f);
+    f.color = cl.color; f.cluster = cl; f.tBorn = tBorn; f.tPulse = tBorn;
+    this.finalizeFig(f);
+    f.id = this.nextId++; f.parent = plan && plan.P ? plan.P.id : null; f.po = plan && plan.P ? plan.oi : -1;
+    cl.start = f; this.clusters.push(cl);
+    if (plan){ f.outs[plan.rayIndex].used = true; }
+    return f;
+  }
+  clusterCenter(cl){ let x = cl.start.x, y = cl.start.y, n = 1; for (const g of cl.figs){ x += g.cx; y += g.cy; n++; } return [x/n, y/n]; }
+
+  planFig(cl, forceKey){
+    const rng = this.rng; const GAP = this.gapU;
+    const sources = [cl.start].concat(cl.figs);
+    const cc = this.clusterCenter(cl);
+    const recent = cl.figs.slice(-2).map((g) => g.key);
+    let best = null;
+    const keys = forceKey ? [forceKey] : LNW_KEYS.slice().sort(() => rng() - 0.5);
+    sources.forEach((P, si) => {
+      P.outs.forEach((ou, oi) => {
+        if (ou.used) return;
+        const tip = this.tf(P, ou.o.x, ou.o.y); const dir = this.outAng(P, ou.o);
+        for (const key of keys){
+          const a = LNW_ASSETS[key];
+          for (const flip of [1,-1]){
+            for (const jit of [-0.36,0,0.36]){
+             for (const ii of a.arms){
+              const s = 0.9 + rng() * 0.16;
+              const io = a.outs[ii];
+              const f = { type: 'fig', key: key, a: a, flip: flip, s: s, x: 0, y: 0, ii: ii };
+              const la = flip < 0 ? Math.PI - io.a : io.a;
+              f.rot = dir + Math.PI + jit - la;
+              // place so the child's hand sits GAP beyond the parent's hand
+              const hand = this.tf(f, io.x, io.y);
+              f.x = tip[0] + Math.cos(dir) * GAP - hand[0]; f.y = tip[1] + Math.sin(dir) * GAP - hand[1];
+              const list = this.worldCircles(f);
+              const bc = this.tf(f, a.bc[0], a.bc[1]);
+              const circ = { list: list, cx: bc[0], cy: bc[1], R: (a.ext + 12) * s };
+              const cl0 = this.clearance(circ, { fig: P, own: ['tip'+ii, 'limb'+ii], theirs: ['tip'+oi, 'limb'+oi, 'mid'+oi] });
+              if (cl0 < 3) continue;
+              let score = Math.min(cl0, 45) + rng() * 14;
+              if (key === P.key) score -= 22;
+              if (recent.indexOf(key) >= 0) score -= 9;
+              const ox = bc[0] - cc[0], oy = bc[1] - cc[1], ol = Math.hypot(ox, oy) || 1;
+              score += 12 * ((ox*Math.cos(dir) + oy*Math.sin(dir)) / ol);
+              if (si === sources.length - 1) score += 8;
+              if (P.type === 'start' && ou.o.k === 'tail' && cl.figs.length === 0) score += 30;
+              score -= Math.abs(jit) * 6;
+              if (P.a.arms && P.a.arms.indexOf(oi) >= 0) score += 6;
+              if (!best || score > best.score) best = { score: score, f: f, P: P, oi: oi, tip: tip, dir: dir };
+             }
+            }
+          }
+        }
+      });
+    });
+    return best;
+  }
+  planStart(fromCl){
+    const rng = this.rng; const GAP = this.gapU; const a = LNW_ASSETS.start;
+    let pool = fromCl ? fromCl.figs.slice().reverse() : [];
+    if (!pool.length) pool = this.figs.filter((g) => g.type === 'fig').reverse();
+    let best = null;
+    pool.forEach((P, pi) => {
+      P.outs.forEach((ou, oi) => {
+        if (ou.used) return;
+        const tip = this.tf(P, ou.o.x, ou.o.y); const dir = this.outAng(P, ou.o);
+        a.outs.forEach((ro, ri) => {
+          if (ro.k !== 'ray') return;
+          for (const flip of [1,-1]){
+            const la = flip < 0 ? Math.PI - ro.a : ro.a;
+            const dR = Math.hypot(ro.x, ro.y);
+            const f = { type: 'start', key: 'start', a: a, flip: flip, s: 1, rot: dir + Math.PI - la, x: tip[0] + Math.cos(dir)*(dR + GAP), y: tip[1] + Math.sin(dir)*(dR + GAP) };
+            const list = this.worldCircles(f);
+            const circ = { list: list, cx: f.x, cy: f.y, R: a.ext + 12 };
+            const c0 = this.clearance(circ, { fig: P, own: ['tip'+ri, 'mid'+ri], theirs: ['tip'+oi, 'limb'+oi] });
+            if (c0 < 4) continue;
+            const score = Math.min(c0, 60) + rng() * 12 - pi * 4;
+            if (!best || score > best.score) best = { score: score, f: f, P: P, oi: oi, rayIndex: ri, tip: tip, dir: dir };
+          }
+        });
+      });
+    });
+    if (!best){
+      // open space fallback: far to the east of everything
+      let mx = 0; for (const g of this.figs) mx = Math.max(mx, g.cx + g.R);
+      best = { f: { flip: 1, s: 1, rot: 0, x: mx + 220, y: (rng() - 0.5) * 200 }, P: null, oi: -1, rayIndex: 2, tip: null, dir: 0 };
+      best.f.sweepFrom = Math.PI;
+    }
+    return best;
+  }
+
+  // ---------- growth ----------
+  growOne(animate){
+    let cl = this.clusters[this.clusters.length - 1];
+    let plan = cl.figs.length >= this.perCluster ? null : this.planFig(cl);
+    if (!plan){
+      this.spawnStart(cl, animate);
+      cl = this.clusters[this.clusters.length - 1];
+      plan = this.planFig(cl);
+      if (!plan) return null;
+    }
+    return this.commitFig(cl, plan, animate);
+  }
+  schedule(animate, pulseMs, busyMs){
+    if (!animate) return { tPulse: -1e9, tBorn: -1e9 };
+    const now = performance.now();
+    const base = Math.max(now + (this.growDelay || 0), this.busyUntil);
+    const tPulse = base, tBorn = base + this.lnw_dur(pulseMs);
+    this.busyUntil = tBorn + this.lnw_dur(busyMs);
+    return { tPulse: tPulse, tBorn: tBorn };
+  }
+  spawnStart(fromCl, animate){
+    const plan = this.planStart(fromCl);
+    const pathPts = plan.P ? plan.P.outs[plan.oi].o.path : null;
+    const T = this.schedule(animate && !!plan.P, pathPts ? 720 : 0, 950);
+    if (!animate) { T.tPulse = T.tBorn = -1e9; }
+    if (animate && !plan.P) { const now = performance.now(); T.tPulse = T.tBorn = Math.max(now + (this.growDelay || 0), this.busyUntil); this.busyUntil = T.tBorn + this.lnw_dur(900); }
+    if (plan.P){
+      plan.P.outs[plan.oi].used = true;
+      // ring sweep starts from the side facing the parent (local angle of used ray)
+      const ro = LNW_ASSETS.start.outs[plan.rayIndex];
+      plan.f.sweepFrom = ro.a;
+    }
+    const st = this.addStart(plan.P, plan, T.tBorn);
+    st.tPulse = T.tPulse;
+    if (plan.P){
+      const edge = { from: plan.P, oi: plan.oi, to: st, tip: plan.tip, dir: plan.dir };
+      this.edges.push(edge);
+      if (animate) this.playConnection(edge, T.tPulse, T.tBorn, 1);
+    }
+    if (animate) this.tl.push({ t: T.tPulse, fn: () => { this.lnw_follow(st); this.pushState(); } });
+    return st;
+  }
+  commitFig(cl, plan, animate){
+    const T = this.schedule(animate, 720, 900);
+    plan.P.outs[plan.oi].used = true;
+    const f = plan.f; f.color = cl.color; f.cluster = cl; f.tBorn = T.tBorn; f.tPulse = T.tPulse;
+    this.finalizeFig(f);
+    f.id = this.nextId++; f.parent = plan.P.id; f.po = plan.oi;
+    if (f.ii >= 0 && f.outs[f.ii]) f.outs[f.ii].used = true;
+    cl.figs.push(f); this.nFigs++;
+    const edge = { from: plan.P, oi: plan.oi, to: f, tip: plan.tip, dir: plan.dir };
+    this.edges.push(edge);
+    if (animate){
+      this.playConnection(edge, T.tPulse, T.tBorn, 1);
+      this.tl.push({ t: T.tPulse, fn: () => this.lnw_follow(f) });
+      this.tl.push({ t: T.tBorn + this.lnw_dur(200), fn: () => this.pushState() });
+    }
+    return f;
+  }
+  edgePath(edge){
+    const P = edge.from; const o = P.outs[edge.oi].o;
+    return o.path.map((q) => this.tf(P, q[0], q[1]));
+  }
+  gapPoint(edge){
+    const to = edge.to; let inR;
+    if (to.type === 'start') inR = 0; else inR = to.a.maxD * 0.85 * to.s;
+    const tip = this.tf(edge.from, edge.from.outs[edge.oi].o.x, edge.from.outs[edge.oi].o.y);
+    const dir = this.outAng(edge.from, edge.from.outs[edge.oi].o);
+    let far, target;
+    if (to.type === 'start'){ far = [tip[0] + Math.cos(dir)*this.gapU, tip[1] + Math.sin(dir)*this.gapU]; target = far; }
+    else if (to.ii >= 0){ far = this.tf(to, to.a.outs[to.ii].x, to.a.outs[to.ii].y); target = far; }
+    else { far = [to.x - Math.cos(dir)*inR, to.y - Math.sin(dir)*inR]; target = [to.x, to.y]; }
+    return { a: tip, b: far, m: [(tip[0]+far[0])/2, (tip[1]+far[1])/2], dir: dir, target: target };
+  }
+  playConnection(edge, tPulse, tBorn, strength){
+    const pts = this.edgePath(edge);
+    this.pulses.push(this.makePulse(pts, tPulse, tBorn - tPulse, strength));
+    edge.from.flashT = tPulse;
+    const g = this.gapPoint(edge);
+    this.bursts.push({ t0: tBorn, dur: this.lnw_dur(760) * (strength < 1 ? 0.8 : 1), g: g, color: edge.to.color, k: strength, seed: Math.random() * 1000 });
+  }
+  makePulse(pts, t0, dur, strength){
+    const cum = [0]; for (let i = 1; i < pts.length; i++) cum.push(cum[i-1] + Math.hypot(pts[i][0]-pts[i-1][0], pts[i][1]-pts[i-1][1]));
+    return { pts: pts, cum: cum, total: cum[cum.length-1] || 1, t0: t0, dur: Math.max(60, dur), k: strength };
+  }
+
+  // ---------- camera ----------
+  frameFor(list, pad){
+    let x0 = 1e9, y0 = 1e9, x1 = -1e9, y1 = -1e9;
+    for (const g of list){ x0 = Math.min(x0, g.cx - g.R); y0 = Math.min(y0, g.cy - g.R); x1 = Math.max(x1, g.cx + g.R); y1 = Math.max(y1, g.cy + g.R); }
+    const w = Math.max(1, x1 - x0), h = Math.max(1, y1 - y0);
+    const z = Math.min((this.W - 120) / w, (this.H - 220) / h) * (pad || 1);
+    return { x: (x0 + x1)/2, y: (y0 + y1)/2 + 20 / Math.max(z, 0.1), z: lnwClamp(z, 0.12, 1.35) };
+  }
+  lnw_follow(f){
+    const now = performance.now();
+    const userRecent = now - this.lastUser < 6000;
+    this.camRate = 2.2;
+    if (!userRecent){
+      const cl = f.cluster; const list = [cl.start].concat(cl.figs).filter((g) => g === f || g.tBorn <= now + 2000);
+      const fr = this.frameFor(list, 0.92);
+      this.tgt.z = lnwClamp(fr.z, 0.45, 1.35);
+      // keep the new figure comfortably inside: shift toward cluster frame
+      this.tgt.x = fr.x; this.tgt.y = fr.y;
+      this.ensureVisible(f, 1);
+    } else {
+      this.ensureVisible(f, 1);
+    }
+  }
+  ensureVisible(f, rateMul){
+    const z = this.tgt.z; const m = 70;
+    const sx = (f.cx - this.tgt.x) * z + this.W/2, sy = (f.cy - this.tgt.y) * z + this.H/2, r = f.R * z;
+    let dx = 0, dy = 0;
+    if (sx - r < m) dx = sx - r - m; else if (sx + r > this.W - m) dx = sx + r - (this.W - m);
+    if (sy - r < m + 40) dy = sy - r - m - 40; else if (sy + r > this.H - m - 70) dy = sy + r - (this.H - m - 70);
+    this.tgt.x += dx / z; this.tgt.y += dy / z;
+  }
+  fitAll(){
+    if (!this.figs || !this.figs.length) return;
+    const fr = this.frameFor(this.figs, 0.95);
+    this.tgt = { x: fr.x, y: fr.y, z: fr.z }; this.camRate = 3; this.lastUser = performance.now() - 5000;
+  }
+  zoomAt(px, py, factor, rate){
+    const t = this.tgt;
+    const wx = t.x + (px - this.W/2) / t.z, wy = t.y + (py - this.H/2) / t.z;
+    const nz = lnwClamp(t.z * factor, 0.12, 4);
+    t.z = nz; t.x = wx - (px - this.W/2) / nz; t.y = wy - (py - this.H/2) / nz;
+    this.camRate = rate || 14; this.lastUser = performance.now();
+  }
+  zoomBy(f){ this.zoomAt(this.W/2, this.H/2, f, 7); }
+  bindInput(){
+    const cv = this.canvas; const ptrs = new Map(); let last = null, pinch = null, vel = [0,0], lastMoveT = 0, downT = 0;
+    const local = (e) => { const r = cv.getBoundingClientRect(); return [e.clientX - r.left, e.clientY - r.top]; };
+    const hideHint = () => { if (!(this.state && this.state.hintGone)) this.setState({ hintGone: true }); };
+    const down = (e) => {
+      cv.setPointerCapture && cv.setPointerCapture(e.pointerId);
+      ptrs.set(e.pointerId, local(e)); vel = [0,0]; lastMoveT = performance.now(); downT = lastMoveT;
+      downPos = local(e); travel = 0; if (e.pointerType === 'mouse') this.setHover(null);
+      cv.style.cursor = 'grabbing';
+      if (ptrs.size === 2){ const p = [...ptrs.values()]; pinch = { d: Math.hypot(p[0][0]-p[1][0], p[0][1]-p[1][1]), m: [(p[0][0]+p[1][0])/2, (p[0][1]+p[1][1])/2] }; }
+      this.lastUser = performance.now();
+    };
+    let downPos = null, travel = 0;
+    const move = (e) => {
+      if (!ptrs.has(e.pointerId)) { if (e.pointerType === 'mouse') this.hoverAt(local(e)); return; }
+      const p = local(e); const prev = ptrs.get(e.pointerId); ptrs.set(e.pointerId, p);
+      const now = performance.now();
+      if (ptrs.size === 1){
+        const dx = p[0] - prev[0], dy = p[1] - prev[1];
+        travel += Math.abs(dx) + Math.abs(dy);
+        const z = this.cam.z;
+        this.cam.x -= dx / z; this.cam.y -= dy / z; this.tgt.x = this.cam.x; this.tgt.y = this.cam.y; this.tgt.z = this.cam.z;
+        const dt = Math.max(1, now - lastMoveT); vel = [vel[0]*0.6 + (-dx/z/dt)*0.4, vel[1]*0.6 + (-dy/z/dt)*0.4]; lastMoveT = now;
+        if (Math.abs(dx) + Math.abs(dy) > 2) hideHint();
+      } else if (ptrs.size === 2 && pinch){
+        const q = [...ptrs.values()]; const d = Math.hypot(q[0][0]-q[1][0], q[0][1]-q[1][1]); const m = [(q[0][0]+q[1][0])/2, (q[0][1]+q[1][1])/2];
+        this.tgt.x -= (m[0] - pinch.m[0]) / this.tgt.z; this.tgt.y -= (m[1] - pinch.m[1]) / this.tgt.z;
+        this.zoomAt(m[0], m[1], d / (pinch.d || d), 20);
+        pinch = { d: d, m: m }; hideHint();
+      }
+      this.lastUser = now;
+    };
+    const up = (e) => {
+      ptrs.delete(e.pointerId);
+      if (ptrs.size < 2) pinch = null;
+      if (ptrs.size === 0){
+        cv.style.cursor = 'grab';
+        if (travel < 6 && downPos) this.hoverAt(local(e));
+        if (performance.now() - lastMoveT < 60){ this.tgt.x += vel[0] * 260; this.tgt.y += vel[1] * 260; this.camRate = 5; }
+      }
+    };
+    const wheel = (e) => {
+      e.preventDefault();
+      const p = local(e);
+      if (e.shiftKey && !e.ctrlKey){ this.tgt.x += (e.deltaY || e.deltaX) / this.tgt.z; this.camRate = 14; this.lastUser = performance.now(); }
+      else {
+        const k = e.deltaMode === 1 ? 0.05 : (e.ctrlKey ? 0.012 : 0.0016);
+        this.zoomAt(p[0], p[1], Math.exp(-e.deltaY * k), 16);
+      }
+      hideHint();
+    };
+    const leave = (e) => { if (e.pointerType === 'mouse' && !ptrs.size) this.setHover(null); };
+    const dbl = (e) => { const p = local(e); this.zoomAt(p[0], p[1], 1.7, 6); hideHint(); };
+    cv.addEventListener('pointerdown', down); cv.addEventListener('pointermove', move);
+    cv.addEventListener('pointerup', up); cv.addEventListener('pointercancel', up);
+    cv.addEventListener('wheel', wheel, { passive: false }); cv.addEventListener('dblclick', dbl); cv.addEventListener('pointerleave', leave);
+    this._unbind = () => {
+      cv.removeEventListener('pointerdown', down); cv.removeEventListener('pointermove', move);
+      cv.removeEventListener('pointerup', up); cv.removeEventListener('pointercancel', up);
+      cv.removeEventListener('wheel', wheel); cv.removeEventListener('dblclick', dbl); cv.removeEventListener('pointerleave', leave);
+    };
+  }
+
+  // ---------- frame ----------
+  lnw_frame(now){
+    if (!this.ctx || !this.figs) return;
+    const dt = Math.min(0.05, (now - (this.lastT || now)) / 1000); this.lastT = now;
+    // timeline
+    if (this.tl.length){ const due = this.tl.filter((e) => e.t <= now); if (due.length){ this.tl = this.tl.filter((e) => e.t > now); due.forEach((e) => e.fn()); } }
+    // camera smoothing
+    const k = 1 - Math.exp(-dt * this.camRate);
+    const lz0 = Math.log(this.cam.z), lz1 = Math.log(this.tgt.z);
+    this.cam.x += (this.tgt.x - this.cam.x) * k; this.cam.y += (this.tgt.y - this.cam.y) * k; this.cam.z = Math.exp(lz0 + (lz1 - lz0) * k);
+    if (Math.abs(this.tgt.z - (this.state && this.state.zoom || 0)) > 0.01 && now - this.lastZoomLabel > 120){ this.lastZoomLabel = now; this.setState({ zoom: this.tgt.z }); }
+    // ambient thoughts
+    if (this.lnw_prop('ambient', true) && !this.reduced && now > this.nextIdle && now > this.busyUntil + 600 && this.edges.length){
+      const e = this.edges[Math.floor(Math.random() * this.edges.length)];
+      if (e.to.tBorn < now - 500){
+        const t0 = now, tB = now + this.lnw_dur(560);
+        this.pulses.push(this.makePulse(this.edgePath(e), t0, tB - t0, 0.6));
+        e.from.flashT = t0;
+        this.bursts.push({ t0: tB, dur: this.lnw_dur(560), g: this.gapPoint(e), color: e.to.color, k: 0.5, seed: Math.random() * 1000 });
+        this.tl.push({ t: tB, fn: () => { e.to.flashT = tB; } });
+      }
+      this.nextIdle = now + 2600 + Math.random() * 3800;
+    }
+    if (this.hover) this.updateHoverCard(false);
+    if (this.state && this.state.screen === 'timer') return;
+    this.lnw_draw(now);
+  }
+  lnw_draw(now){
+    const ctx = this.ctx, dpr = this.dpr, W = this.W, H = this.H, cam = this.cam;
+    ctx.setTransform(1,0,0,1,0,0); ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    const z = cam.z;
+    ctx.setTransform(dpr*z, 0, 0, dpr*z, dpr*(W/2 - cam.x*z), dpr*(H/2 - cam.y*z));
+    const vx0 = cam.x - W/2/z, vx1 = cam.x + W/2/z, vy0 = cam.y - H/2/z, vy1 = cam.y + H/2/z;
+    this.drawGrid(vx0, vx1, vy0, vy1, z);
+    for (const f of this.figs){
+      if (f.tBorn > now) continue;
+      if (f.cx + f.R < vx0 || f.cx - f.R > vx1 || f.cy + f.R < vy0 || f.cy - f.R > vy1) continue;
+      this.drawFig(f, now);
+    }
+    // keep effect lists short
+    this.pulses = this.pulses.filter((p) => now < p.t0 + p.dur + 400);
+    this.bursts = this.bursts.filter((b) => now < b.t0 + b.dur);
+    for (const p of this.pulses) this.drawPulse(p, now);
+    for (const b of this.bursts) this.drawBurst(b, now);
+  }
+  drawGrid(x0, x1, y0, y1, z){
+    const ctx = this.ctx; let sp = 32;
+    while (sp * z < 20) sp *= 2; while (sp * z > 44) sp /= 2;
+    const r = 0.8 / z, R = 1.1 / z;
+    const gx0 = Math.floor(x0 / sp), gx1 = Math.ceil(x1 / sp), gy0 = Math.floor(y0 / sp), gy1 = Math.ceil(y1 / sp);
+    ctx.fillStyle = 'rgba(30,27,24,0.13)';
+    for (let gx = gx0; gx <= gx1; gx++) for (let gy = gy0; gy <= gy1; gy++){ if (gx % 4 === 0 && gy % 4 === 0) continue; ctx.fillRect(gx*sp - r, gy*sp - r, 2*r, 2*r); }
+    ctx.fillStyle = 'rgba(30,27,24,0.28)';
+    for (let gx = Math.ceil(gx0/4)*4; gx <= gx1; gx += 4) for (let gy = Math.ceil(gy0/4)*4; gy <= gy1; gy += 4) ctx.fillRect(gx*sp - R, gy*sp - R, 2*R, 2*R);
+  }
+  drawFig(f, now){
+    const ctx = this.ctx; const P = this.paths[f.key]; const a = f.a;
+    const age = now - f.tBorn; const sp = this.lnwSpeed;
+    const ambient = this.lnw_prop('ambient', true) && !this.reduced;
+    const sway = ambient ? 0.007 * Math.sin(now * 0.00065 + f.phase) : 0;
+    let settle = 0, pop = 1;
+    if (f.type === 'fig'){
+      const tb = age * sp / 1500; settle = (1 - lnwEaseOutBack(tb)) * 0.16; pop = 0.9 + 0.1 * lnwEaseOutCubic(tb);
+    }
+    ctx.save();
+    f.hov = (f.hov || 0) + ((this.hover === f ? 1 : 0) - (f.hov || 0)) * 0.2;
+    if (f.hov > 0.001) pop *= 1 + 0.045 * f.hov;
+    const pv = f.piv || [f.x, f.y];
+    ctx.translate(pv[0], pv[1]); ctx.rotate(sway + settle * (f.flip)); ctx.scale(pop, pop); ctx.translate(-pv[0], -pv[1]);
+    ctx.translate(f.x, f.y); ctx.rotate(f.rot); ctx.scale(f.flip * f.s, f.s);
+    ctx.fillStyle = f.color;
+    // spark pieces
+    const flash = f.flashT ? (now - f.flashT) / 520 : 9;
+    const fb = flash >= 0 && flash < 1 ? Math.sin(flash * Math.PI) : 0;
+    const sparkStart = f.type === 'start' ? this.lnw_dur(320) : 0;
+    for (let i = 0; i < a.spark.length; i++){
+      const pc = a.spark[i];
+      const sd = (f.type === 'fig' && f.ii >= 0) ? this.lnw_dur(110 + 1350 * lnwClamp(Math.hypot(pc.c[0] - f.gx, pc.c[1] - f.gy) / f.GR, 0, 1) * 0.92) : sparkStart + (pc.d / a.maxD) * this.lnw_dur(420);
+      const tp = (age - sd) / this.lnw_dur(300);
+      if (tp <= 0) continue;
+      let sc = lnwEaseOutBack(tp);
+      let al = 1;
+      if (ambient && tp > 1){ const w = Math.sin(now * 0.0021 + f.phase * 3 - pc.d * 0.16); al = 1 - 0.32 * Math.pow(Math.max(0, w), 10); }
+      sc *= 1 + 0.16 * fb * (pc.d / a.maxD);
+      ctx.globalAlpha = al;
+      if (sc !== 1){ ctx.save(); ctx.translate(pc.c[0], pc.c[1]); ctx.scale(sc, sc); ctx.translate(-pc.c[0], -pc.c[1]); ctx.fill(P.spark[i]); ctx.restore(); }
+      else ctx.fill(P.spark[i]);
+    }
+    ctx.globalAlpha = 1;
+    // body
+    if (f.type === 'start'){
+      const tb = age / this.lnw_dur(900);
+      if (tb >= 1) ctx.fill(P.body, 'evenodd');
+      else if (tb > 0){
+        const e = lnwEaseInOut(tb) * Math.PI + 0.02;
+        const a0 = f.sweepFrom || 0;
+        ctx.save(); ctx.beginPath(); ctx.moveTo(0,0); ctx.arc(0, 0, a.ext + 20, a0 - e, a0 + e); ctx.closePath(); ctx.clip();
+        ctx.fill(P.body, 'evenodd'); ctx.restore();
+      }
+    } else {
+      const tb = (age - this.lnw_dur(110)) / this.lnw_dur(1350);
+      if (tb >= 1) ctx.fill(P.body, 'evenodd');
+      else if (tb > 0){
+        const R = 4 + lnwEaseInOut(tb) * (f.GR + 18);
+        const ph = f.phase, tt = now * 0.001;
+        ctx.save(); ctx.beginPath();
+        for (let i = 0; i <= 48; i++){
+          const an = i / 48 * Math.PI * 2;
+          const r = R * (1 + 0.07 * Math.sin(3*an + ph + tt*5) + 0.05 * Math.sin(7*an - ph*2 + tt*3));
+          const x = f.gx + Math.cos(an) * r, y = f.gy + Math.sin(an) * r;
+          if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+        }
+        ctx.closePath(); ctx.clip(); ctx.fill(P.body, 'evenodd'); ctx.restore();
+      }
+    }
+    ctx.restore();
+  }
+  drawPulse(p, now){
+    const u0 = (now - p.t0) / p.dur; if (u0 < 0 || u0 > 1.25) return;
+    const ctx = this.ctx; const u = lnwEaseInOut(Math.min(1, u0));
+    const fade = u0 > 1 ? 1 - (u0 - 1) / 0.25 : Math.min(1, u0 * 6);
+    const at = (v) => {
+      const d = lnwClamp(v, 0, 1) * p.total; let i = 1; while (i < p.cum.length - 1 && p.cum[i] < d) i++;
+      const s0 = p.cum[i-1], s1 = p.cum[i] || s0 + 1; const t = (d - s0) / Math.max(1e-6, s1 - s0);
+      const A = p.pts[i-1], B = p.pts[i] || A; return [A[0] + (B[0]-A[0])*t, A[1] + (B[1]-A[1])*t];
+    };
+    ctx.save();
+    ctx.shadowColor = 'rgba(' + LNW_GLOW + ',0.9)'; ctx.shadowBlur = 12 * this.dpr * p.k;
+    for (let j = 8; j >= 0; j--){
+      const q = at(u - j * 0.022); const r = (2.4 - j * 0.2) * (0.7 + 0.3 * p.k);
+      ctx.globalAlpha = fade * (1 - j / 9) * (0.55 + 0.45 * p.k);
+      ctx.fillStyle = j === 0 ? '#FFF6E2' : 'rgba(' + LNW_GLOW + ',1)';
+      ctx.beginPath(); ctx.arc(q[0], q[1], Math.max(0.4, r), 0, Math.PI * 2); ctx.fill();
+    }
+    ctx.restore();
+  }
+  drawBurst(b, now){
+    const t = (now - b.t0) / b.dur; if (t < 0 || t > 1) return;
+    const ctx = this.ctx; const g = b.g; const k = b.k;
+    ctx.save();
+    // soft flash
+    const fr = 6 + 22 * lnwEaseOutCubic(t);
+    const grd = ctx.createRadialGradient(g.m[0], g.m[1], 0, g.m[0], g.m[1], fr);
+    grd.addColorStop(0, 'rgba(' + LNW_GLOW + ',' + (0.55 * (1 - t) * k) + ')'); grd.addColorStop(1, 'rgba(' + LNW_GLOW + ',0)');
+    ctx.fillStyle = grd; ctx.beginPath(); ctx.arc(g.m[0], g.m[1], fr, 0, Math.PI * 2); ctx.fill();
+    // jagged arc across the gap (flickers)
+    if (t < 0.38){
+      const frame = Math.floor((now - b.t0) / 45); const r = lnwRng((b.seed * 997 + frame * 31) | 0);
+      if (r() > 0.18){
+        const A = g.a, B = g.target; const dx = B[0]-A[0], dy = B[1]-A[1]; const L = Math.hypot(dx, dy) || 1; const nx = -dy / L, ny = dx / L;
+        ctx.strokeStyle = 'rgba(255,244,222,' + (0.95 * (1 - t / 0.38)) + ')';
+        ctx.shadowColor = 'rgba(' + LNW_GLOW + ',1)'; ctx.shadowBlur = 10 * this.dpr * k;
+        ctx.lineWidth = 1.1 * k + 0.4; ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+        ctx.beginPath(); ctx.moveTo(A[0], A[1]);
+        const n = 6; for (let i = 1; i < n; i++){ const s = i / n; const o = (r() - 0.5) * 5 * k; ctx.lineTo(A[0] + dx*s + nx*o, A[1] + dy*s + ny*o); }
+        ctx.lineTo(B[0], B[1]); ctx.stroke();
+      }
+    }
+    ctx.shadowBlur = 0;
+    // dash-dot rays echoing the spark motif
+    const e = lnwEaseOutCubic(t); const n = 8; const rr = lnwRng((b.seed * 13) | 0);
+    ctx.strokeStyle = b.color; ctx.fillStyle = b.color; ctx.lineCap = 'round'; ctx.lineWidth = 1.5 * k + 0.3;
+    ctx.globalAlpha = Math.pow(1 - t, 1.4) * (0.5 + 0.5 * k);
+    for (let i = 0; i < n; i++){
+      const an = i / n * Math.PI * 2 + rr() * 0.5;
+      const r0 = 5 + e * 7 * k, r1 = r0 + 4 + 4 * k, rd = r1 + 2.6 + 2 * e;
+      const c = Math.cos(an), s = Math.sin(an);
+      ctx.beginPath(); ctx.moveTo(g.m[0] + c*r0, g.m[1] + s*r0); ctx.lineTo(g.m[0] + c*r1, g.m[1] + s*r1); ctx.stroke();
+      ctx.beginPath(); ctx.arc(g.m[0] + c*rd, g.m[1] + s*rd, 0.9 * k + 0.3, 0, Math.PI * 2); ctx.fill();
+    }
+    ctx.restore();
+  }
+}
+
+(function(){
+  const comp = new Component();
+  const q = new URLSearchParams(location.search);
+  comp.props = Object.assign({"previewScreen": "live", "quickTimer": false, "speed": 1, "gap": 6, "perCluster": 5, "ambient": true}, q.has('quick') ? { quickTimer: true } : {});
+  lnwMount(document.getElementById('app'), document.getElementById('app-tpl'), comp);
+})();
+</script>
+</body>
+</html>
